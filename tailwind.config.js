@@ -5,6 +5,10 @@ export const content = [
 ];
 export const presets = [require("nativewind/preset")];
 export const theme = {
-  extend: {},
+  extend: {
+    colors: {
+      app_theme: "#faf5ff",
+    },
+  },
 };
 export const plugins = [];
