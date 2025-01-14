@@ -1,6 +1,7 @@
 declare interface Dream {
-  id?: string;
-  date: string;
+  id: string;
+  title: string;
+  createdAt: string;
   content: string;
   audioUri?: string;
   lastModified?: string;

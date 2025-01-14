@@ -7,7 +7,17 @@ export const presets = [require("nativewind/preset")];
 export const theme = {
   extend: {
     colors: {
-      app_theme: "#faf5ff",
+      primary: "#faf5ff",
+      secondary: "#8B5CF6",
+      accent: "#f3f4f6",
+      dark: "#1F2937",
+      black: {
+        DEFAULT: "#000000",
+        100: "#8C8E98",
+        200: "#666876",
+        300: "#191D31",
+      },
+      danger: "#f75555",
     },
   },
 };
