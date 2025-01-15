@@ -5,7 +5,7 @@ import "../global.css";
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack
         screenOptions={{
           headerShown: false,
@@ -18,6 +18,13 @@ export default function RootLayout() {
           options={{
             presentation: "modal",
             animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)/dream/[id]"
+          options={{
+            headerShown: false,
+            animation: "default",
           }}
         />
       </Stack>

@@ -8,7 +8,7 @@ export const theme = {
   extend: {
     colors: {
       primary: "#faf5ff",
-      secondary: "#8B5CF6",
+      secondary: "#8b5cf6",
       accent: "#f3f4f6",
       dark: "#1F2937",
       black: {

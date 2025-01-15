@@ -13,6 +13,7 @@ export const tags = [
   { name: "Signal", value: "signal" },
   { name: "Mutual", value: "mutual" },
   { name: "Progressive", value: "progressive" },
+  { name: "Past Life", value: "past-life" },
   { name: "Tragic", value: "tragic" },
   { name: "Dramatic", value: "dramatic" },
   { name: "Night Terrors", value: "night-terrors" },

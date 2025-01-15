@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,12 +8,18 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Easing,
+  FlatList,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
+import { format } from "date-fns";
 import images from "@/lib/images";
+import { getDreams } from "@/lib/storage";
+import { tags } from "@/lib/data";
 
 // Interface for menu items
 interface MenuItem {
@@ -30,8 +36,32 @@ export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [sortBy, setSortBy] = useState("Entry Date");
+  const [dreams, setDreams] = useState<Dream[]>([]);
+  const [selectedTag, setSelectedTag] = useState("all");
   const router = useRouter();
   const menuRef = useRef(null);
+
+  // Load dreams when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      const loadDreams = async () => {
+        const loadedDreams = await getDreams();
+        setDreams(loadedDreams);
+      };
+
+      loadDreams();
+    }, [])
+  );
+
+  // Sort dreams based on selection
+  const sortedDreams = [...dreams].sort((a, b) => {
+    if (sortBy === "Entry Date") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else {
+      // Moment Date - assuming content date might be different from creation date
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    }
+  });
 
   // Animation values
   const menuAnimation = useRef(new Animated.Value(0)).current;
@@ -161,6 +191,23 @@ export default function Home() {
     ],
   };
 
+  const renderDream = ({ item }: { item: Dream }) => (
+    <TouchableOpacity
+      className="bg-white rounded-2xl p-4 mb-4 shadow-sm"
+      onPress={() => {
+        router.push(`/dream/${item.id}`);
+      }}
+    >
+      <Text className="text-lg font-semibold mb-2">{item.title}</Text>
+      <Text className="text-gray-600 mb-3" numberOfLines={2}>
+        {item.content}
+      </Text>
+      <Text className="text-gray-400 text-sm">
+        {format(new Date(item.createdAt), "MMM d, yyyy")}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <TouchableWithoutFeedback onPress={() => setShowMenu(false)}>
       <SafeAreaView className="flex-1 bg-primary">
@@ -174,7 +221,7 @@ export default function Home() {
             <TouchableOpacity
               onPress={(e) => {
                 e.stopPropagation();
-                setShowMenu(!showMenu);
+                setShowMenu((prevShowMenu) => !prevShowMenu);
                 if (showSortDropdown) setShowSortDropdown(false);
               }}
               className="bg-gray-100 p-2 rounded-full"
@@ -258,19 +305,64 @@ export default function Home() {
           </View>
         )}
 
-        <View className="flex-1 items-center justify-center -mt-16">
-          <Image
-            source={images.dummyLogo}
-            className="size-28 mb-4 rounded-2xl"
-            resizeMode="contain"
-          />
-          <Text className="text-2xl font-bold mb-2">Start Journaling</Text>
-          <Text className="text-gray-500 text-center px-12">
-            Record your dreams through voice.{"\n"}
-            Tap the plus button to get started.
-          </Text>
-        </View>
+        {/* Tags */}
+        {dreams.length > 0 && (
+          <View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              className="px-6 py-6"
+            >
+              {tags.map((tag) => (
+                <TouchableOpacity
+                  key={tag.value}
+                  onPress={() => setSelectedTag(tag.value)}
+                  className={`mr-2 px-6 py-4 rounded-full ${
+                    selectedTag === tag.value
+                      ? "bg-secondary border border-secondary"
+                      : "bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  <Text
+                    className={`${
+                      selectedTag === tag.value
+                        ? "text-white font-medium"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {tag.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
 
+        {/* Dream List */}
+        {dreams.length === 0 ? (
+          <View className="flex-1 items-center justify-center">
+            <Image
+              source={images.dummyLogo}
+              className="size-28 mb-4 rounded-2xl"
+              resizeMode="contain"
+            />
+            <Text className="text-2xl font-bold mb-2">Start Journaling</Text>
+            <Text className="text-gray-500 text-center px-12">
+              Record your dreams through voice.{"\n"}
+              Tap the plus button to get started.
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={sortedDreams}
+            renderItem={renderDream}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ padding: 24, paddingTop: 12 }}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+
+        {/* Record Button */}
         <View className="absolute bottom-8 self-center z-10">
           <TouchableOpacity
             onPress={() => router.push("/record-modal")}
