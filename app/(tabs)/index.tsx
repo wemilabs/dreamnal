@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import images from "@/lib/images";
 import { getDreams } from "@/lib/storage";
 import { tags } from "@/lib/data";
+import { formatRelativeDate } from "@/lib/utils/formatDate";
 
 // Interface for menu items
 interface MenuItem {
@@ -202,8 +203,8 @@ export default function Home() {
       <Text className="text-gray-600 mb-3" numberOfLines={2}>
         {item.content}
       </Text>
-      <Text className="text-gray-400 text-sm">
-        {format(new Date(item.createdAt), "MMM d, yyyy")}
+      <Text className="text-gray-400 text-sm text-right italic">
+        {formatRelativeDate(item.createdAt)}
       </Text>
     </TouchableOpacity>
   );
@@ -215,8 +216,8 @@ export default function Home() {
         <View className="flex-row justify-between items-center px-6 pt-14 pb-2">
           <Text className="text-4xl font-bold">Dreamnal</Text>
           <View className="flex-row gap-2">
-            <TouchableOpacity className="mr-2 bg-gray-100 p-2 rounded-full">
-              <Feather name="search" size={24} color="#000" />
+            <TouchableOpacity className="mr-2 bg-gray-100 p-1 rounded-full">
+              <Feather name="search" size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={(e) => {
@@ -224,9 +225,9 @@ export default function Home() {
                 setShowMenu((prevShowMenu) => !prevShowMenu);
                 if (showSortDropdown) setShowSortDropdown(false);
               }}
-              className="bg-gray-100 p-2 rounded-full"
+              className="bg-gray-100 p-1 rounded-full"
             >
-              <Feather name="more-horizontal" size={24} color="#000" />
+              <Feather name="more-horizontal" size={20} color="#000" />
             </TouchableOpacity>
           </View>
         </View>
@@ -314,25 +315,25 @@ export default function Home() {
               className="px-6 py-6"
             >
               {tags.map((tag) => (
-                <TouchableOpacity
+                <Pressable
                   key={tag.value}
                   onPress={() => setSelectedTag(tag.value)}
                   className={`mr-2 px-6 py-4 rounded-full ${
                     selectedTag === tag.value
-                      ? "bg-secondary border border-secondary"
+                      ? "bg-secondary-100 border border-secondary-100"
                       : "bg-gray-100 border border-gray-200"
                   }`}
                 >
                   <Text
-                    className={`${
+                    className={`font-bold ${
                       selectedTag === tag.value
-                        ? "text-white font-medium"
+                        ? "text-secondary-200"
                         : "text-gray-600"
                     }`}
                   >
                     {tag.name}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </ScrollView>
           </View>
@@ -366,9 +367,9 @@ export default function Home() {
         <View className="absolute bottom-8 self-center z-10">
           <TouchableOpacity
             onPress={() => router.push("/record-modal")}
-            className="bg-white size-20 rounded-full items-center justify-center shadow-md"
+            className="bg-secondary size-20 rounded-full items-center justify-center shadow-md"
           >
-            <Feather name="plus" size={33} color="#8b5cf6" />
+            <Feather name="plus" size={33} color="#fff" />
           </TouchableOpacity>
         </View>
       </SafeAreaView>

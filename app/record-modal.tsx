@@ -14,15 +14,9 @@ import { Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { format } from "date-fns";
-import OpenAI from "openai";
 import * as FileSystem from "expo-file-system";
-import { storeDream } from "@/lib/storage";
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY ?? "",
-  dangerouslyAllowBrowser: true, // Required for React Native
-});
+import { storeDream } from "@/lib/storage";
 
 // Component for a single wave bar in the visualizer
 const WaveBar = ({ amplitude }: { amplitude: number }) => {
@@ -235,13 +229,13 @@ export default function RecordModal() {
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-5 py-4">
         <TouchableOpacity onPress={() => router.back()}>
-          <Text className="text-xl text-secondary">Cancel</Text>
+          <Text className="text-xl text-secondary-200">Cancel</Text>
         </TouchableOpacity>
         <Text className="text-xl font-semibold">{formattedDate}</Text>
         <TouchableOpacity onPress={handleSave} disabled={!showForm}>
           <Text
             className={`text-xl font-bold ${
-              !showForm ? "text-secondary/50" : "text-secondary"
+              !showForm ? "text-secondary-200/50" : "text-secondary-200"
             }`}
           >
             Done
@@ -249,10 +243,10 @@ export default function RecordModal() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
+      <View className="flex-1 items-center justify-center pb-11">
         {isTranscribing ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#0066CC" />
+            <ActivityIndicator size="large" color="#8b5cf6" />
             <Text style={styles.loadingText}>Transcribing your dream...</Text>
           </View>
         ) : showForm ? (
@@ -283,6 +277,7 @@ export default function RecordModal() {
                 styles.recordButton,
                 isRecording && styles.recordingButton,
               ]}
+              // className="items-center justify-center w-16 h-16 rounded-full bg-red-500"
               onPress={isRecording ? stopRecording : startRecording}
             >
               <Feather
@@ -299,12 +294,6 @@ export default function RecordModal() {
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 40,
-  },
   waveContainer: {
     flexDirection: "row",
     alignItems: "center",

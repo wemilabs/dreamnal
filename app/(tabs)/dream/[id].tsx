@@ -10,8 +10,9 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
-import { format } from "date-fns";
 import { getDreams, updateDream, deleteDream } from "@/lib/storage";
+import { format } from "date-fns";
+import { formatDetailedDate } from "@/lib/utils/formatDate";
 
 export default function DreamDetail() {
   const { id } = useLocalSearchParams();
@@ -139,7 +140,7 @@ export default function DreamDetail() {
           <>
             <Text className="text-2xl font-bold mb-2">{dream.title}</Text>
             <Text className="text-gray-500 mb-4">
-              {format(new Date(dream.createdAt), "MMMM d, yyyy 'at' h:mm a")}
+              {formatDetailedDate(dream.createdAt)}
             </Text>
             <Text className="text-base leading-6">{dream.content}</Text>
           </>
