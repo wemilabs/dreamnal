@@ -39,7 +39,7 @@ export default function DreamDetail() {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (id: string) => {
     if (!dream) return;
     if (!title.trim() || !content.trim()) {
       Alert.alert("Error", "Please fill in both title and content");
@@ -54,7 +54,7 @@ export default function DreamDetail() {
         updatedAt: new Date().toISOString(),
       };
 
-      await updateDream(updatedDream);
+      await updateDream(id, updatedDream);
       setDream(updatedDream);
       setIsEditing(false);
     } catch (error) {
@@ -101,7 +101,7 @@ export default function DreamDetail() {
               <TouchableOpacity onPress={() => setIsEditing(false)}>
                 <Text className="text-red-500">Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleSave}>
+              <TouchableOpacity onPress={() => handleSave(dream.id)}>
                 <Text className="text-blue-500 font-semibold">Save</Text>
               </TouchableOpacity>
             </>

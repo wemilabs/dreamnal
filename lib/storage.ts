@@ -1,58 +1,59 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Dream } from "./types/dream";
 
 const DREAMS_STORAGE_KEY = "@dreams";
 
-export const storeDream = async (dream: Dream) => {
-  try {
-    const existingDreams = await getDreams();
-    const updatedDreams = [dream, ...existingDreams];
-    await AsyncStorage.setItem(
-      DREAMS_STORAGE_KEY,
-      JSON.stringify(updatedDreams)
-    );
-  } catch (error) {
-    console.error("Error storing dream:", error);
-    throw error;
-  }
-};
+export async function saveDream(
+  dream: Omit<Dream, "id" | "createdAt" | "updatedAt">
+): Promise<Dream> {
+  const dreams = await getDreams();
+  const newDream: Dream = {
+    ...dream,
+    id: Math.random().toString(36).substring(7),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 
-export const getDreams = async (): Promise<Dream[]> => {
+  await AsyncStorage.setItem(
+    DREAMS_STORAGE_KEY,
+    JSON.stringify([newDream, ...dreams])
+  );
+
+  return newDream;
+}
+
+export async function getDreams(): Promise<Dream[]> {
   try {
-    const dreams = await AsyncStorage.getItem(DREAMS_STORAGE_KEY);
-    return dreams ? JSON.parse(dreams) : [];
+    const dreamsJson = await AsyncStorage.getItem(DREAMS_STORAGE_KEY);
+    return dreamsJson ? JSON.parse(dreamsJson) : [];
   } catch (error) {
     console.error("Error getting dreams:", error);
     return [];
   }
-};
+}
 
-export const updateDream = async (updatedDream: Dream) => {
-  try {
-    const dreams = await getDreams();
-    const updatedDreams = dreams.map((dream) =>
-      dream.id === updatedDream.id ? updatedDream : dream
-    );
-    await AsyncStorage.setItem(
-      DREAMS_STORAGE_KEY,
-      JSON.stringify(updatedDreams)
-    );
-  } catch (error) {
-    console.error("Error updating dream:", error);
-    throw error;
-  }
-};
+export async function updateDream(
+  id: string,
+  updates: Partial<Omit<Dream, "id" | "createdAt">>
+): Promise<void> {
+  const dreams = await getDreams();
+  const updatedDreams = dreams.map((dream) =>
+    dream.id === id
+      ? {
+          ...dream,
+          ...updates,
+          updatedAt: new Date().toISOString(),
+        }
+      : dream
+  );
 
-export const deleteDream = async (id: string) => {
-  try {
-    const dreams = await getDreams();
-    const updatedDreams = dreams.filter((dream) => dream.id !== id);
-    await AsyncStorage.setItem(
-      DREAMS_STORAGE_KEY,
-      JSON.stringify(updatedDreams)
-    );
-  } catch (error) {
-    console.error("Error deleting dream:", error);
-    throw error;
-  }
-};
+  await AsyncStorage.setItem(DREAMS_STORAGE_KEY, JSON.stringify(updatedDreams));
+}
+
+export async function deleteDream(id: string): Promise<void> {
+  const dreams = await getDreams();
+  const filteredDreams = dreams.filter((dream) => dream.id !== id);
+  await AsyncStorage.setItem(
+    DREAMS_STORAGE_KEY,
+    JSON.stringify(filteredDreams)
+  );
+}

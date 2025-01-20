@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Pressable,
-  Image,
   TouchableWithoutFeedback,
   Animated,
   Easing,
@@ -16,11 +15,12 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
-import { format } from "date-fns";
-import images from "@/lib/images";
+
 import { getDreams } from "@/lib/storage";
 import { tags } from "@/lib/data";
 import { formatRelativeDate } from "@/lib/utils/formatDate";
+import NewRecordButton from "@/components/new-record-button";
+import WelcomeStart from "@/components/welcome-start";
 
 // Interface for menu items
 interface MenuItem {
@@ -63,6 +63,14 @@ export default function Home() {
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     }
   });
+
+  // Filter dreams based on selected tag
+  const filteredDreams = useMemo(() => {
+    if (selectedTag === "all") {
+      return sortedDreams;
+    }
+    return sortedDreams.filter((dream) => dream.tags?.includes(selectedTag));
+  }, [sortedDreams, selectedTag]);
 
   // Animation values
   const menuAnimation = useRef(new Animated.Value(0)).current;
@@ -192,27 +200,43 @@ export default function Home() {
     ],
   };
 
-  const renderDream = ({ item }: { item: Dream }) => (
-    <TouchableOpacity
-      className="bg-white rounded-2xl p-4 mb-4 shadow-sm"
-      onPress={() => {
-        router.push(`/dream/${item.id}`);
-      }}
-    >
-      <Text className="text-lg font-semibold mb-2">{item.title}</Text>
-      <Text className="text-gray-600 mb-3" numberOfLines={2}>
-        {item.content}
-      </Text>
-      <Text className="text-gray-400 text-sm text-right italic">
-        {formatRelativeDate(item.createdAt)}
-      </Text>
-    </TouchableOpacity>
-  );
+  const dreamItem = ({ item }: { item: Dream }) => {
+    return (
+      <Pressable
+        className="bg-white rounded-2xl p-4 mb-4 shadow-sm"
+        onPress={() => {
+          router.push(`/dream/${item.id}`);
+        }}
+      >
+        <Text className="text-lg font-semibold mb-2">{item.title}</Text>
+        <Text className="text-gray-600 mb-3" numberOfLines={2}>
+          {item.content}
+        </Text>
+
+        <View className="flex-row items-center justify-between pt-2 pb-1">
+          <View className="flex-row gap-2">
+            {item.tags?.map((tag) => (
+              <Text
+                key={tag}
+                className="bg-gray-200 rounded-full px-2 py-1 text-gray-600 text-xs"
+              >
+                {tag}
+              </Text>
+            ))}
+          </View>
+          <Text className="text-gray-400 text-sm">
+            {formatRelativeDate(item.createdAt)}
+          </Text>
+        </View>
+      </Pressable>
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => setShowMenu(false)}>
       <SafeAreaView className="flex-1 bg-primary">
         <StatusBar style="dark" />
+
         <View className="flex-row justify-between items-center px-6 pt-14 pb-2">
           <Text className="text-4xl font-bold">Dreamnal</Text>
           <View className="flex-row gap-2">
@@ -318,14 +342,14 @@ export default function Home() {
                 <Pressable
                   key={tag.value}
                   onPress={() => setSelectedTag(tag.value)}
-                  className={`mr-2 px-6 py-4 rounded-full ${
+                  className={`mr-2 px-4 py-2 rounded-full ${
                     selectedTag === tag.value
                       ? "bg-secondary-100 border border-secondary-100"
                       : "bg-gray-100 border border-gray-200"
                   }`}
                 >
                   <Text
-                    className={`font-bold ${
+                    className={`font-semibold ${
                       selectedTag === tag.value
                         ? "text-secondary-200"
                         : "text-gray-600"
@@ -341,37 +365,26 @@ export default function Home() {
 
         {/* Dream List */}
         {dreams.length === 0 ? (
-          <View className="flex-1 items-center justify-center">
-            <Image
-              source={images.dummyLogo}
-              className="size-28 mb-4 rounded-2xl"
-              resizeMode="contain"
-            />
-            <Text className="text-2xl font-bold mb-2">Start Journaling</Text>
-            <Text className="text-gray-500 text-center px-12">
-              Record your dreams through voice.{"\n"}
-              Tap the plus button to get started.
-            </Text>
-          </View>
+          <WelcomeStart />
         ) : (
           <FlatList
-            data={sortedDreams}
-            renderItem={renderDream}
+            data={filteredDreams}
+            renderItem={dreamItem}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ padding: 24, paddingTop: 12 }}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => (
+              <View className="flex-1 items-center justify-center py-8">
+                <Text className="text-gray-500">
+                  No dreams found with this tag
+                </Text>
+              </View>
+            )}
           />
         )}
 
-        {/* Record Button */}
-        <View className="absolute bottom-8 self-center z-10">
-          <TouchableOpacity
-            onPress={() => router.push("/record-modal")}
-            className="bg-secondary size-20 rounded-full items-center justify-center shadow-md"
-          >
-            <Feather name="plus" size={33} color="#fff" />
-          </TouchableOpacity>
-        </View>
+        {/* New Record Button */}
+        <NewRecordButton />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

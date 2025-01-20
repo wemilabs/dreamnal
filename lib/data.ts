@@ -1,4 +1,4 @@
-export const tags = [
+export const tags: Tag[] = [
   { name: "All", value: "all" },
   { name: "Lucid", value: "lucid" },
   { name: "Nightmare", value: "nightmare" },

@@ -1,11 +1,4 @@
-import {
-  format,
-  formatDistanceToNow,
-  isToday,
-  isYesterday,
-  isThisWeek,
-  isThisYear,
-} from "date-fns";
+import { format, isToday, isYesterday, isThisWeek, isThisYear } from "date-fns";
 
 /**
  * Formats a date in a relative way, similar to social media apps:

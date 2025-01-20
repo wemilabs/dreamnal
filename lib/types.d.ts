@@ -4,4 +4,10 @@ declare type Dream = {
   content: string;
   createdAt: string;
   updatedAt: string;
+  tags?: string[];
+};
+
+declare type Tag = {
+  name: string;
+  value: string;
 };

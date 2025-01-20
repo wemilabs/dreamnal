@@ -13,7 +13,6 @@ export const theme = {
         100: "#e9d5ff",
         200: "#9333ea",
       },
-
       accent: "#f3f4f6",
       dark: "#1F2937",
       black: {

@@ -1,13 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Animated,
-  Easing,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Feather } from "@expo/vector-icons";
@@ -16,51 +15,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { format } from "date-fns";
 import * as FileSystem from "expo-file-system";
 
-import { storeDream } from "@/lib/storage";
-
-// Component for a single wave bar in the visualizer
-const WaveBar = ({ amplitude }: { amplitude: number }) => {
-  const heightAnim = useRef(new Animated.Value(2)).current;
-
-  useEffect(() => {
-    Animated.timing(heightAnim, {
-      toValue: Math.max(2, Math.min(40, amplitude * 40)),
-      duration: 100,
-      easing: Easing.ease,
-      useNativeDriver: false,
-    }).start();
-  }, [amplitude]);
-
-  return (
-    <Animated.View
-      style={[
-        styles.waveBar,
-        {
-          height: heightAnim,
-        },
-      ]}
-    />
-  );
-};
-
-// Wave Visualizer component
-const WaveVisualizer = ({
-  metering,
-  isRecording,
-}: {
-  metering: number[];
-  isRecording: boolean;
-}) => {
-  if (!isRecording) return null;
-
-  return (
-    <View style={styles.waveContainer}>
-      {metering.map((amplitude, i) => (
-        <WaveBar key={i} amplitude={amplitude} />
-      ))}
-    </View>
-  );
-};
+import { tags } from "@/lib/data";
+import { saveDream } from "@/lib/storage";
+import WaveVisualizer from "@/components/record-modal/wave-visualizer";
 
 export default function RecordModal() {
   const router = useRouter();
@@ -71,6 +28,7 @@ export default function RecordModal() {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Update metering data
   useEffect(() => {
@@ -210,16 +168,26 @@ export default function RecordModal() {
         id: Date.now().toString(),
         title: title.trim(),
         content: content.trim(),
+        tags: selectedTags,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
-      await storeDream(dream);
+      await saveDream(dream);
       router.back();
     } catch (error) {
       console.error("Error saving dream:", error);
       alert("Failed to save dream. Please try again.");
     }
+  };
+
+  // Toggle tag selection
+  const toggleTag = (tagValue: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagValue)
+        ? prev.filter((t) => t !== tagValue)
+        : [...prev, tagValue]
+    );
   };
 
   // Format current date as "Wed, 15 Jan, 2025"
@@ -267,6 +235,36 @@ export default function RecordModal() {
               placeholderTextColor="#999"
               textAlignVertical="top"
             />
+
+            <View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                className="mb-4"
+              >
+                {tags.slice(1).map((tag) => (
+                  <TouchableOpacity
+                    key={tag.value}
+                    onPress={() => toggleTag(tag.value)}
+                    className={`mr-2 px-4 py-2 rounded-full ${
+                      selectedTags.includes(tag.value)
+                        ? "bg-secondary-100 border border-secondary-100"
+                        : "bg-gray-100 border border-gray-200"
+                    }`}
+                  >
+                    <Text
+                      className={
+                        selectedTags.includes(tag.value)
+                          ? "text-secondary-200"
+                          : "text-gray-600"
+                      }
+                    >
+                      {tag.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           </View>
         ) : (
           <>
@@ -277,7 +275,6 @@ export default function RecordModal() {
                 styles.recordButton,
                 isRecording && styles.recordingButton,
               ]}
-              // className="items-center justify-center w-16 h-16 rounded-full bg-red-500"
               onPress={isRecording ? stopRecording : startRecording}
             >
               <Feather
@@ -294,19 +291,6 @@ export default function RecordModal() {
 }
 
 const styles = StyleSheet.create({
-  waveContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 60,
-    marginBottom: 40,
-    gap: 2,
-  },
-  waveBar: {
-    width: 3,
-    backgroundColor: "#0066CC",
-    borderRadius: 2,
-  },
   recordButton: {
     width: 72,
     height: 72,
