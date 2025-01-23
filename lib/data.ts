@@ -17,5 +17,5 @@ export const tags: Tag[] = [
   { name: "Tragic", value: "tragic" },
   { name: "Dramatic", value: "dramatic" },
   { name: "Night Terrors", value: "night-terrors" },
-  { name: "Other", value: "other" },
+  { name: "I don't really know", value: "other" },
 ];

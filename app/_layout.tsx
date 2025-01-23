@@ -12,21 +12,23 @@ export default function RootLayout() {
           animation: "fade",
         }}
       >
-        <Stack.Screen name="(tabs)/index" />
+        <Stack.Screen name="(tabs)" />
         <Stack.Screen
-          name="record-modal"
+          name="modal-screens/record-modal"
           options={{
             presentation: "modal",
             animation: "slide_from_bottom",
           }}
         />
         <Stack.Screen
-          name="(tabs)/dream/[id]"
+          name="modal-screens/account-modal"
           options={{
-            headerShown: false,
-            animation: "default",
+            presentation: "modal",
+            animation: "slide_from_bottom",
           }}
         />
+        <Stack.Screen name="dream/[id]" options={{ animation: "default" }} />
+        <Stack.Screen name="category/[id]" options={{ animation: "default" }} />
       </Stack>
     </GestureHandlerRootView>
   );

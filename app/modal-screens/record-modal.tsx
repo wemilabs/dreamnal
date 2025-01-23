@@ -197,13 +197,13 @@ export default function RecordModal() {
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-5 py-4">
         <TouchableOpacity onPress={() => router.back()}>
-          <Text className="text-xl text-secondary-200">Cancel</Text>
+          <Text className="text-xl text-secondary">Cancel</Text>
         </TouchableOpacity>
         <Text className="text-xl font-semibold">{formattedDate}</Text>
         <TouchableOpacity onPress={handleSave} disabled={!showForm}>
           <Text
             className={`text-xl font-bold ${
-              !showForm ? "text-secondary-200/50" : "text-secondary-200"
+              !showForm ? "text-secondary/50" : "text-secondary"
             }`}
           >
             Done
@@ -226,16 +226,6 @@ export default function RecordModal() {
               onChangeText={setTitle}
               placeholderTextColor="#999"
             />
-            <TextInput
-              style={styles.contentInput}
-              placeholder="Start writing..."
-              value={content}
-              onChangeText={setContent}
-              multiline
-              placeholderTextColor="#999"
-              textAlignVertical="top"
-            />
-
             <View>
               <ScrollView
                 horizontal
@@ -265,6 +255,15 @@ export default function RecordModal() {
                 ))}
               </ScrollView>
             </View>
+            <TextInput
+              style={styles.contentInput}
+              placeholder="Start writing..."
+              value={content}
+              onChangeText={setContent}
+              multiline
+              placeholderTextColor="#999"
+              textAlignVertical="top"
+            />
           </View>
         ) : (
           <>
