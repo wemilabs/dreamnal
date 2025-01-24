@@ -1,14 +1,31 @@
-import { View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Animated } from "react-native";
+import { useRef } from "react";
 
+import ParallaxHeader from "../../components/categories/ParallaxHeader";
+import CategoryGrid from "../../components/categories/CategoryGrid";
+import { categories } from "@/lib/data";
+
+/**
+ * Categories screen component with parallax header and grid of category cards
+ */
 const Categories = () => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+
   return (
-    <SafeAreaView className="flex-1 bg-primary">
-      <View className="flex-row justify-between items-center px-6 pt-16 pb-2">
-        <Text className="text-4xl font-bold">Categories</Text>
-        <Text className="text-4xl font-bold">🌙</Text>
-      </View>
-    </SafeAreaView>
+    <View className="flex-1 bg-primary">
+      <ParallaxHeader scrollY={scrollY} />
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+        className="flex-1"
+      >
+        <View style={{ height: 400 }} />
+        <CategoryGrid categories={categories} />
+      </Animated.ScrollView>
+    </View>
   );
 };
 
