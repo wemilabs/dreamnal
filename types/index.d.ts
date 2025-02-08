@@ -6,6 +6,8 @@ declare type Dream = {
   updatedAt: string;
   tags?: string[];
   isBookmarked?: boolean;
+  mood?: "happy" | "neutral" | "scary" | "unknown";
+  location?: string;
 };
 
 declare type Tag = {

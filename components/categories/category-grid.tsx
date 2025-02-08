@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import CategoryCard from "./CategoryCard";
+import CategoryCard from "./category-card";
 
 interface CategoryGridProps {
   categories: Category[];

@@ -96,7 +96,7 @@ export default function SearchInput({
       />
       <TextInput
         className="flex-1 text-xl leading-6 text-gray-900"
-        placeholder="Search dreams"
+        placeholder="Search your dreams..."
         placeholderTextColor="#9CA3AF"
         returnKeyType="search"
         clearButtonMode="never"

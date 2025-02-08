@@ -1,8 +1,8 @@
 import { View, Animated } from "react-native";
 import { useRef } from "react";
 
-import ParallaxHeader from "../../components/categories/ParallaxHeader";
-import CategoryGrid from "../../components/categories/CategoryGrid";
+import ParallaxHeader from "@/components/categories/parallax-header";
+import CategoryGrid from "@/components/categories/category-grid";
 import { categories } from "@/lib/data";
 
 /**
