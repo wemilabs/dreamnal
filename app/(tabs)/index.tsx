@@ -117,13 +117,13 @@ export default function Home() {
 
         {/* Sticky Header */}
         <Animated.View
-          className="absolute top-0 left-0 right-0 bg-gray-50 backdrop-blur-md z-20 border-b border-gray-200 py-2"
+          className="absolute top-0 left-0 right-0 bg-gray-50 backdrop-blur-md z-20 border-b border-gray-200"
           style={{
             opacity: headerOpacity,
             transform: [{ translateY: headerTranslateY }],
           }}
         >
-          <View className="px-6 pt-14 pb-2 flex-row items-center justify-between">
+          <View className="px-6 pt-[62px] pb-2 flex-row items-center justify-between">
             <Pressable className="size-8 rounded-full bg-gray-200 flex-row justify-center items-center">
               <Feather name="more-horizontal" size={18} />
             </Pressable>
@@ -216,7 +216,7 @@ export default function Home() {
                           onPress={() => setSelectedTag("all")}
                           className="mt-6"
                         >
-                          <Text className="text-secondary text-lg font-bold">
+                          <Text className="text-secondary text-lg font-semibold">
                             View All dreams
                           </Text>
                         </Pressable>
