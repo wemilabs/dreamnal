@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import Feather from "@expo/vector-icons/Feather";
 
 import { getDreams } from "@/lib/storage";
 import { tags } from "@/lib/data";
@@ -60,7 +61,7 @@ export default function Home() {
     return filtered;
   }, [dreams, selectedTag, searchText]);
 
-  // Animation values for sticky header
+  // Animation scroll value
   const scrollY = useRef(new Animated.Value(0)).current;
 
   // Calculate sticky header animations
@@ -122,8 +123,11 @@ export default function Home() {
             transform: [{ translateY: headerTranslateY }],
           }}
         >
-          <View className="px-6 py-[22.5px] flex-row items-center justify-between">
-            <Text className="text-xl font-bold">Dreams</Text>
+          <View className="px-6 pt-14 pb-2 flex-row items-center justify-between">
+            <Pressable className="size-8 rounded-full bg-gray-200 flex-row justify-center items-center">
+              <Feather name="more-horizontal" size={18} />
+            </Pressable>
+            <Text className="text-xl font-bold ">Dreams</Text>
             <AccountCTA />
           </View>
         </Animated.View>
@@ -145,7 +149,10 @@ export default function Home() {
             switch (item.type) {
               case "header":
                 return (
-                  <View className="px-6 pt-14 pb-2">
+                  <View className="px-6 py-[9px]">
+                    <Pressable className="size-8 rounded-full bg-gray-200 flex-row justify-center items-center mb-4">
+                      <Feather name="more-horizontal" size={18} />
+                    </Pressable>
                     <View className="flex-row justify-between items-center mb-4">
                       <Text className="text-[37px] leading-[41px] font-bold">
                         Dreams

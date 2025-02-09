@@ -8,8 +8,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#8b5cf6",
         headerShown: false,
         tabBarStyle: {
-          // borderTopLeftRadius: 20,
-          // borderTopRightRadius: 20,
+          backdropFilter: "blur(50px)",
         },
       }}
     >
