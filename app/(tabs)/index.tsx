@@ -2,12 +2,10 @@ import { useState, useCallback, useMemo, useRef } from "react";
 import {
   View,
   Text,
-  Image,
   Pressable,
   TouchableWithoutFeedback,
   FlatList,
   Animated,
-  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -20,7 +18,7 @@ import { formatRelativeDate } from "@/lib/utils/formatDate";
 import NewRecordButton from "@/components/new-record-button";
 import WelcomeStart from "@/components/welcome-start";
 import SearchInput from "@/components/search-input";
-import images from "@/lib/images";
+import AccountCTA from "@/components/shared/account-cta";
 
 export default function Home() {
   const [dreams, setDreams] = useState<Dream[]>([]);
@@ -64,12 +62,17 @@ export default function Home() {
 
   // Animation values for sticky header
   const scrollY = useRef(new Animated.Value(0)).current;
-  const headerHeight = 140; // Reduced header height
 
-  // Calculate header opacity for background
-  const headerBackgroundOpacity = scrollY.interpolate({
+  // Calculate sticky header animations
+  const headerOpacity = scrollY.interpolate({
     inputRange: [0, 50],
     outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [-20, 0],
     extrapolate: "clamp",
   });
 
@@ -106,65 +109,30 @@ export default function Home() {
     );
   };
 
-  // "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=800&q=80",
-
   return (
     <TouchableWithoutFeedback>
       <SafeAreaView className="flex-1 bg-primary">
-        <StatusBar style="auto" translucent />
+        <StatusBar style="auto" />
 
-        {/* Fixed Header Background */}
+        {/* Sticky Header */}
         <Animated.View
+          className="absolute top-0 left-0 right-0 bg-gray-50 backdrop-blur-md z-20 border-b border-gray-200 py-2"
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: headerHeight,
-            backgroundColor: "#fff",
-            opacity: headerBackgroundOpacity,
-            zIndex: 1,
-            ...Platform.select({
-              ios: {
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.05,
-                shadowRadius: 2,
-              },
-              android: {
-                elevation: 2,
-              },
-            }),
+            opacity: headerOpacity,
+            transform: [{ translateY: headerTranslateY }],
           }}
-        />
-
-        {/* Header Content */}
-        <View className="z-10">
-          <View className="px-6 pt-14 pb-2">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-4xl font-bold">Dreams</Text>
-              <Pressable
-                onPress={() => router.push("/modal-screens/account-modal")}
-                className="p-2 rounded-full"
-              >
-                <Image
-                  source={images.profile}
-                  className="size-8 rounded-full"
-                />
-              </Pressable>
-            </View>
-            <SearchInput
-              value={searchText}
-              onSearch={setSearchText}
-              onClear={() => setSearchText("")}
-            />
+        >
+          <View className="px-6 py-[22.5px] flex-row items-center justify-between">
+            <Text className="text-xl font-bold">Dreams</Text>
+            <AccountCTA />
           </View>
-        </View>
+        </Animated.View>
 
         {/* Scrollable Content */}
         <Animated.FlatList
           contentContainerStyle={{ paddingTop: 0 }}
           data={[
+            { id: "header", type: "header" },
             { id: "tags", type: "tags" },
             { id: "dreams", type: "dreams" },
           ]}
@@ -175,6 +143,23 @@ export default function Home() {
           scrollEventThrottle={16}
           renderItem={({ item }) => {
             switch (item.type) {
+              case "header":
+                return (
+                  <View className="px-6 pt-14 pb-2">
+                    <View className="flex-row justify-between items-center mb-4">
+                      <Text className="text-[37px] leading-[41px] font-bold">
+                        Dreams
+                      </Text>
+                      <AccountCTA />
+                    </View>
+
+                    <SearchInput
+                      value={searchText}
+                      onSearch={setSearchText}
+                      onClear={() => setSearchText("")}
+                    />
+                  </View>
+                );
               case "tags":
                 return dreams.length > 0 ? (
                   <FlatList
@@ -217,9 +202,17 @@ export default function Home() {
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={() => (
                       <View className="flex-1 items-center justify-center py-8">
-                        <Text className="text-gray-500">
+                        <Text className="text-gray-500 text-lg">
                           No dreams matching your request
                         </Text>
+                        <Pressable
+                          onPress={() => setSelectedTag("all")}
+                          className="mt-6"
+                        >
+                          <Text className="text-secondary text-lg font-bold">
+                            View All dreams
+                          </Text>
+                        </Pressable>
                       </View>
                     )}
                   />

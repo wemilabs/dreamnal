@@ -27,12 +27,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="insights"
+        name="bookings"
         options={{
-          title: "Insights",
+          title: "Bookings",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "analytics" : "analytics-outline"}
+              name={focused ? "calendar" : "calendar-outline"}
               color={color}
               size={28}
             />
