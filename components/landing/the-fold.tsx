@@ -101,7 +101,7 @@ export function TheFold() {
     <svg
       viewBox="0 0 1120 780"
       aria-hidden="true"
-      className="anim-fold absolute bottom-[-130px] left-[-150px] h-auto w-[640px] lg:bottom-[-40px] lg:left-auto lg:right-[-40px] lg:w-[1120px]"
+      className="anim-fold absolute -bottom-32.5 -left-37.5 h-auto w-160 lg:-bottom-10 lg:left-auto lg:-right-10 lg:w-280"
     >
       <defs>
         <FoldGradient id="fold-a" name="a" middleOffset={0.22} />

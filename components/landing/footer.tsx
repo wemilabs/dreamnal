@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function SiteFooter() {
+export function Footer() {
   return (
     <footer className="flex flex-col items-center gap-4 border-t border-night-line bg-night px-6 py-7 md:flex-row md:justify-between lg:px-16">
       <Link
@@ -22,7 +22,7 @@ export function SiteFooter() {
         >
           Terms
         </Link>
-        <span className="font-mono text-[13px] leading-[18px] text-night-muted">
+        <span className="font-mono text-[13px] leading-4.5 text-night-muted">
           © 2026
         </span>
       </nav>

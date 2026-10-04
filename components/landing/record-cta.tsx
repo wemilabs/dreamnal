@@ -1,7 +1,7 @@
 import { Mic } from "lucide-react";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 
 const tones = {
   ink: {
@@ -38,7 +38,7 @@ export function RecordCta({ tone, href, children }: RecordCtaProps) {
           styles.disc,
         )}
       >
-        <Mic className="size-[18px]" aria-hidden />
+        <Mic className="size-4.5" aria-hidden />
       </span>
       <span className="text-[17px] font-semibold leading-6 whitespace-nowrap">
         {children}

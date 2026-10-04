@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "../theme-toggle";
 
-export function SiteHeader() {
+export function Header() {
   return (
     <header className="relative z-10 flex items-center justify-between px-6 py-7 lg:px-16">
       <Link
@@ -26,7 +26,7 @@ export function SiteHeader() {
         </Link>
         <Link
           href="/sign-in"
-          className="pressable flex shrink-0 items-center rounded-full bg-primary px-[18px] py-[10px] text-[15px] font-semibold leading-tight whitespace-nowrap text-primary-foreground"
+          className="pressable flex shrink-0 items-center rounded-full bg-primary px-4.5 py-2.5 text-[15px] font-semibold leading-tight whitespace-nowrap text-primary-foreground"
         >
           Start your journal
         </Link>

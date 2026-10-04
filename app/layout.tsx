@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Geist_Mono, Hanken_Grotesk } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({

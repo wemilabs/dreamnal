@@ -14,11 +14,11 @@ const BARS = [
 
 export function Waveform() {
   return (
-    <div className="flex h-[40px] items-center gap-[5px]" aria-hidden="true">
+    <div className="flex h-10 items-center gap-1.25" aria-hidden="true">
       {BARS.map((bar) => (
         <span
           key={bar.key}
-          className={`wave-bar w-[3px] shrink-0 rounded-[2px] ${bar.idle ? "bg-border" : "bg-fold"}`}
+          className={`wave-bar w-0.75 shrink-0 rounded-xs ${bar.idle ? "bg-border" : "bg-fold"}`}
           style={{ height: bar.height, "--i": bar.i } as CSSProperties}
         />
       ))}

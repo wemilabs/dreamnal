@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { Header } from "./header";
 import { LiveTranscriptCard } from "./live-transcript-card";
 import { RecordCta } from "./record-cta";
-import { SiteHeader } from "./site-header";
 import { TheFold } from "./the-fold";
 
 export function Hero() {
@@ -10,15 +10,15 @@ export function Hero() {
       className="relative min-h-svh overflow-hidden"
       style={{ backgroundImage: "var(--hero-bg)" }}
     >
-      <SiteHeader />
+      <Header />
       <TheFold />
-      <div className="relative z-10 flex flex-col gap-7 px-6 pt-16 lg:absolute lg:top-[196px] lg:left-16 lg:w-[620px] lg:p-0">
+      <div className="relative z-10 flex flex-col gap-7 px-6 pt-16 lg:absolute lg:top-49 lg:left-16 lg:w-155 lg:p-0">
         <h1 className="flex flex-col gap-5 font-display">
           <span className="anim-rise block text-hero tracking-display text-foreground">
             Say it before
           </span>
           <span
-            className="anim-rise flex items-baseline gap-[26px] text-hero"
+            className="anim-rise flex items-baseline gap-6.5 text-hero"
             style={{ animationDelay: "70ms" }}
           >
             <span className="tracking-display text-foreground">it</span>
@@ -28,7 +28,7 @@ export function Hero() {
           </span>
         </h1>
         <p
-          className="anim-rise max-w-[470px] text-lg leading-[30px] text-muted-foreground"
+          className="anim-rise max-w-117.5 text-lg leading-7.5 text-muted-foreground"
           style={{ animationDelay: "140ms" }}
         >
           Dreams slip away minutes after you wake. Press record, talk it through

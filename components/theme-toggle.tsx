@@ -13,8 +13,8 @@ export function ThemeToggle() {
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       className="pressable flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
     >
-      <Sun className="size-[18px] dark:hidden" />
-      <Moon className="hidden size-[18px] dark:block" />
+      <Sun className="size-4.5 dark:hidden" />
+      <Moon className="hidden size-4.5 dark:block" />
     </button>
   );
 }
