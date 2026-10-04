@@ -1,26 +1,321 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-fog: #e8ebee;
+  --color-paper: #f6f8fa;
+  --color-mist: #cdd3da;
+  --color-slate: #56657a;
+  --color-ink: #16233b;
+  --color-petal: #b7cde0;
+  --color-fold: #6f8fb3;
+  --color-night: #0d1420;
+  --color-night-surface: #152033;
+  --color-night-line: #24324a;
+  --color-night-muted: #93a3b8;
+  --color-moon: #e4ebf2;
+  --color-rec: #c2543f;
+
+  --text-lg: 1.1875rem;
+  --text-display: 6.5rem;
+  --text-hero: clamp(60px, 7.2vw, 104px);
+  --text-hero--line-height: 0.96;
+  --text-night-cta: clamp(48px, 6vw, 80px);
+  --text-night-cta--line-height: 1.05;
+
+  --tracking-display: -0.035em;
+  --tracking-caps: 0.12em;
+  --leading-body: 1.5;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-hanken);
+  --font-display: var(--font-bodoni);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-bodoni);
+  --color-display-accent: var(--display-accent);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: 20px;
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #e8ebee;
+  --foreground: #16233b;
+  --card: #f6f8fa;
+  --card-foreground: #16233b;
+  --popover: #f6f8fa;
+  --popover-foreground: #16233b;
+  --primary: #16233b;
+  --primary-foreground: #f6f8fa;
+  --secondary: #b7cde0;
+  --secondary-foreground: #16233b;
+  --muted: #e8ebee;
+  --muted-foreground: #56657a;
+  --accent: #b7cde0;
+  --accent-foreground: #16233b;
+  --destructive: #c2543f;
+  --border: #cdd3da;
+  --input: #cdd3da;
+  --ring: #6f8fb3;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  --display-accent: #6f8fb3;
+  --hero-bg: linear-gradient(118deg, #f1f3f5 0%, #e6e9ed 48%, #d3d9e0 100%);
+  --fold-a-0: #eaf1f7;
+  --fold-a-1: #bcd0e3;
+  --fold-a-2: #7896b8;
+  --fold-a-3: #3a5274;
+  --fold-b-0: #e2ebf4;
+  --fold-b-1: #afc6dd;
+  --fold-b-2: #6683a8;
+  --fold-b-3: #22344f;
+  --fold-c-0: #d9e5f0;
+  --fold-c-1: #a3bdd7;
+  --fold-c-2: #56739a;
+  --fold-c-3: #16233b;
+  --fold-edge: rgb(255 255 255 / 0.7);
+  --glass-bg: rgb(246 248 250 / 0.74);
+  --glass-border: rgb(255 255 255 / 0.85);
+  --glass-shadow:
+    0 40px 80px -32px rgb(22 35 59 / 0.38), 0 2px 6px rgb(22 35 59 / 0.06);
+}
+
+.dark {
+  --background: #0d1420;
+  --foreground: #e4ebf2;
+  --card: #152033;
+  --card-foreground: #e4ebf2;
+  --popover: #152033;
+  --popover-foreground: #e4ebf2;
+  --primary: #e4ebf2;
+  --primary-foreground: #16233b;
+  --secondary: #24324a;
+  --secondary-foreground: #e4ebf2;
+  --muted: #152033;
+  --muted-foreground: #93a3b8;
+  --accent: #24324a;
+  --accent-foreground: #e4ebf2;
+  --destructive: #c2543f;
+  --border: #24324a;
+  --input: #24324a;
+  --ring: #b7cde0;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+  --display-accent: #b7cde0;
+  --hero-bg: radial-gradient(
+    ellipse 80% 70% at 70% 100%,
+    #1e2e48 0%,
+    #111a2a 55%,
+    #0d1420 100%
+  );
+  --fold-a-0: #8eabc9;
+  --fold-a-1: #4e6a8f;
+  --fold-a-2: #22344f;
+  --fold-a-3: #0d1420;
+  --fold-b-0: #7896b8;
+  --fold-b-1: #3f5a80;
+  --fold-b-2: #1a2a44;
+  --fold-b-3: #0b111c;
+  --fold-c-0: #6683a8;
+  --fold-c-1: #34507a;
+  --fold-c-2: #152238;
+  --fold-c-3: #080d16;
+  --fold-edge: rgb(255 255 255 / 0.22);
+  --glass-bg: rgb(21 32 51 / 0.7);
+  --glass-border: #24324a;
+  --glass-shadow:
+    0 40px 80px -32px rgb(0 0 0 / 0.5), 0 2px 6px rgb(0 0 0 / 0.3);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes fold-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fold-drift {
+  from {
+    transform: translateY(calc(var(--amp, 4px) * -1));
+  }
+  to {
+    transform: translateY(var(--amp, 4px));
+  }
+}
+
+@keyframes wave-pulse {
+  from {
+    transform: scaleY(0.55);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes rec-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgb(194 84 63 / 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgb(194 84 63 / 0.04);
+  }
+}
+
+.anim-rise {
+  animation: rise-in 600ms var(--ease-out) both;
+}
+
+.anim-fold {
+  animation: fold-in 1100ms var(--ease-out) both;
+}
+
+.anim-card {
+  animation: card-in 600ms var(--ease-out) 350ms both;
+}
+
+.fold-path {
+  stroke: var(--fold-edge);
+  animation: fold-drift var(--dur, 10s) ease-in-out var(--dly, 0s) infinite
+    alternate;
+}
+
+.wave-bar {
+  transform-origin: center;
+  animation: wave-pulse calc(1.1s + var(--i, 0) * 0.012s) ease-in-out
+    calc(var(--i, 0) * 55ms) infinite alternate;
+}
+
+.rec-dot {
+  animation: rec-pulse 1.8s ease-in-out infinite;
+}
+
+.pressable {
+  transition: transform 160ms var(--ease-out);
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+.pressable:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise,
+  .anim-fold,
+  .anim-card {
+    animation-name: fade-in;
+  }
+  .fold-path,
+  .wave-bar,
+  .rec-dot {
+    animation: none;
+  }
 }
