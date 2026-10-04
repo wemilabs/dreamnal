@@ -24,7 +24,7 @@ export function NightCta() {
         Night mode keeps the screen dim, so checking it at 3 AM won’t wake you
         up all the way.
       </p>
-      <RecordCta tone="moon" href="/sign-in">
+      <RecordCta tone="moon" href="/journal">
         Start your journal
       </RecordCta>
     </section>

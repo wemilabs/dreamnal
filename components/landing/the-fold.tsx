@@ -96,12 +96,15 @@ function FoldGradient({
   );
 }
 
-export function TheFold() {
+export function TheFold({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 1120 780"
       aria-hidden="true"
-      className="anim-fold absolute -bottom-32.5 -left-37.5 h-auto w-160 lg:-bottom-10 lg:left-auto lg:-right-10 lg:w-280"
+      className={
+        className ??
+        "anim-fold absolute -bottom-32.5 -left-37.5 h-auto w-160 lg:-bottom-10 lg:left-auto lg:-right-10 lg:w-280"
+      }
     >
       <defs>
         <FoldGradient id="fold-a" name="a" middleOffset={0.22} />

@@ -45,6 +45,63 @@ App code lives at the repo root (no `src/`): `app/`, `components/`, `db/`,
   branch `main`; auth tables live in the `neon_auth` schema
 - xAI speech-to-text: `POST https://api.x.ai/v1/stt` (`XAI_API_BASE_URL`)
 
+## Auth wiring (`@neondatabase/auth`)
+
+- `lib/auth/server.ts` — `auth = createNeonAuth({ baseUrl, cookies: { secret } })`
+  from `@neondatabase/auth/next/server`
+- `app/api/auth/[...path]/route.ts` — `auth.handler()` exports
+  `GET POST PUT DELETE PATCH`
+- `lib/auth/client.ts` — `"use client"`, `authClient = createAuthClient()` from
+  `@neondatabase/auth/next`; Google goes through `authClient.signIn.social`
+- `proxy.ts` (Next 16 middleware) — `auth.middleware({ loginUrl: "/auth/sign-in" })`,
+  matcher `"/journal/:path*"`
+- Session: `const { data: session } = await auth.getSession()` — the user is at
+  `session?.user`, never a top-level `user`
+- Server actions use `auth.signUp.email`, `auth.signIn.email`, `auth.signOut`;
+  each returns `{ data, error }`
+
+## Cache Components / DAL
+
+- `lib/auth/session.ts` — `getCurrentUser` (React `cache`, redirects to
+  `/auth/sign-in` when logged out). Session reads must sit behind `<Suspense>`;
+  never await the session at a layout's top level
+- `lib/entries.ts` — exported functions resolve the user via `getCurrentUser`,
+  then call unexported `"use cache"` functions keyed by userId with
+  `cacheTag("entries:${userId}")` + `cacheLife("minutes")`. Every query filters
+  on `userId`; mutations `updateTag` the same key and re-check the session
+- Server Actions re-validate auth + input (zod) on every call; ids are
+  uuid-validated and updates/deletes are scoped `WHERE id AND user_id`
+
+## Recorder format decision
+
+Verified against `POST /v1/stt` with real browser recordings
+(`MediaStreamAudioDestination` → `MediaRecorder`, `.scratch` matrix):
+
+| MIME | Chrome MediaRecorder | xAI |
+| --- | --- | --- |
+| `audio/webm;codecs=opus` | ✓ | 200, correct transcript |
+| `audio/ogg;codecs=opus` | not supported | — |
+| `audio/mp4;codecs=mp4a.40.2` | ✓ | 200, correct transcript |
+| `audio/mp4` | ✓ | 200, correct transcript |
+| `audio/wav` (synth test) | n/a | 200, correct transcript |
+
+`components/journal/recorder-mime.ts` keeps the preference list; Chrome picks
+webm/opus (`audioBitsPerSecond: 64000`). xAI wants `file` as the **last**
+multipart field; don't send `language`/`format`.
+
+## Routes
+
+- `/` — static landing
+- `/auth/sign-in`, `/auth/sign-up` — static pages, client forms
+- `/journal` — list + empty state (Suspense)
+- `/journal/new[?mode=type]` — composer: idle → recording → transcribing →
+  editing (type mode opens the editor)
+- `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
+- `/api/auth/[...path]` — Neon Auth handler
+
+Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
+`/journal/*`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

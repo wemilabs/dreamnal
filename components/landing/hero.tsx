@@ -39,11 +39,11 @@ export function Hero() {
           className="anim-rise flex flex-wrap items-center gap-x-6 gap-y-4 pt-2"
           style={{ animationDelay: "210ms" }}
         >
-          <RecordCta tone="ink" href="/new">
+          <RecordCta tone="ink" href="/journal/new">
             Record a dream
           </RecordCta>
           <Link
-            href="/new"
+            href="/journal/new?mode=type"
             className="pressable text-[17px] font-medium leading-6 whitespace-nowrap text-foreground underline decoration-foreground/30 decoration-1 underline-offset-[5px]"
           >
             or type it instead
