@@ -6,8 +6,9 @@ then you edit and save it as a note.
 ## Layout
 
 App code lives at the repo root (no `src/`): `app/`, `components/`, `db/`,
-`lib/`. Imports use relative paths; the `@/*` alias maps to `./*` in
-`tsconfig.json`.
+`lib/`. Imports use the `@/*` alias (maps to `./*` in `tsconfig.json`).
+Biome owns import order (packages first, then `@/`); `.vscode/settings.json`
+disables the editor's own organize/sort-imports on save so they don't fight.
 
 ## Commands
 

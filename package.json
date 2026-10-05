@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --inspect",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --inspect",
     "lint": "biome check",
     "format": "biome format --write",
     "typecheck": "tsc --noEmit",
@@ -41,5 +41,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@12.8.1"
+  "packageManager": "pnpm@12.9.1"
 }

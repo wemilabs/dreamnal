@@ -1,10 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
-import { signUpWithEmail } from "../../app/auth/actions";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { GoogleButton } from "./google-button";
+import { signUpWithEmail } from "@/app/auth/actions";
+import { GoogleButton } from "@/components/auth/google-button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function SignUpForm() {
   const [state, formAction, pending] = useActionState(signUpWithEmail, null);

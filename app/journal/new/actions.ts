@@ -1,8 +1,8 @@
 "use server";
 
-import { MAX_AUDIO_BYTES } from "../../../components/journal/recorder-mime";
-import { getCurrentUser } from "../../../lib/auth/session";
-import { transcribeAudio } from "../../../lib/transcribe";
+import { MAX_AUDIO_BYTES } from "@/components/journal/recorder-mime";
+import { getCurrentUser } from "@/lib/auth/session";
+import { transcribeAudio } from "@/lib/transcribe";
 
 export type TranscribeResult =
   | { status: "ok"; text: string; duration: number }
