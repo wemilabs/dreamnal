@@ -1,9 +1,9 @@
 import { Mic, PenLine } from "lucide-react";
 import Link from "next/link";
-import { listEntries } from "../../lib/entries";
-import { formatDuration, titleFallback } from "../../lib/format";
-import { EmptyState } from "./empty-state";
-import { EntryDate } from "./entry-date";
+import { EmptyState } from "@/components/journal/empty-state";
+import { EntryDate } from "@/components/journal/entry-date";
+import { listEntries } from "@/lib/entries";
+import { formatDuration, titleFallback } from "@/lib/format";
 
 export async function EntryList() {
   const entries = await listEntries();

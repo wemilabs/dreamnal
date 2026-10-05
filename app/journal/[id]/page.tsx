@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { EntryDetail } from "../../../components/journal/entry-detail";
-import { getEntry } from "../../../lib/entries";
+import { EntryDetail } from "@/components/journal/entry-detail";
+import { getEntry } from "@/lib/entries";
 
 export default function EntryPage({
   params,
