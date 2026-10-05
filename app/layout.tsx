@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Geist_Mono, Hanken_Grotesk } from "next/font/google";
+import { PwaRegistrar } from "../components/pwa/pwa-registrar";
 import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
 
@@ -32,9 +33,16 @@ export const metadata: Metadata = {
   description:
     "Record your dreams the moment you wake. Dreamnal transcribes your voice into a journal entry you can edit and keep.",
   twitter: { card: "summary_large_image" },
+  formatDetection: { telephone: false },
+  appleWebApp: {
+    capable: true,
+    title: "Dreamnal",
+    statusBarStyle: "default",
+  },
 };
 
 export const viewport: Viewport = {
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#e8ebee" },
     { media: "(prefers-color-scheme: dark)", color: "#0d1420" },
@@ -58,6 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           {children}
         </ThemeProvider>
+        <PwaRegistrar />
       </body>
     </html>
   );

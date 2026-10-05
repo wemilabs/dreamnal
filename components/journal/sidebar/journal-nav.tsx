@@ -10,6 +10,7 @@ import {
   JOURNAL_NAV_ITEMS,
   type JournalNavItem,
 } from "@/components/journal/sidebar/nav-items";
+import { InstallAppButton } from "@/components/pwa/install-app-button";
 import { Kbd } from "@/components/ui/kbd";
 import {
   SidebarMenu,
@@ -52,6 +53,7 @@ export function JournalNavBottom() {
   const { setOpen } = useCommandMenu();
   return (
     <SidebarMenu>
+      <InstallAppButton />
       <SidebarMenuItem>
         <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Search">
           <Search aria-hidden />
