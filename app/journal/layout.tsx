@@ -2,6 +2,7 @@ import { PenLine } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Suspense } from "react";
+import { Wordmark } from "@/components/wordmark";
 import { UserMenu } from "../../components/journal/user-menu";
 import { ThemeToggle } from "../../components/theme-toggle";
 import { Skeleton } from "../../components/ui/skeleton";
@@ -14,7 +15,7 @@ export default function JournalLayout({ children }: { children: ReactNode }) {
           href="/journal"
           className="pressable font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
         >
-          dreamnal
+          <Wordmark />
         </Link>
         <nav className="flex items-center gap-3">
           <Link

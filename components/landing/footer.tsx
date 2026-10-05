@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Wordmark } from "@/components/wordmark";
 
 export function Footer() {
   return (
@@ -7,7 +8,7 @@ export function Footer() {
         href="/"
         className="pressable font-display text-[22px] font-medium italic leading-body tracking-[-0.02em] text-moon"
       >
-        dreamnal
+        <Wordmark />
       </Link>
       <nav className="flex items-center gap-7">
         <Link
