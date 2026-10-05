@@ -54,8 +54,13 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   `GET POST PUT DELETE PATCH`
 - `lib/auth/client.ts` — `"use client"`, `authClient = createAuthClient()` from
   `@neondatabase/auth/next`; Google goes through `authClient.signIn.social`
-- `proxy.ts` (Next 16 middleware) — `auth.middleware({ loginUrl: "/auth/sign-in" })`,
-  matcher `"/journal/:path*"`
+- `proxy.ts` (Next 16 middleware) — `auth.middleware({ loginUrl: "/auth/sign-in" })`
+  guards `/journal/*`. GETs on `/`, `/auth/sign-in`, `/auth/sign-up` probe the
+  same middleware against `/journal` (the SDK skips session checks on auth
+  pages) and 307 signed-in users to `/journal`; POSTs (Server Actions) skip
+  the probe
+- Google sign-in must pass `newUserCallbackURL` too: Neon sends first-time
+  OAuth users there (default `/`) with the session verifier
 - Session: `const { data: session } = await auth.getSession()` — the user is at
   `session?.user`, never a top-level `user`
 - Server actions use `auth.signUp.email`, `auth.signIn.email`, `auth.signOut`;
@@ -107,7 +112,7 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 - `/api/auth/[...path]` — Neon Auth handler
 
 Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
-`/journal/*`.
+`/journal/*` and bounces signed-in users off `/` and the auth pages.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
