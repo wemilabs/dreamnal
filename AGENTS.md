@@ -101,6 +101,24 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 `transcribeRecording` action. `next.config.ts` sets `serverActions` /
 `proxyClientMaxBodySize` to `4.5mb` to match.
 
+## PWA
+
+- `app/manifest.ts` — `id: "/journal"` (don't change it; installs are keyed
+  on it), screenshots in `public/screenshots/` (390×844 narrow, 1280×800 wide)
+- `public/sw.js` — hand-written service worker. Navigations: network
+  (navigation preload) with cached `/offline` fallback, never cached.
+  `/_next/static/*` cache-first; icons/brand/screenshots stale-while-revalidate.
+  Never cache authenticated HTML, RSC payloads, Server Actions, or `/api/*`.
+  Bump `VERSION` whenever SW logic changes (purges old caches). Install uses
+  sequential `cache.add` because `cache.addAll` hung during testing
+- `components/pwa/pwa-registrar.tsx` registers `/sw.js` in production only;
+  test the SW with `pnpm build && pnpm start`
+- `lib/pwa/install-prompt.ts` — `beforeinstallprompt` store (attached from
+  first paint via the registrar); `InstallAppButton` sits in the sidebar and
+  shows Add-to-Home-Screen steps on iOS
+- `app/offline/page.tsx` — static, outside the `proxy.ts` matcher
+- `next.config.ts` sets security headers globally and no-cache + CSP on `/sw.js`
+
 ## Routes
 
 - `/` — static landing
