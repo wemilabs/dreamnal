@@ -76,7 +76,7 @@ export function useRecorder() {
 
     const recorder = new MediaRecorder(stream, {
       mimeType,
-      audioBitsPerSecond: 64000,
+      audioBitsPerSecond: 48000,
     });
     chunksRef.current = [];
     recorder.ondataavailable = (e) => {

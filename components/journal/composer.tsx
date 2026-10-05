@@ -7,7 +7,7 @@ import { createEntry } from "../../app/journal/actions";
 import { transcribeRecording } from "../../app/journal/new/actions";
 import { Skeleton } from "../ui/skeleton";
 import { EntryForm } from "./entry-form";
-import { extensionFor } from "./recorder-mime";
+import { extensionFor, MAX_AUDIO_BYTES } from "./recorder-mime";
 import { RecordingCard } from "./recording-card";
 import { useRecorder } from "./use-recorder";
 
@@ -112,6 +112,14 @@ export function Composer({ initialMode }: { initialMode: "record" | "type" }) {
         dispatch({
           type: "failed",
           message: "Nothing was captured. Try again.",
+        });
+        return;
+      }
+      if (blob.size > MAX_AUDIO_BYTES) {
+        dispatch({
+          type: "failed",
+          message:
+            "That recording is too long to send. Try a shorter one, or type it instead.",
         });
         return;
       }

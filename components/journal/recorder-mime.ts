@@ -8,6 +8,10 @@ export const PREFERRED_MIME_TYPES = [
   "audio/mp4",
 ] as const;
 
+// Server-side check is 4 MB so a compliant recording can't trip Vercel
+// Functions' 4.5 MB request-body cap.
+export const MAX_AUDIO_BYTES = 4 * 1024 * 1024;
+
 const EXTENSIONS: [string, string][] = [
   ["mp4", "m4a"],
   ["ogg", "ogg"],

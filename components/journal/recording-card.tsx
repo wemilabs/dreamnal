@@ -4,7 +4,9 @@ import type { RefObject } from "react";
 import { useEffect, useEffectEvent, useRef } from "react";
 
 const BAR_COUNT = 48;
-const MAX_SECONDS = 600;
+// Eight minutes at 48 kbps ≈ 2.9 MB — keeps the blob under the platform's
+// 4.5 MB Server Action request cap (Vercel Functions limit).
+const MAX_SECONDS = 480;
 
 export function RecordingCard({
   analyserRef,

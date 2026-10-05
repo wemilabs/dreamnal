@@ -1,5 +1,6 @@
 "use server";
 
+import { MAX_AUDIO_BYTES } from "../../../components/journal/recorder-mime";
 import { getCurrentUser } from "../../../lib/auth/session";
 import { transcribeAudio } from "../../../lib/transcribe";
 
@@ -16,7 +17,7 @@ export async function transcribeRecording(
   if (
     !(audio instanceof File) ||
     audio.size === 0 ||
-    audio.size > 24 * 1024 * 1024 ||
+    audio.size > MAX_AUDIO_BYTES ||
     !audio.type.startsWith("audio/")
   ) {
     return { status: "error", message: "Transcription failed, try again" };

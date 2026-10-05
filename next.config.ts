@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
   reactCompiler: true,
   experimental: {
-    serverActions: { bodySizeLimit: "25mb" },
-    proxyClientMaxBodySize: "25mb",
+    serverActions: { bodySizeLimit: "4.5mb" },
+    proxyClientMaxBodySize: "4.5mb",
   },
 };
 

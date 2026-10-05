@@ -85,9 +85,15 @@ Verified against `POST /v1/stt` with real browser recordings
 | `audio/mp4` | ✓ | 200, correct transcript |
 | `audio/wav` (synth test) | n/a | 200, correct transcript |
 
-`components/journal/recorder-mime.ts` keeps the preference list; Chrome picks
-webm/opus (`audioBitsPerSecond: 64000`). xAI wants `file` as the **last**
-multipart field; don't send `language`/`format`.
+`components/journal/recorder-mime.ts` keeps the preference list plus
+`MAX_AUDIO_BYTES` (4 MB); Chrome picks webm/opus. xAI wants `file` as the
+**last** multipart field; don't send `language`/`format`.
+
+Deployment constraint: Vercel Functions cap request bodies at 4.5 MB, so
+recordings run at 48 kbps, auto-stop at 8 minutes (~2.9 MB), are rejected
+client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
+`transcribeRecording` action. `next.config.ts` sets `serverActions` /
+`proxyClientMaxBodySize` to `4.5mb` to match.
 
 ## Routes
 
