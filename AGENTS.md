@@ -81,7 +81,7 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 ## Recorder format decision
 
 Verified against `POST /v1/stt` with real browser recordings
-(`MediaStreamAudioDestination` → `MediaRecorder`, `.scratch` matrix):
+(`MediaStreamAudioDestination` → `MediaRecorder`):
 
 | MIME | Chrome MediaRecorder | xAI |
 | --- | --- | --- |
