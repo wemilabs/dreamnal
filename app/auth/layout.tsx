@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Wordmark } from "@/components/wordmark";
 import { TheFold } from "../../components/landing/the-fold";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
@@ -13,7 +14,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           href="/"
           className="pressable font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
         >
-          dreamnal
+          <Wordmark />
         </Link>
       </header>
       <main className="relative z-10 mx-auto flex w-full max-w-105 flex-col px-6 pt-12 pb-24 lg:pt-16">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Wordmark } from "@/components/wordmark";
 import { ThemeToggle } from "../theme-toggle";
 
 export function Header() {
@@ -8,7 +9,7 @@ export function Header() {
         href="/"
         className="pressable font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
       >
-        dreamnal
+        <Wordmark />
       </Link>
       <nav className="flex items-center gap-7">
         <a
