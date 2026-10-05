@@ -3,13 +3,16 @@
 import { Mic } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useReducer, useRef, useTransition } from "react";
-import { createEntry } from "../../app/journal/actions";
-import { transcribeRecording } from "../../app/journal/new/actions";
-import { Skeleton } from "../ui/skeleton";
-import { EntryForm } from "./entry-form";
-import { extensionFor, MAX_AUDIO_BYTES } from "./recorder-mime";
-import { RecordingCard } from "./recording-card";
-import { useRecorder } from "./use-recorder";
+import { createEntry } from "@/app/journal/actions";
+import { transcribeRecording } from "@/app/journal/new/actions";
+import { EntryForm } from "@/components/journal/entry-form";
+import {
+  extensionFor,
+  MAX_AUDIO_BYTES,
+} from "@/components/journal/recorder-mime";
+import { RecordingCard } from "@/components/journal/recording-card";
+import { useRecorder } from "@/components/journal/use-recorder";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Phase = "idle" | "recording" | "transcribing" | "editing" | "error";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { authClient } from "../../lib/auth/client";
+import { authClient } from "@/lib/auth/client";
 
 export function GoogleButton() {
   const [error, setError] = useState<string | null>(null);
@@ -13,6 +13,7 @@ export function GoogleButton() {
       const { error } = await authClient.signIn.social({
         provider: "google",
         callbackURL: "/journal",
+        newUserCallbackURL: "/journal",
       });
       if (error) {
         setError("Couldn’t reach Google. Try again in a moment.");

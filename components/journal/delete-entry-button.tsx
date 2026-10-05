@@ -2,7 +2,7 @@
 
 import { Trash2 } from "lucide-react";
 import { useActionState } from "react";
-import { deleteEntry } from "../../app/journal/actions";
+import { deleteEntry } from "@/app/journal/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 export function DeleteEntryButton({ id }: { id: string }) {
   const [state, formAction, pending] = useActionState(deleteEntry, null);
