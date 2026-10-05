@@ -81,7 +81,7 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 ## Recorder format decision
 
 Verified against `POST /v1/stt` with real browser recordings
-(`MediaStreamAudioDestination` → `MediaRecorder`, `.scratch` matrix):
+(`MediaStreamAudioDestination` → `MediaRecorder`):
 
 | MIME | Chrome MediaRecorder | xAI |
 | --- | --- | --- |
@@ -106,8 +106,11 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 - `/` — static landing
 - `/auth/sign-in`, `/auth/sign-up` — static pages, client forms
 - `/journal` — list + empty state (Suspense)
-- `/journal/new[?mode=type]` — composer: idle → recording → transcribing →
-  editing (type mode opens the editor)
+- `/journal/*` — dashboard shell: sidebar + inset content; "Record a dream"
+  opens a composer overlay (Drawer on mobile, Dialog on desktop) instead of
+  navigating; recording → transcribing → editing → save
+- `/journal/{calendar,insights,symbols,favorites,lucid,trash,settings}` —
+  placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
 

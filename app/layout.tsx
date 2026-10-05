@@ -25,7 +25,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://dreamnal.vercel.app"),
   applicationName: "Dreamnal",
-  title: "Dreamnal | Say it before it fades",
+  title: {
+    default: "Dreamnal | Say it before it fades",
+    template: "%s | Dreamnal",
+  },
   description:
     "Record your dreams the moment you wake. Dreamnal transcribes your voice into a journal entry you can edit and keep.",
   twitter: { card: "summary_large_image" },
