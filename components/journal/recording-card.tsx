@@ -59,7 +59,7 @@ export function RecordingCard({
   }, [analyserRef, startedAtRef]);
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-lg border border-(--glass-border) bg-(--glass-bg) px-6 py-6 shadow-(--glass-shadow) backdrop-blur-xl">
+    <div className="flex w-full flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <span className="rec-dot size-2 shrink-0 rounded-full bg-rec" />

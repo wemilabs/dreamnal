@@ -16,33 +16,37 @@ const tones = {
   },
 } as const;
 
+export type RecordCtaTone = keyof typeof tones;
+
+export function recordCtaClasses(tone: RecordCtaTone) {
+  const styles = tones[tone];
+  return {
+    pill: cn(
+      "pressable flex items-center gap-3 rounded-full py-2 pr-6 pl-2",
+      styles.pill,
+    ),
+    disc: cn(
+      "grid size-10 shrink-0 place-items-center rounded-full",
+      styles.disc,
+    ),
+    label: "text-[17px] font-semibold leading-6 whitespace-nowrap",
+  };
+}
+
 type RecordCtaProps = {
-  tone: keyof typeof tones;
+  tone: RecordCtaTone;
   href: ComponentProps<typeof Link>["href"];
   children: ReactNode;
 };
 
 export function RecordCta({ tone, href, children }: RecordCtaProps) {
-  const styles = tones[tone];
+  const classes = recordCtaClasses(tone);
   return (
-    <Link
-      href={href}
-      className={cn(
-        "pressable flex items-center gap-3 rounded-full py-2 pr-6 pl-2",
-        styles.pill,
-      )}
-    >
-      <span
-        className={cn(
-          "grid size-10 shrink-0 place-items-center rounded-full",
-          styles.disc,
-        )}
-      >
+    <Link href={href} className={classes.pill}>
+      <span className={classes.disc}>
         <Mic className="size-4.5" aria-hidden />
       </span>
-      <span className="text-[17px] font-semibold leading-6 whitespace-nowrap">
-        {children}
-      </span>
+      <span className={classes.label}>{children}</span>
     </Link>
   );
 }

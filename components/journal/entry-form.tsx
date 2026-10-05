@@ -17,6 +17,8 @@ type EntryFormProps = {
   onRecordAgain?: () => void;
   recordLabel?: string;
   onDiscard?: () => void;
+  onTitleChange?: (title: string) => void;
+  onBodyChange?: (body: string) => void;
 };
 
 export function EntryForm({
@@ -31,6 +33,8 @@ export function EntryForm({
   onRecordAgain,
   recordLabel = "Record again",
   onDiscard,
+  onTitleChange,
+  onBodyChange,
 }: EntryFormProps) {
   const [state, formAction, pending] = useActionState(action, null);
   const [body, setBody] = useState(defaultBody);
@@ -52,6 +56,7 @@ export function EntryForm({
         <Input
           name="title"
           defaultValue={defaultTitle ?? ""}
+          onChange={(e) => onTitleChange?.(e.target.value)}
           placeholder="Untitled dream"
           aria-label="Title"
           maxLength={120}
@@ -68,12 +73,15 @@ export function EntryForm({
         <Textarea
           name="body"
           value={body}
-          onChange={(e) => setBody(e.target.value)}
+          onChange={(e) => {
+            setBody(e.target.value);
+            onBodyChange?.(e.target.value);
+          }}
           autoFocus={!defaultBody}
           required
           aria-label="Dream"
           placeholder="Start with the last thing you remember…"
-          className="min-h-60 w-full resize-none rounded-lg border border-border bg-card/60 p-4 text-lg leading-body text-foreground shadow-none md:text-lg"
+          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-lg leading-body text-foreground shadow-none md:text-lg"
         />
         <div className="flex items-center justify-between">
           <span className="font-mono text-xs text-muted-foreground">
