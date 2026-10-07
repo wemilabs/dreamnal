@@ -10,7 +10,18 @@ import { openEntry } from "./crypto/entries";
 
 export async function listEntries() {
   const user = await getCurrentUser();
-  return (await listEntriesForUser(user.id)).map(openEntry);
+  const rows = await listEntriesForUser(user.id);
+  return rows.map((row) => {
+    const entry = openEntry(row);
+    return {
+      id: entry.id,
+      title: entry.title,
+      source: entry.source,
+      audioDurationSeconds: entry.audioDurationSeconds,
+      createdAt: entry.createdAt,
+      excerpt: Array.from(entry.body).slice(0, 280).join(""),
+    };
+  });
 }
 
 async function listEntriesForUser(userId: string) {
@@ -19,7 +30,15 @@ async function listEntriesForUser(userId: string) {
   cacheLife("minutes");
 
   return db
-    .select()
+    .select({
+      id: dreamEntries.id,
+      userId: dreamEntries.userId,
+      title: dreamEntries.title,
+      body: dreamEntries.body,
+      source: dreamEntries.source,
+      audioDurationSeconds: dreamEntries.audioDurationSeconds,
+      createdAt: dreamEntries.createdAt,
+    })
     .from(dreamEntries)
     .where(eq(dreamEntries.userId, userId))
     .orderBy(desc(dreamEntries.createdAt));
