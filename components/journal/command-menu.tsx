@@ -60,7 +60,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
     <CommandMenuContext.Provider value={{ open, setOpen }}>
       {children}
       <CommandDialog
-        className="top-[calc(env(safe-area-inset-top)+1rem)] sm:top-1/3"
+        className="top-1/2 -translate-y-1/2 sm:top-1/3 sm:translate-y-0"
         open={open}
         onOpenChange={setOpen}
       >
