@@ -1,6 +1,6 @@
-import { updateEntry } from "../../app/journal/actions";
-import type { DreamEntry } from "../../db/schema";
-import { formatDuration, titleFallback } from "../../lib/format";
+import { updateEntry } from "@/app/journal/actions";
+import type { DreamEntry } from "@/db/schema";
+import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
 import { EntryDate } from "./entry-date";
 import { EntryForm } from "./entry-form";

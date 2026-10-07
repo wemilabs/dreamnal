@@ -1,5 +1,5 @@
 import { createNeonAuth } from "@neondatabase/auth/next/server";
-import { env } from "../env";
+import { env } from "@/lib/env";
 
 export const auth = createNeonAuth({
   baseUrl: env.NEON_AUTH_BASE_URL,
