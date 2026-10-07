@@ -3,10 +3,10 @@ import "server-only";
 import { and, desc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { z } from "zod";
-import { db } from "../db";
-import { dreamEntries } from "../db/schema";
-import { getCurrentUser } from "./auth/session";
-import { openEntry } from "./crypto/entries";
+import { db } from "@/db";
+import { dreamEntries } from "@/db/schema";
+import { getCurrentUser } from "@/lib/auth/session";
+import { openEntry } from "@/lib/crypto/entries";
 
 export async function listEntries() {
   const user = await getCurrentUser();

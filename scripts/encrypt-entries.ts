@@ -3,7 +3,7 @@ import {
   encryptEntryField,
   isEncryptedField,
   parseEntryKey,
-} from "../lib/crypto/entry-cipher.ts";
+} from "@/lib/crypto/entry-cipher.ts";
 
 const dryRun = process.argv.includes("--dry-run");
 const databaseUrl = process.env.DATABASE_URL;

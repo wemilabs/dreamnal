@@ -1,7 +1,7 @@
 import { Mic } from "lucide-react";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 const tones = {
   ink: {

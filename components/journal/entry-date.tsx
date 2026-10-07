@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { formatEntryDate } from "../../lib/format";
+import { formatEntryDate } from "@/lib/format";
 
 const subscribeNoop = () => () => {};
 

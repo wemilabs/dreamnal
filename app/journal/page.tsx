@@ -1,13 +1,13 @@
 import { Suspense, ViewTransition } from "react";
-import { EntryList } from "../../components/journal/entry-list";
-import { EntryListSkeleton } from "../../components/journal/entry-list-skeleton";
-import { PageFade } from "../../components/journal/page-fade";
+import { EntryList } from "@/components/journal/entry-list";
+import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
+import { PageFade } from "@/components/journal/page-fade";
 
 export default function JournalPage() {
   return (
     <PageFade>
       <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
-        Your journal
+        My journal
       </h1>
       <div className="mt-8">
         <Suspense

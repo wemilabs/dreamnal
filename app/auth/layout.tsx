@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Wordmark } from "@/components/wordmark";
-import { TheFold } from "../../components/landing/the-fold";
+import { TheFold } from "@/components/landing/the-fold";
 
 export const ensureStatic = "navigation";
 

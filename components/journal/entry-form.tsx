@@ -1,9 +1,9 @@
 "use client";
 
 import { useActionState, useState, ViewTransition } from "react";
-import type { EntryFormState } from "../../app/journal/actions";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import type { EntryFormState } from "@/app/journal/actions";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 type EntryFormProps = {
   action: (prev: EntryFormState, formData: FormData) => Promise<EntryFormState>;
