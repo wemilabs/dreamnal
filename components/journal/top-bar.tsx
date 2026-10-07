@@ -1,25 +1,16 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { useCommandMenu } from "@/components/journal/command-menu";
-import { titleForPathname } from "@/components/journal/sidebar/nav-items";
+import { JournalBreadcrumbs } from "@/components/journal/journal-breadcrumbs";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
-function TopBarTitle() {
-  const pathname = usePathname();
-  return (
-    <span className="text-sm font-medium text-muted-foreground">
-      {titleForPathname(pathname)}
-    </span>
-  );
-}
-
-export function TopBar() {
+export function TopBar({ entryCrumb }: { entryCrumb?: ReactNode }) {
   const { setOpen } = useCommandMenu();
 
   return (
@@ -30,7 +21,7 @@ export function TopBar() {
         className="data-[orientation=vertical]:h-4 data-[orientation=vertical]:self-center"
       />
       <Suspense>
-        <TopBarTitle />
+        <JournalBreadcrumbs entryCrumb={entryCrumb} />
       </Suspense>
       <div className="ml-auto flex items-center gap-1">
         <Button

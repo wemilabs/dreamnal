@@ -6,10 +6,11 @@ import { z } from "zod";
 import { db } from "../db";
 import { dreamEntries } from "../db/schema";
 import { getCurrentUser } from "./auth/session";
+import { openEntry } from "./crypto/entries";
 
 export async function listEntries() {
   const user = await getCurrentUser();
-  return listEntriesForUser(user.id);
+  return (await listEntriesForUser(user.id)).map(openEntry);
 }
 
 async function listEntriesForUser(userId: string) {
@@ -29,7 +30,8 @@ export async function getEntry(id: string) {
     return null;
   }
   const user = await getCurrentUser();
-  return getEntryForUser(user.id, id);
+  const entry = await getEntryForUser(user.id, id);
+  return entry === null ? null : openEntry(entry);
 }
 
 async function getEntryForUser(userId: string, id: string) {

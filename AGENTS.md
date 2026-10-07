@@ -74,7 +74,9 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 - `lib/entries.ts` — exported functions resolve the user via `getCurrentUser`,
   then call unexported `"use cache"` functions keyed by userId with
   `cacheTag("entries:${userId}")` + `cacheLife("minutes")`. Every query filters
-  on `userId`; mutations `updateTag` the same key and re-check the session
+  on `userId`; mutations `updateTag` the same key and re-check the session.
+  `listEntriesForUser` returns ciphertext and `listEntries`/`getEntry` decrypt
+  outside the cache
 - Server Actions re-validate auth + input (zod) on every call; ids are
   uuid-validated and updates/deletes are scoped `WHERE id AND user_id`
 
@@ -145,6 +147,34 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 
 Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
 `/journal/*` and bounces signed-in users off `/` and the auth pages.
+
+## Entry encryption
+
+`dream_entries.title` and `body` hold AES-256-GCM ciphertext. The key per user
+comes from HKDF over `ENTRY_ENCRYPTION_KEY` (32 bytes, base64, in `.env.local`
+and in Vercel Production + Preview, validated in `lib/env.ts`). AAD is
+`${entryId}:${field}`, so ciphertext can't be moved between rows or fields.
+Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
+
+- `lib/crypto/entry-cipher.ts` is pure `node:crypto` with no `server-only` and
+  no `@/` imports, so scripts can import it
+- `lib/crypto/entries.ts` exports `sealEntry` (used by actions) and `openEntry`
+  (used by `lib/entries.ts` outside the `"use cache"` functions, so the cache
+  only holds ciphertext)
+- Values without the `v1.` prefix pass through as legacy plaintext
+- Backfill: `node --env-file=.env.local scripts/encrypt-entries.ts [--dry-run]`.
+  Idempotent, guarded on the old `body`, prints counts only
+- Losing `ENTRY_ENCRYPTION_KEY` loses every entry. The DB can't search
+  title/body anymore
+
+## Analytics and breadcrumbs
+
+- `<Analytics />` from `@vercel/analytics/next` sits in the root layout inside
+  `<Suspense>` because it reads search params
+- Top-bar breadcrumbs: client `JournalBreadcrumbs` derives crumbs from
+  `usePathname` via `crumbForPathname` in `nav-items.ts`. The entry title comes
+  from the `app/journal/@crumb` parallel slot (`[id]/page.tsx` calls `getEntry`)
+  and reaches `TopBar` as `entryCrumb`
 
 <!-- BEGIN:nextjs-agent-rules -->
 
