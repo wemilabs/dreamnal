@@ -25,6 +25,7 @@ export function EntryDetail({ entry }: { entry: DreamEntry }) {
         action={updateEntry}
         entryId={entry.id}
         defaultTitle={entry.title}
+        titleTransitionName={`entry-title-${entry.id}`}
         defaultBody={entry.body}
         source={entry.source}
         audioDurationSeconds={entry.audioDurationSeconds}
