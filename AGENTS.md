@@ -92,6 +92,11 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   `prefetch={true}` (per-link, resolves URL data + session-cached content) on
   hover/touch/focus — used by `EntryList`. `/journal/[id]` Suspense fallback is
   `components/journal/entry-detail-skeleton.tsx`
+- View transitions (React 19.3 `<ViewTransition>`): `components/journal/page-fade.tsx`
+  wraps each journal page (`page-fade` enter/exit); Suspense fallbacks use
+  `reveal-out`/`reveal-in`; list titles morph to the entry form via
+  `entry-title-${id}` (`share="title-morph"`). Every `<ViewTransition>` uses
+  `default="none"`; CSS lives in `app/globals.css` (`vt-*` keyframes)
 - `ensureStatic = "navigation"` guards `/` (`app/page.tsx`), `/auth/*`
   (`app/auth/layout.tsx`), and `/offline` (`app/offline/page.tsx`). Nothing
   under `app/journal` exports it — those routes read the session

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, ViewTransition } from "react";
 import type { EntryFormState } from "../../app/journal/actions";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -19,6 +19,7 @@ type EntryFormProps = {
   onDiscard?: () => void;
   onTitleChange?: (title: string) => void;
   onBodyChange?: (body: string) => void;
+  titleTransitionName?: string;
 };
 
 export function EntryForm({
@@ -35,10 +36,23 @@ export function EntryForm({
   onDiscard,
   onTitleChange,
   onBodyChange,
+  titleTransitionName,
 }: EntryFormProps) {
   const [state, formAction, pending] = useActionState(action, null);
   const [body, setBody] = useState(defaultBody);
   const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+
+  const titleInput = (
+    <Input
+      name="title"
+      defaultValue={defaultTitle ?? ""}
+      onChange={(e) => onTitleChange?.(e.target.value)}
+      placeholder="Untitled dream"
+      aria-label="Title"
+      maxLength={120}
+      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 font-display text-[28px] tracking-[-0.02em] shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-[28px]"
+    />
+  );
 
   return (
     <form action={formAction} className="flex w-full flex-col gap-5">
@@ -53,15 +67,17 @@ export function EntryForm({
       ) : null}
 
       <div className="grid gap-1.5">
-        <Input
-          name="title"
-          defaultValue={defaultTitle ?? ""}
-          onChange={(e) => onTitleChange?.(e.target.value)}
-          placeholder="Untitled dream"
-          aria-label="Title"
-          maxLength={120}
-          className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 font-display text-[28px] tracking-[-0.02em] shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-[28px]"
-        />
+        {titleTransitionName && defaultTitle ? (
+          <ViewTransition
+            name={titleTransitionName}
+            share="title-morph"
+            default="none"
+          >
+            {titleInput}
+          </ViewTransition>
+        ) : (
+          titleInput
+        )}
         {state?.fieldErrors?.title?.[0] ? (
           <p role="alert" className="text-sm/tight text-rec">
             {state.fieldErrors.title[0]}

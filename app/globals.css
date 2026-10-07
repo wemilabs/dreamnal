@@ -31,6 +31,11 @@
   --leading-body: 1.5;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --vt-exit: 120ms;
+  --vt-enter: 200ms;
+  --vt-move: 300ms;
 }
 
 @theme inline {
@@ -321,5 +326,58 @@
   .wave-bar,
   .rec-dot {
     animation: none;
+  }
+}
+
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-old(.page-fade),
+::view-transition-old(.reveal-out) {
+  animation: var(--vt-exit) var(--ease-out) both vt-fade reverse;
+}
+::view-transition-new(.page-fade) {
+  animation: var(--vt-enter) var(--ease-out) both vt-fade;
+}
+::view-transition-new(.reveal-in) {
+  animation:
+    var(--vt-enter) var(--ease-out) both vt-fade,
+    var(--vt-move) var(--ease-out) both vt-rise;
+}
+::view-transition-group(.title-morph) {
+  animation-duration: var(--vt-move);
+  animation-timing-function: var(--ease-in-out);
+}
+::view-transition-image-pair(.title-morph) {
+  animation-name: vt-soften;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    translate: 0 6px;
+  }
+}
+@keyframes vt-soften {
+  40% {
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) {
+    /* biome-ignore lint/complexity/noImportantStyles: must beat the .title-morph group rule, which has higher specificity */
+    animation-duration: 0s !important;
+  }
+  ::view-transition-new(.reveal-in) {
+    animation: var(--vt-enter) ease both vt-fade;
   }
 }
