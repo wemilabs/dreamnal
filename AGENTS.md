@@ -28,7 +28,7 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 
 - Next.js 16.4.0 (App Router, Turbopack) with `cacheComponents`, `typedRoutes`,
   `partialPrefetching`, and `reactCompiler` enabled in `next.config.ts`.
-  Experimental: `turbopackRustReactCompiler` (Rust compiler — no
+  Experimental: `turbopackRustReactCompiler` (Rust compiler, no
   `babel-plugin-react-compiler`), `turbopackGc`, `turbopackLazyDynamicImports`,
   `exposeTestingApiInProductionBuild` (gated on `EXPOSE_TESTING_API=1` at build
   time, used by `pnpm test:e2e`)
@@ -90,7 +90,7 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 - Partial Prefetching: default links prefetch the shared App Shell.
   `components/journal/intent-prefetch-link.tsx` upgrades to
   `prefetch={true}` (per-link, resolves URL data + session-cached content) on
-  hover/touch/focus — used by `EntryList`. `/journal/[id]` Suspense fallback is
+  hover/touch/focus. `EntryList` uses it. `/journal/[id]` Suspense fallback is
   `components/journal/entry-detail-skeleton.tsx`
 - View transitions (React 19.3 `<ViewTransition>`): `components/journal/page-fade.tsx`
   wraps each journal page (`page-fade` enter/exit); Suspense fallbacks use
@@ -99,7 +99,7 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   `default="none"`; CSS lives in `app/globals.css` (`vt-*` keyframes)
 - `ensureStatic = "navigation"` guards `/` (`app/page.tsx`), `/auth/*`
   (`app/auth/layout.tsx`), and `/offline` (`app/offline/page.tsx`). Nothing
-  under `app/journal` exports it — those routes read the session
+  under `app/journal` exports it, because those routes read the session
 - e2e: `playwright.config.ts` builds with `EXPOSE_TESTING_API=1` and serves
   :3100; `e2e/auth.setup.ts` signs in as `E2E_EMAIL`/`E2E_PASSWORD` (sign-up
   fallback), stores `e2e/.auth/user.json`, seeds one titled entry via the
