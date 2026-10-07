@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { EntryDetail } from "@/components/journal/entry-detail";
+import { EntryDetailSkeleton } from "@/components/journal/entry-detail-skeleton";
 import { getEntry } from "@/lib/entries";
 
 export default function EntryPage({
@@ -9,7 +10,7 @@ export default function EntryPage({
   params: Promise<{ id: string }>;
 }) {
   return (
-    <Suspense>
+    <Suspense fallback={<EntryDetailSkeleton />}>
       <EntryLoader params={params} />
     </Suspense>
   );

@@ -17,15 +17,22 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 - `pnpm lint` — `biome check`
 - `pnpm format` — `biome format --write`
 - `pnpm typecheck` — `tsc --noEmit`
+- `pnpm test:e2e` — Playwright instant-navigation suite (builds + serves :3100;
+  needs `E2E_EMAIL`/`E2E_PASSWORD` in `.env.local`; rig notes in
+  `e2e/instant-nav.rig.md`)
 - `pnpm db:generate` — `drizzle-kit generate` (emit SQL migration to `drizzle/`)
 - `pnpm db:migrate` — `drizzle-kit migrate` (apply migrations)
 - `pnpm db:studio` — `drizzle-kit studio`
 
 ## Stack
 
-- Next.js 16.3.8 (App Router, Turbopack) with `cacheComponents`, `typedRoutes`,
-  and `reactCompiler` enabled in `next.config.ts`
-- React 19.2.8, TypeScript, Tailwind CSS v4
+- Next.js 16.4.0 (App Router, Turbopack) with `cacheComponents`, `typedRoutes`,
+  `partialPrefetching`, and `reactCompiler` enabled in `next.config.ts`.
+  Experimental: `turbopackRustReactCompiler` (Rust compiler — no
+  `babel-plugin-react-compiler`), `turbopackGc`, `turbopackLazyDynamicImports`,
+  `exposeTestingApiInProductionBuild` (gated on `EXPOSE_TESTING_API=1` at build
+  time, used by `pnpm test:e2e`)
+- React 19.3.0, TypeScript, Tailwind CSS v4
 - shadcn/ui 4.x with **Base UI** primitives (`@base-ui/react`), `base-nova`
   preset, neutral base color, CSS variables; `cn` from the `cn` package
 - Biome 2.4.2 for lint + format (no ESLint); `drizzle/` is generated and ignored
@@ -68,15 +75,31 @@ disables the editor's own organize/sort-imports on save so they don't fight.
 
 ## Cache Components / DAL
 
-- `lib/auth/session.ts` — `getCurrentUser` (React `cache`, redirects to
-  `/auth/sign-in` when logged out). Session reads must sit behind `<Suspense>`;
+- `lib/auth/session.ts` — `getCurrentUser` (`"use cache: private"`, redirects to
+  `/auth/sign-in` when logged out). The private scope is what puts
+  session-derived UI into the per-session App Shell; without it the read is
+  request-time-only and everything behind its `<Suspense>` boundary is deferred
+  to the navigation stage. Session reads must still sit behind `<Suspense>`;
   never await the session at a layout's top level
 - `lib/entries.ts` — exported functions resolve the user via `getCurrentUser`,
   then call unexported `"use cache"` functions keyed by userId with
   `cacheTag("entries:${userId}")` + `cacheLife("minutes")`. Every query filters
   on `userId`; mutations `updateTag` the same key and re-check the session.
-  `listEntriesForUser` returns ciphertext and `listEntries`/`getEntry` decrypt
-  outside the cache
+  `listEntriesForUser` returns ciphertext; `listEntries` decrypts outside the
+  cache and derives a 280-char `excerpt` (`Array.from`, surrogate-safe)
+- Partial Prefetching: default links prefetch the shared App Shell.
+  `components/journal/intent-prefetch-link.tsx` upgrades to
+  `prefetch={true}` (per-link, resolves URL data + session-cached content) on
+  hover/touch/focus — used by `EntryList`. `/journal/[id]` Suspense fallback is
+  `components/journal/entry-detail-skeleton.tsx`
+- `ensureStatic = "navigation"` guards `/` (`app/page.tsx`), `/auth/*`
+  (`app/auth/layout.tsx`), and `/offline` (`app/offline/page.tsx`). Nothing
+  under `app/journal` exports it — those routes read the session
+- e2e: `playwright.config.ts` builds with `EXPOSE_TESTING_API=1` and serves
+  :3100; `e2e/auth.setup.ts` signs in as `E2E_EMAIL`/`E2E_PASSWORD` (sign-up
+  fallback), stores `e2e/.auth/user.json`, seeds one titled entry via the
+  composer when the journal is empty. Tests use `instant()` from
+  `@next/playwright` to assert what's visible while dynamic data is locked
 - Server Actions re-validate auth + input (zod) on every call; ids are
   uuid-validated and updates/deletes are scoped `WHERE id AND user_id`
 
@@ -150,31 +173,30 @@ Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
 
 ## Entry encryption
 
-`dream_entries.title` and `body` hold AES-256-GCM ciphertext. The key per user
-comes from HKDF over `ENTRY_ENCRYPTION_KEY` (32 bytes, base64, in `.env.local`
-and in Vercel Production + Preview, validated in `lib/env.ts`). AAD is
-`${entryId}:${field}`, so ciphertext can't be moved between rows or fields.
-Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
+`dream_entries.title`/`body` hold AES-256-GCM ciphertext at rest.
+`lib/crypto/entry-cipher.ts` is a pure `node:crypto` module (no `server-only`,
+no `@/` imports — scripts import it directly). Per-user key via HKDF from
+`ENTRY_ENCRYPTION_KEY` (32-byte base64, in `.env.local`, validated in
+`lib/env.ts`); AAD `${entryId}:${field}` binds ciphertext to row+field; stored
+as `v1.<b64url iv>.<b64url ct||tag>`. `lib/crypto/entries.ts` (`sealEntry` /
+`openEntry`) does the encrypt/decrypt — writes seal in actions, reads open
+outside the `"use cache"` functions so the cache stores ciphertext only.
+Legacy plaintext decrypts as passthrough until the backfill runs. Losing
+`ENTRY_ENCRYPTION_KEY` loses every entry; DB-side search over title/body is
+no longer possible. Backfill: `node --env-file=.env.local
+scripts/encrypt-entries.ts [--dry-run]` (idempotent, optimistic guard on
+`body`, prints counts only).
 
-- `lib/crypto/entry-cipher.ts` is pure `node:crypto` with no `server-only` and
-  no `@/` imports, so scripts can import it
-- `lib/crypto/entries.ts` exports `sealEntry` (used by actions) and `openEntry`
-  (used by `lib/entries.ts` outside the `"use cache"` functions, so the cache
-  only holds ciphertext)
-- Values without the `v1.` prefix pass through as legacy plaintext
-- Backfill: `node --env-file=.env.local scripts/encrypt-entries.ts [--dry-run]`.
-  Idempotent, guarded on the old `body`, prints counts only
-- Losing `ENTRY_ENCRYPTION_KEY` loses every entry. The DB can't search
-  title/body anymore
+## Misc
 
-## Analytics and breadcrumbs
-
-- `<Analytics />` from `@vercel/analytics/next` sits in the root layout inside
-  `<Suspense>` because it reads search params
-- Top-bar breadcrumbs: client `JournalBreadcrumbs` derives crumbs from
-  `usePathname` via `crumbForPathname` in `nav-items.ts`. The entry title comes
-  from the `app/journal/@crumb` parallel slot (`[id]/page.tsx` calls `getEntry`)
-  and reaches `TopBar` as `entryCrumb`
+- `@vercel/analytics` renders `<Analytics />` in the root layout inside
+  `<Suspense>` — it reads search params, which `ensureStatic` routes reject
+  without a boundary.
+- Top-bar breadcrumbs: `@crumb` parallel route slot under `app/journal/`
+  feeds the entry title (`@crumb/[id]/page.tsx` → `getEntry` →
+  `title ?? titleFallback(body)`) into `TopBar`'s `entryCrumb`; the client
+  `JournalBreadcrumbs` derives the rest from `usePathname` via
+  `crumbForPathname` in `nav-items.ts`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
