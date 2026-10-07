@@ -178,30 +178,31 @@ Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
 
 ## Entry encryption
 
-`dream_entries.title`/`body` hold AES-256-GCM ciphertext at rest.
-`lib/crypto/entry-cipher.ts` is a pure `node:crypto` module (no `server-only`,
-no `@/` imports — scripts import it directly). Per-user key via HKDF from
-`ENTRY_ENCRYPTION_KEY` (32-byte base64, in `.env.local`, validated in
-`lib/env.ts`); AAD `${entryId}:${field}` binds ciphertext to row+field; stored
-as `v1.<b64url iv>.<b64url ct||tag>`. `lib/crypto/entries.ts` (`sealEntry` /
-`openEntry`) does the encrypt/decrypt — writes seal in actions, reads open
-outside the `"use cache"` functions so the cache stores ciphertext only.
-Legacy plaintext decrypts as passthrough until the backfill runs. Losing
-`ENTRY_ENCRYPTION_KEY` loses every entry; DB-side search over title/body is
-no longer possible. Backfill: `node --env-file=.env.local
-scripts/encrypt-entries.ts [--dry-run]` (idempotent, optimistic guard on
-`body`, prints counts only).
+`dream_entries.title` and `body` hold AES-256-GCM ciphertext. The key per user
+comes from HKDF over `ENTRY_ENCRYPTION_KEY` (32 bytes, base64, in `.env.local`
+and in Vercel Production + Preview, validated in `lib/env.ts`). AAD is
+`${entryId}:${field}`, so ciphertext can't be moved between rows or fields.
+Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
 
-## Misc
+- `lib/crypto/entry-cipher.ts` is pure `node:crypto` with no `server-only` and
+  no `@/` imports, so scripts can import it
+- `lib/crypto/entries.ts` exports `sealEntry` (used by actions) and `openEntry`
+  (used by `lib/entries.ts` outside the `"use cache"` functions, so the cache
+  only holds ciphertext)
+- Values without the `v1.` prefix pass through as legacy plaintext
+- Backfill: `node --env-file=.env.local scripts/encrypt-entries.ts [--dry-run]`.
+  Idempotent, guarded on the old `body`, prints counts only
+- Losing `ENTRY_ENCRYPTION_KEY` loses every entry. The DB can't search
+  title/body anymore
 
-- `@vercel/analytics` renders `<Analytics />` in the root layout inside
-  `<Suspense>` — it reads search params, which `ensureStatic` routes reject
-  without a boundary.
-- Top-bar breadcrumbs: `@crumb` parallel route slot under `app/journal/`
-  feeds the entry title (`@crumb/[id]/page.tsx` → `getEntry` →
-  `title ?? titleFallback(body)`) into `TopBar`'s `entryCrumb`; the client
-  `JournalBreadcrumbs` derives the rest from `usePathname` via
-  `crumbForPathname` in `nav-items.ts`.
+## Analytics and breadcrumbs
+
+- `<Analytics />` from `@vercel/analytics/next` sits in the root layout inside
+  `<Suspense>` because it reads search params
+- Top-bar breadcrumbs: client `JournalBreadcrumbs` derives crumbs from
+  `usePathname` via `crumbForPathname` in `nav-items.ts`. The entry title comes
+  from the `app/journal/@crumb` parallel slot (`[id]/page.tsx` calls `getEntry`)
+  and reaches `TopBar` as `entryCrumb`
 
 <!-- BEGIN:nextjs-agent-rules -->
 
