@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import { EntryDetail } from "@/components/journal/entry-detail";
+import { EntryDetailSkeleton } from "@/components/journal/entry-detail-skeleton";
+import { PageFade } from "@/components/journal/page-fade";
 import { getEntry } from "@/lib/entries";
 
 export default function EntryPage({
@@ -9,9 +11,19 @@ export default function EntryPage({
   params: Promise<{ id: string }>;
 }) {
   return (
-    <Suspense>
-      <EntryLoader params={params} />
-    </Suspense>
+    <PageFade>
+      <Suspense
+        fallback={
+          <ViewTransition exit="reveal-out" default="none">
+            <EntryDetailSkeleton />
+          </ViewTransition>
+        }
+      >
+        <ViewTransition enter="reveal-in" default="none">
+          <EntryLoader params={params} />
+        </ViewTransition>
+      </Suspense>
+    </PageFade>
   );
 }
 

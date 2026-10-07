@@ -1,7 +1,6 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import { cache } from "react";
 import { auth } from "./server";
 
 export type SessionUser = {
@@ -10,7 +9,9 @@ export type SessionUser = {
   email: string;
 };
 
-export const getCurrentUser = cache(async (): Promise<SessionUser> => {
+export async function getCurrentUser(): Promise<SessionUser> {
+  "use cache: private";
+
   const { data: session } = await auth.getSession();
   const user = session?.user;
   if (!user) {
@@ -21,4 +22,4 @@ export const getCurrentUser = cache(async (): Promise<SessionUser> => {
     name: user.name ?? "",
     email: user.email ?? "",
   };
-});
+}

@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Wordmark } from "@/components/wordmark";
 import { TheFold } from "../../components/landing/the-fold";
 
+export const ensureStatic = "navigation";
+
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div

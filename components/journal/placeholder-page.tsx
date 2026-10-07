@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { PageFade } from "@/components/journal/page-fade";
 import { Badge } from "@/components/ui/badge";
 import {
   Empty,
@@ -19,7 +20,7 @@ export function PlaceholderPage({
   icon: LucideIcon;
 }) {
   return (
-    <>
+    <PageFade>
       <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
         {title}
       </h1>
@@ -35,6 +36,6 @@ export function PlaceholderPage({
           <Badge variant="secondary">Coming soon</Badge>
         </EmptyContent>
       </Empty>
-    </>
+    </PageFade>
   );
 }

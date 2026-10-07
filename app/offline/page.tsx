@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+export const ensureStatic = "navigation";
+
 export default function OfflinePage() {
   return (
     <div
