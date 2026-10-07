@@ -1,5 +1,4 @@
-import type { ReactNode } from "react";
-import { ViewTransition } from "react";
+import { type ReactNode, ViewTransition } from "react";
 
 export function PageFade({ children }: { children: ReactNode }) {
   return (
