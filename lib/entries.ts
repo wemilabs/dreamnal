@@ -4,9 +4,10 @@ import { and, desc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { z } from "zod";
 import { db } from "@/db";
-import { dreamEntries } from "@/db/schema";
+import { type DreamEntry, dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
-import { openEntry } from "@/lib/crypto/entries";
+import { openEntry, openSymbols } from "@/lib/crypto/entries";
+import type { SymbolsPayload } from "@/lib/symbols/schema";
 
 export async function listEntries() {
   const user = await getCurrentUser();
@@ -19,6 +20,7 @@ export async function listEntries() {
       source: entry.source,
       audioDurationSeconds: entry.audioDurationSeconds,
       createdAt: entry.createdAt,
+      symbols: openSymbols(row)?.items ?? [],
       excerpt: Array.from(entry.body).slice(0, 280).join(""),
     };
   });
@@ -37,6 +39,7 @@ async function listEntriesForUser(userId: string) {
       body: dreamEntries.body,
       source: dreamEntries.source,
       audioDurationSeconds: dreamEntries.audioDurationSeconds,
+      symbols: dreamEntries.symbols,
       createdAt: dreamEntries.createdAt,
     })
     .from(dreamEntries)
@@ -44,13 +47,20 @@ async function listEntriesForUser(userId: string) {
     .orderBy(desc(dreamEntries.createdAt));
 }
 
-export async function getEntry(id: string) {
+export type EntryWithSymbols = Omit<DreamEntry, "symbols"> & {
+  symbols: SymbolsPayload | null;
+};
+
+export async function getEntry(id: string): Promise<EntryWithSymbols | null> {
   if (!z.uuid().safeParse(id).success) {
     return null;
   }
   const user = await getCurrentUser();
   const entry = await getEntryForUser(user.id, id);
-  return entry === null ? null : openEntry(entry);
+  if (entry === null) {
+    return null;
+  }
+  return { ...openEntry(entry), symbols: openSymbols(entry) };
 }
 
 async function getEntryForUser(userId: string, id: string) {

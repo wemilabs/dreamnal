@@ -1,17 +1,36 @@
-import { Tags } from "lucide-react";
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/journal/placeholder-page";
+import { Suspense, ViewTransition } from "react";
+import { PageFade } from "@/components/journal/page-fade";
+import { SymbolsContent } from "@/components/journal/symbols/symbols-content";
+import { SymbolsSkeleton } from "@/components/journal/symbols/symbols-skeleton";
+import { symbolsCopy } from "@/lib/symbols/copy";
 
 export const metadata: Metadata = {
-  title: "Symbols & tags",
+  title: symbolsCopy.symbolsTitle,
 };
 
 export default function SymbolsPage() {
   return (
-    <PlaceholderPage
-      title="Symbols & tags"
-      description="The people, places, and motifs that keep showing up in your dreams."
-      icon={Tags}
-    />
+    <PageFade>
+      <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
+        {symbolsCopy.symbolsTitle}
+      </h1>
+      <div className="mt-8">
+        <Suspense
+          fallback={
+            <ViewTransition exit="reveal-out" default="none">
+              <SymbolsSkeleton />
+            </ViewTransition>
+          }
+        >
+          <ViewTransition enter="reveal-in" default="none">
+            <SymbolsContent />
+          </ViewTransition>
+        </Suspense>
+      </div>
+      <p className="mt-10 text-sm text-muted-foreground">
+        {symbolsCopy.footer}
+      </p>
+    </PageFade>
   );
 }

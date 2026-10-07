@@ -8,7 +8,8 @@ import { MAX_AUDIO_BYTES } from "@/components/journal/recorder-mime";
 import { db } from "@/db";
 import { dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
-import { sealEntry } from "@/lib/crypto/entries";
+import { openEntry, openSymbols, sealEntry } from "@/lib/crypto/entries";
+import { scheduleSymbolRefresh } from "@/lib/symbols/refresh";
 import { transcribeAudio } from "@/lib/transcribe";
 
 export type EntryFormState = {
@@ -101,17 +102,25 @@ export async function createEntry(
   }
 
   const id = crypto.randomUUID();
+  const sealed = sealEntry({ userId: user.id, id, ...parsed.data });
   const [entry] = await db
     .insert(dreamEntries)
     .values({
       ...parsed.data,
-      ...sealEntry({ userId: user.id, id, ...parsed.data }),
+      ...sealed,
       id,
       userId: user.id,
     })
     .returning({ id: dreamEntries.id });
 
   updateTag(`entries:${user.id}`);
+  scheduleSymbolRefresh({
+    userId: user.id,
+    id,
+    body: parsed.data.body,
+    sealedBody: sealed.body,
+    previousSymbols: null,
+  });
   return { savedId: entry.id };
 }
 
@@ -134,10 +143,20 @@ export async function updateEntry(
     };
   }
 
+  const [existing] = await db
+    .select({ body: dreamEntries.body, symbols: dreamEntries.symbols })
+    .from(dreamEntries)
+    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .limit(1);
+  if (!existing) {
+    return { error: "Couldn’t find that entry." };
+  }
+
+  const sealed = sealEntry({ userId: user.id, id: id.data, ...parsed.data });
   const updated = await db
     .update(dreamEntries)
     .set({
-      ...sealEntry({ userId: user.id, id: id.data, ...parsed.data }),
+      ...sealed,
       updatedAt: new Date(),
     })
     .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
@@ -145,6 +164,27 @@ export async function updateEntry(
 
   if (updated.length === 0) {
     return { error: "Couldn’t find that entry." };
+  }
+
+  const oldBody = openEntry({
+    userId: user.id,
+    id: id.data,
+    title: null,
+    body: existing.body,
+  }).body;
+  const symbolsSource = openSymbols({
+    userId: user.id,
+    id: id.data,
+    symbols: existing.symbols,
+  })?.source;
+  if (oldBody !== parsed.data.body && symbolsSource !== "user") {
+    scheduleSymbolRefresh({
+      userId: user.id,
+      id: id.data,
+      body: parsed.data.body,
+      sealedBody: sealed.body,
+      previousSymbols: existing.symbols,
+    });
   }
 
   updateTag(`entries:${user.id}`);
