@@ -59,10 +59,14 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
   return (
     <CommandMenuContext.Provider value={{ open, setOpen }}>
       {children}
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog
+        className="top-[calc(env(safe-area-inset-top)+1rem)] sm:top-1/3"
+        open={open}
+        onOpenChange={setOpen}
+      >
         <Command>
           <CommandInput placeholder="Search dreams, pages, actions…" />
-          <CommandList>
+          <CommandList className="max-h-[min(18rem,45svh)] overscroll-contain">
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Actions">
               <CommandItem

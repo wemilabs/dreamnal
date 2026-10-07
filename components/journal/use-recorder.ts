@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { PREFERRED_MIME_TYPES } from "./recorder-mime";
+import { useScreenWakeLock } from "./use-screen-wake-lock";
 
 export type RecorderError = "unsupported" | "denied" | "interrupted";
 
@@ -13,6 +14,7 @@ export function useRecorder() {
   const cancelledRef = useRef(false);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const startedAtRef = useRef(0);
+  const wakeLock = useScreenWakeLock();
 
   const cleanup = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => {
@@ -24,7 +26,8 @@ export function useRecorder() {
     analyserRef.current = null;
     recorderRef.current = null;
     chunksRef.current = [];
-  }, []);
+    wakeLock.release();
+  }, [wakeLock]);
 
   useEffect(() => cleanup, [cleanup]);
 
@@ -90,9 +93,10 @@ export function useRecorder() {
     analyserRef.current = analyser;
     recorderRef.current = recorder;
     startedAtRef.current = performance.now();
+    wakeLock.acquire();
     recorder.start(250);
     return null;
-  }, []);
+  }, [wakeLock]);
 
   const stop = useCallback((): Promise<Blob | null> => {
     const recorder = recorderRef.current;

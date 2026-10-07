@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { isIOS, isStandalone } from "@/lib/pwa/platform";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -29,14 +30,6 @@ if (typeof window !== "undefined") {
     emitChange();
   });
 }
-
-const isStandalone = () =>
-  window.matchMedia("(display-mode: standalone)").matches ||
-  (navigator as Navigator & { standalone?: boolean }).standalone === true;
-
-const isIOS = () =>
-  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 const getSnapshot = (): InstallStatus => {
   if (isStandalone()) {

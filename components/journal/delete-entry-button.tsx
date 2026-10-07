@@ -40,7 +40,7 @@ export function DeleteEntryButton({ id }: { id: string }) {
         ) : null}
         <AlertDialogFooter>
           <AlertDialogCancel>Keep it</AlertDialogCancel>
-          <form action={formAction}>
+          <form action={formAction} className="contents">
             <input type="hidden" name="id" value={id} />
             <AlertDialogAction
               type="submit"
