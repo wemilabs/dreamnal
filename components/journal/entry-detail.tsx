@@ -1,11 +1,12 @@
 import { updateEntry } from "@/app/journal/actions";
-import type { DreamEntry } from "@/db/schema";
+import type { EntryWithSymbols } from "@/lib/entries";
 import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
 import { EntryDate } from "./entry-date";
 import { EntryForm } from "./entry-form";
+import { SymbolTags } from "./symbols/symbol-tags";
 
-export function EntryDetail({ entry }: { entry: DreamEntry }) {
+export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
   const duration =
     entry.source === "voice" && entry.audioDurationSeconds != null
       ? formatDuration(entry.audioDurationSeconds)
@@ -31,6 +32,7 @@ export function EntryDetail({ entry }: { entry: DreamEntry }) {
         audioDurationSeconds={entry.audioDurationSeconds}
         submitLabel="Save changes"
       />
+      <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />
     </div>
   );
 }

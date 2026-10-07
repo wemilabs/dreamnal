@@ -5,7 +5,7 @@ import {
   randomBytes,
 } from "node:crypto";
 
-export type EntryField = "title" | "body";
+export type EntryField = "title" | "body" | "symbols";
 
 const KEY_INFO = "dreamnal:entries:v1";
 const IV_BYTES = 12;

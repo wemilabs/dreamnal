@@ -1,0 +1,33 @@
+export const symbolsCopy = {
+  insightsTitle: "Insights",
+  symbolsTitle: "Symbols & tags",
+  footer: "Dreamnal counts what you wrote. It doesn’t say what it means.",
+  empty: "Record a few more dreams to see what comes back.",
+  noRecurring: "Nothing keeps coming back yet.",
+  kinds: {
+    person: "People",
+    place: "Places",
+    thing: "Things",
+    feeling: "Feelings",
+  },
+  rhythm: {
+    total: "Dreams recorded",
+    thisMonth: "This month",
+    lastMonth: "Last month",
+  },
+  keepsComingBack: "Keeps coming back",
+  seenTogether: "Seen together",
+  allSymbols: "See all symbols",
+  dreams: (n: number) => (n === 1 ? "1 dream" : `${n} dreams`),
+  lastOn: "last on",
+  saveError: "Couldn’t save your tags.",
+  entryTags: {
+    heading: "Symbols",
+    none: "No symbols yet.",
+    addPlaceholder: "Add a symbol",
+    add: "Add",
+    kindLabel: "Kind",
+    remove: (label: string) => `Remove “${label}”`,
+  },
+  untitled: "Untitled dream",
+};

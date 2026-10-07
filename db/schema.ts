@@ -22,6 +22,7 @@ export const dreamEntries = pgTable(
     body: text("body").notNull(),
     source: entrySource("source").notNull(),
     audioDurationSeconds: real("audio_duration_seconds"),
+    symbols: text("symbols"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

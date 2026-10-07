@@ -168,17 +168,45 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 - `/journal/*` — dashboard shell: sidebar + inset content; "Record a dream"
   opens a composer overlay (Drawer on mobile, Dialog on desktop) instead of
   navigating; recording → transcribing → editing → save
-- `/journal/{calendar,insights,symbols,favorites,lucid,trash,settings}` —
-  placeholder pages
+- `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
+- `/journal/{calendar,favorites,lucid,trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
 
 Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
 `/journal/*` and bounces signed-in users off `/` and the auth pages.
 
+## Symbols and patterns
+
+Spec: `docs/specs/symbols-and-patterns.md`. The AI labels, it never
+interprets. Code does all counting.
+
+- `lib/symbols/extract-core.ts` (script-safe, relative imports): xAI chat
+  completions (`XAI_CHAT_URL`), `grok-4.3`, strict `json_schema` output, up
+  to 12 `{ kind: person|place|thing|feeling, label }`
+- `scheduleSymbolRefresh` (`lib/symbols/refresh.ts`) runs in `after()` from
+  `createEntry`/`updateEntry` when the body changed and tags aren't
+  user-edited. The update is guarded on `body` and `symbols` being unchanged,
+  then calls `revalidateTag(…, { expire: 0 })`, because `updateTag` is
+  Server-Action-only
+- `dream_entries.symbols` holds encrypted JSON
+  `{ v: 1, source: "ai"|"user", items }` (AAD field `symbols`). Once
+  `source: "user"` (set by `saveSymbols`), extraction never overwrites it
+- `lib/insights.ts` is pure (relative imports): `labelStats`,
+  `keepsComingBack` (≥3), `recurringLabels` (≥2, Symbols page),
+  `seenTogether`. Fewer than 3 dreams → empty state
+- UI copy (English) lives in `lib/symbols/copy.ts`; labels stay in the
+  dream's language. Never put a label in a URL
+  (Symbols uses `<details>`). Local-time dates and month buckets are computed
+  in client components (`LocalDay`, `RhythmStats`)
+- Backfill: `node --env-file=.env.local scripts/extract-symbols.ts [--dry-run]`.
+  It only touches rows where `symbols is null`
+- Scripts run under plain node, which doesn't resolve `@/`. Use relative
+  `.ts` imports. `scripts/encrypt-entries.ts` currently fails for this reason
+
 ## Entry encryption
 
-`dream_entries.title` and `body` hold AES-256-GCM ciphertext. The key per user
+`dream_entries.title`, `body` and `symbols` hold AES-256-GCM ciphertext. The key per user
 comes from HKDF over `ENTRY_ENCRYPTION_KEY` (32 bytes, base64, in `.env.local`
 and in Vercel Production + Preview, validated in `lib/env.ts`). AAD is
 `${entryId}:${field}`, so ciphertext can't be moved between rows or fields.

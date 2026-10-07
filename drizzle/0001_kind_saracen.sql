@@ -1,0 +1,1 @@
+ALTER TABLE "dream_entries" ADD COLUMN "symbols" text;
