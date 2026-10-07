@@ -2,17 +2,21 @@
 
 import { ComposerError } from "@/components/journal/composer/composer-error";
 import { useComposer } from "@/components/journal/composer/composer-provider";
+import { IosMicHint } from "@/components/journal/composer/ios-mic-hint";
 import { TranscribingCard } from "@/components/journal/composer/transcribing-card";
 import { EntryForm } from "@/components/journal/entry-form";
 import { RecordingCard } from "@/components/journal/recording-card";
 
 function MicWaiting() {
   return (
-    <div className="flex w-full items-center gap-2.5">
-      <span className="rec-dot size-2 shrink-0 rounded-full bg-fold" />
-      <span className="text-sm/tight font-semibold text-foreground">
-        Waiting for the microphone…
-      </span>
+    <div className="flex w-full flex-col gap-3">
+      <div className="flex items-center gap-2.5">
+        <span className="rec-dot size-2 shrink-0 rounded-full bg-fold" />
+        <span className="text-sm/tight font-semibold text-foreground">
+          Waiting for the microphone…
+        </span>
+      </div>
+      <IosMicHint />
     </div>
   );
 }
