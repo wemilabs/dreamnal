@@ -11,6 +11,7 @@ import {
   useTransition,
 } from "react";
 import { toast } from "sonner";
+import { useWebHaptics } from "web-haptics/react";
 import {
   createEntry,
   type EntryFormState,
@@ -61,6 +62,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reduceComposer, initialComposerState);
   const router = useRouter();
   const recorder = useRecorder();
+  const { trigger } = useWebHaptics();
   const requestIdRef = useRef(0);
   const [, startTransition] = useTransition();
 
@@ -94,6 +96,8 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "open" });
       return;
     }
+    // iOS only fires haptics synchronously inside the tap handler.
+    void trigger("nudge");
     void beginRecording();
   };
 
@@ -106,6 +110,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   };
 
   const finishRecording = () => {
+    void trigger("success");
     const requestId = ++requestIdRef.current;
     startTransition(async () => {
       const blob = await recorder.stop();
