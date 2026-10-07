@@ -8,6 +8,7 @@ import { MAX_AUDIO_BYTES } from "@/components/journal/recorder-mime";
 import { db } from "@/db";
 import { dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
+import { sealEntry } from "@/lib/crypto/entries";
 import { transcribeAudio } from "@/lib/transcribe";
 
 export type EntryFormState = {
@@ -99,9 +100,15 @@ export async function createEntry(
     };
   }
 
+  const id = crypto.randomUUID();
   const [entry] = await db
     .insert(dreamEntries)
-    .values({ ...parsed.data, userId: user.id })
+    .values({
+      ...parsed.data,
+      ...sealEntry({ userId: user.id, id, ...parsed.data }),
+      id,
+      userId: user.id,
+    })
     .returning({ id: dreamEntries.id });
 
   updateTag(`entries:${user.id}`);
@@ -130,8 +137,7 @@ export async function updateEntry(
   const updated = await db
     .update(dreamEntries)
     .set({
-      title: parsed.data.title,
-      body: parsed.data.body,
+      ...sealEntry({ userId: user.id, id: id.data, ...parsed.data }),
       updatedAt: new Date(),
     })
     .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))

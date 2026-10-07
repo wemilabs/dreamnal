@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { CommandMenuProvider } from "@/components/journal/command-menu";
 import { ComposerProvider } from "@/components/journal/composer/composer-provider";
 import { RecordFab } from "@/components/journal/record-fab";
@@ -8,7 +7,10 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-export default function JournalLayout({ children }: { children: ReactNode }) {
+export default function JournalLayout({
+  children,
+  crumb,
+}: LayoutProps<"/journal">) {
   return (
     <ComposerProvider>
       <CommandMenuProvider>
@@ -19,7 +21,7 @@ export default function JournalLayout({ children }: { children: ReactNode }) {
           >
             <JournalSidebar />
             <SidebarInset>
-              <TopBar />
+              <TopBar entryCrumb={crumb} />
               <div className="mx-auto w-full max-w-180 flex-1 px-6 pt-10 pb-24 md:pb-10">
                 {children}
               </div>

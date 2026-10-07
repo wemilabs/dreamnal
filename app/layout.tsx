@@ -1,5 +1,7 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Geist_Mono, Hanken_Grotesk } from "next/font/google";
+import { Suspense } from "react";
 import { PwaRegistrar } from "../components/pwa/pwa-registrar";
 import { ThemeProvider } from "../components/theme-provider";
 import "./globals.css";
@@ -67,6 +69,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </ThemeProvider>
         <PwaRegistrar />
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
       </body>
     </html>
   );

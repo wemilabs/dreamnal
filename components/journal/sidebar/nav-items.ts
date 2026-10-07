@@ -51,14 +51,19 @@ export function isNavItemActive(
   );
 }
 
-export function titleForPathname(pathname: string): string {
+export type JournalCrumb =
+  | { kind: "journal" }
+  | { kind: "nav"; title: string }
+  | { kind: "entry" };
+
+export function crumbForPathname(pathname: string): JournalCrumb {
+  if (pathname === "/journal") {
+    return { kind: "journal" };
+  }
   const match = JOURNAL_NAV_LINKS.find(
     (item) =>
       item.href !== "/journal" &&
       (pathname === item.href || pathname.startsWith(`${item.href}/`)),
   );
-  if (match) {
-    return match.title;
-  }
-  return pathname === "/journal" ? "Journal" : "Dream";
+  return match ? { kind: "nav", title: match.title } : { kind: "entry" };
 }
