@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { playCue } from "./recorder-cues";
 import { PREFERRED_MIME_TYPES } from "./recorder-mime";
 import { useScreenWakeLock } from "./use-screen-wake-lock";
 
@@ -77,6 +78,20 @@ export function useRecorder() {
     analyser.smoothingTimeConstant = 0.75;
     source.connect(analyser);
 
+    // Refs are set before the cue await so cancel() during the chime still
+    // tears down the stream and context.
+    streamRef.current = stream;
+    ctxRef.current = ctx;
+    analyserRef.current = analyser;
+
+    // The chime must finish before MediaRecorder starts or it lands in the
+    // recording.
+    await playCue(ctx, "start");
+    if (cancelledRef.current) {
+      cleanup();
+      return "interrupted";
+    }
+
     const recorder = new MediaRecorder(stream, {
       mimeType,
       audioBitsPerSecond: 48000,
@@ -88,15 +103,12 @@ export function useRecorder() {
       }
     };
 
-    streamRef.current = stream;
-    ctxRef.current = ctx;
-    analyserRef.current = analyser;
     recorderRef.current = recorder;
     startedAtRef.current = performance.now();
     wakeLock.acquire();
     recorder.start(250);
     return null;
-  }, [wakeLock]);
+  }, [wakeLock, cleanup]);
 
   const stop = useCallback((): Promise<Blob | null> => {
     const recorder = recorderRef.current;
@@ -106,7 +118,14 @@ export function useRecorder() {
     return new Promise((resolve) => {
       recorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: recorder.mimeType });
+        // Detach the context so cleanup() doesn't close it. The stop cue
+        // plays on it after the mic tracks stop.
+        const ctx = ctxRef.current;
+        ctxRef.current = null;
         cleanup();
+        if (ctx) {
+          void playCue(ctx, "stop").finally(() => ctx.close().catch(() => {}));
+        }
         resolve(blob.size > 0 ? blob : null);
       };
       recorder.stop();

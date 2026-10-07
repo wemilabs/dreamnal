@@ -1,16 +1,17 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { isIOS, isStandalone } from "@/lib/pwa/platform";
+import { isAndroid, isIOS, isStandalone } from "@/lib/pwa/platform";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-type InstallStatus = "hidden" | "prompt" | "ios";
+type InstallStatus = "hidden" | "prompt" | "ios" | "android";
 
 let installPrompt: BeforeInstallPromptEvent | null = null;
+let installed = false;
 const listeners = new Set<() => void>();
 
 const emitChange = () => {
@@ -26,19 +27,23 @@ if (typeof window !== "undefined") {
     emitChange();
   });
   window.addEventListener("appinstalled", () => {
+    installed = true;
     installPrompt = null;
     emitChange();
   });
 }
 
 const getSnapshot = (): InstallStatus => {
-  if (isStandalone()) {
+  if (isStandalone() || installed) {
     return "hidden";
   }
   if (installPrompt) {
     return "prompt";
   }
-  return isIOS() ? "ios" : "hidden";
+  if (isIOS()) {
+    return "ios";
+  }
+  return isAndroid() ? "android" : "hidden";
 };
 
 const getServerSnapshot = (): InstallStatus => "hidden";

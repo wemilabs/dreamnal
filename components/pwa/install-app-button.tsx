@@ -1,59 +1,41 @@
 "use client";
 
-import { Download, Share, SquarePlus } from "lucide-react";
+import { Download, EllipsisVertical, Share, SquarePlus } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  type InstallStep,
+  InstallStepsItem,
+} from "@/components/pwa/install-steps-item";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { promptInstall, useInstallStatus } from "@/lib/pwa/install-prompt";
 
-function IosInstallItem() {
-  return (
-    <SidebarMenuItem>
-      <Dialog>
-        <DialogTrigger render={<SidebarMenuButton tooltip="Install app" />}>
-          <Download aria-hidden />
-          <span>Install app</span>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Install Dreamnal</DialogTitle>
-            <DialogDescription>
-              Keep your journal on the Home Screen.
-            </DialogDescription>
-          </DialogHeader>
-          <ol className="flex flex-col gap-3 text-sm text-foreground">
-            <li className="flex items-center gap-3">
-              <Share
-                className="size-4 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
-              <span>Tap Share in Safari’s toolbar.</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <SquarePlus
-                className="size-4 shrink-0 text-muted-foreground"
-                aria-hidden
-              />
-              <span>Tap “Add to Home Screen”.</span>
-            </li>
-          </ol>
-        </DialogContent>
-      </Dialog>
-    </SidebarMenuItem>
-  );
-}
+const IOS_STEPS: InstallStep[] = [
+  { icon: Share, text: "Tap Share in Safari’s toolbar." },
+  { icon: SquarePlus, text: "Tap “Add to Home Screen”." },
+];
+
+const ANDROID_STEPS: InstallStep[] = [
+  { icon: EllipsisVertical, text: "Open your browser’s menu (⋮)." },
+  { icon: SquarePlus, text: "Tap “Install app” or “Add to Home screen”." },
+];
 
 export function InstallAppButton() {
   const status = useInstallStatus();
 
   if (status === "ios") {
-    return <IosInstallItem />;
+    return (
+      <InstallStepsItem
+        description="Keep your journal on the Home Screen."
+        steps={IOS_STEPS}
+      />
+    );
+  }
+  if (status === "android") {
+    return (
+      <InstallStepsItem
+        description="Keep your journal on your Home screen. Already installed? Open it from there."
+        steps={ANDROID_STEPS}
+      />
+    );
   }
   if (status === "hidden") {
     return null;

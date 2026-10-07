@@ -95,6 +95,15 @@ Verified against `POST /v1/stt` with real browser recordings
 `MAX_AUDIO_BYTES` (4 MB); Chrome picks webm/opus. xAI wants `file` as the
 **last** multipart field; don't send `language`/`format`.
 
+Start/stop tones are generated in `components/journal/recorder-cues.ts` (two
+sine notes on the recorder's AudioContext, no audio files). The start cue
+finishes before `MediaRecorder.start` so it isn't recorded. The stop cue
+plays after the mic tracks stop, and the context closes once it ends.
+
+Haptics use `web-haptics` (`useWebHaptics` in `composer-provider.tsx`). It
+must fire from the composer's synchronous tap handlers because iOS only
+vibrates inside a user gesture.
+
 Deployment constraint: Vercel Functions cap request bodies at 4.5 MB, so
 recordings run at 48 kbps, auto-stop at 8 minutes (~2.9 MB), are rejected
 client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
@@ -115,7 +124,9 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
   test the SW with `pnpm build && pnpm start`
 - `lib/pwa/install-prompt.ts` — `beforeinstallprompt` store (attached from
   first paint via the registrar); `InstallAppButton` sits in the sidebar and
-  shows Add-to-Home-Screen steps on iOS
+  shows Add-to-Home-Screen steps on iOS, with an Android fallback steps
+  dialog when `beforeinstallprompt` never fires. An `installed` flag set
+  from `appinstalled` keeps the button hidden after a browser-menu install
 - `app/offline/page.tsx` — static, outside the `proxy.ts` matcher
 - `next.config.ts` sets security headers globally and no-cache + CSP on `/sw.js`
 
