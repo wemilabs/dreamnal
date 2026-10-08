@@ -7,6 +7,7 @@ import { db } from "@/db";
 import { type DreamEntry, dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
 import { openEntry, openSymbols } from "@/lib/crypto/entries";
+import type { SearchEntry } from "@/lib/dream-search";
 import type { SymbolsPayload } from "@/lib/symbols/schema";
 
 export async function listEntries() {
@@ -22,6 +23,21 @@ export async function listEntries() {
       createdAt: entry.createdAt,
       symbols: openSymbols(row)?.items ?? [],
       excerpt: Array.from(entry.body).slice(0, 280).join(""),
+    };
+  });
+}
+
+export async function listSearchEntries(): Promise<SearchEntry[]> {
+  const user = await getCurrentUser();
+  const rows = await listEntriesForUser(user.id);
+  return rows.map((row) => {
+    const entry = openEntry(row);
+    return {
+      id: entry.id,
+      title: entry.title,
+      body: entry.body,
+      labels: (openSymbols(row)?.items ?? []).map((item) => item.label),
+      createdAt: entry.createdAt.toISOString(),
     };
   });
 }
