@@ -34,7 +34,9 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   time, used by `pnpm test:e2e`)
 - React 19.3.0, TypeScript, Tailwind CSS v4
 - shadcn/ui 4.x with **Base UI** primitives (`@base-ui/react`), `base-nova`
-  preset, neutral base color, CSS variables; `cn` from the `cn` package
+  preset, neutral base color, CSS variables; `cn` comes from `@/lib/utils`,
+  which wraps the `cn` package with the font-size tokens — ui components must
+  import it from there, never directly from `"cn"`
 - Biome 2.4.2 for lint + format (no ESLint); `drizzle/` is generated and ignored
 - `next-themes` for light/dark (class attribute, system default)
 - Type scale: use the named `--text-*` tokens in `app/globals.css` (e.g.
