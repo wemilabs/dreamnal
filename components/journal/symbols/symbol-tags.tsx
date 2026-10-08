@@ -75,7 +75,7 @@ export function SymbolTags({
             }
             return (
               <div key={groupKind} className="grid gap-2">
-                <span className="font-mono text-xs uppercase tracking-caps text-muted-foreground">
+                <span className="font-mono text-xs text-muted-foreground">
                   {symbolsCopy.kinds[groupKind]}
                 </span>
                 <div className="flex flex-wrap gap-2">

@@ -34,7 +34,7 @@ function KeepVignette() {
     <div className="flex h-30 shrink-0 items-center rounded-[16px] bg-background px-7">
       <div className="flex w-full flex-col gap-1.5 rounded-md border border-border bg-card px-4.5 py-3.5">
         <span className="font-mono text-xs leading-4 text-muted-foreground">
-          TUE 6 OCT
+          Tue 6 Oct
         </span>
         <span className="font-display text-lead text-foreground">
           The hallway to the sea
@@ -53,19 +53,19 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    label: "01 — RECORD",
+    label: "01 — Record",
     title: "Talk, eyes still closed",
     body: "One tap starts recording. Ramble, pause, go back. Nothing you say is wasted.",
     Vignette: RecordVignette,
   },
   {
-    label: "02 — READ IT BACK",
+    label: "02 — Read it back",
     title: "Fix what it misheard",
     body: "Grok turns your voice into text in seconds. Edit it like any note, or add what came back to you.",
     Vignette: ReadBackVignette,
   },
   {
-    label: "03 — KEEP",
+    label: "03 — Keep",
     title: "Save it to your journal",
     body: "Every entry is dated and kept private to your account. Scroll back and watch the patterns surface.",
     Vignette: KeepVignette,
@@ -76,7 +76,7 @@ function StepCard({ step }: { step: Step }) {
   const { Vignette } = step;
   return (
     <div className="flex grow basis-0 flex-col gap-5 border-t border-border pt-6">
-      <span className="font-mono text-[13px] leading-4.5 tracking-[0.08em] text-fold">
+      <span className="font-mono text-[13px] leading-4.5 text-fold">
         {step.label}
       </span>
       <Vignette />

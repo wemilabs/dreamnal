@@ -45,7 +45,7 @@ export function RhythmStats({ timestamps }: { timestamps: string[] }) {
           key={tile.label}
           className="rounded-lg border border-border bg-card/60 p-4"
         >
-          <p className="font-mono text-xs uppercase tracking-caps text-muted-foreground">
+          <p className="font-mono text-xs text-muted-foreground">
             {tile.label}
           </p>
           <p className="mt-3 font-display text-section-title leading-none text-foreground">
