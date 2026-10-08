@@ -14,7 +14,7 @@ export function TopBar({ entryCrumb }: { entryCrumb?: ReactNode }) {
   const { setOpen } = useCommandMenu();
 
   return (
-    <header className="sticky top-0 z-20 flex h-13 shrink-0 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur-sm">
+    <header className="sticky top-0 z-20 flex h-13 shrink-0 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur-sm md:rounded-t-xl">
       <SidebarTrigger />
       <Separator
         orientation="vertical"

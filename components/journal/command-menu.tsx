@@ -84,11 +84,12 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
     <CommandMenuContext.Provider value={{ open, setOpen }}>
       {children}
       <CommandDialog
-        className="top-1/2 -translate-y-1/2 sm:top-1/3 sm:translate-y-0"
+        className="top-1/2 -translate-y-1/2 sm:top-1/3 sm:translate-y-0 md:top-[20svh] md:max-w-2xl md:rounded-2xl!"
         open={open}
         onOpenChange={setOpen}
       >
         <Command
+          className="md:**:data-[slot=command-group]:p-2 md:**:data-[slot=command-input-wrapper]:p-2 md:**:data-[slot=command-input-wrapper]:pb-0 md:**:data-[slot=command-input]:text-base md:**:data-[slot=command-item]:gap-3 md:**:data-[slot=command-item]:px-3 md:**:data-[slot=command-item]:py-2 md:**:data-[slot=input-group]:h-12! md:[&_[data-slot=input-group]_svg]:size-5"
           filter={(value, search, keywords) =>
             value.startsWith(DREAM_VALUE_PREFIX)
               ? scoreDream(search, keywords ?? [])
@@ -100,7 +101,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
             value={search}
             onValueChange={setSearch}
           />
-          <CommandList className="max-h-[min(18rem,45svh)] overscroll-contain">
+          <CommandList className="max-h-[min(18rem,45svh)] overscroll-contain md:max-h-[min(28rem,60svh)]">
             <CommandEmpty>
               {entries === null && search.trim() !== ""
                 ? ""
