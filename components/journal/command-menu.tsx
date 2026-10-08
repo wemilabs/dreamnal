@@ -10,6 +10,7 @@ import {
   type ReactNode,
   useContext,
   useEffect,
+  useEffectEvent,
   useState,
 } from "react";
 import { getSearchEntries } from "@/app/journal/actions";
@@ -48,41 +49,34 @@ export function useCommandMenu() {
 }
 
 export function CommandMenuProvider({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(false);
   const [search, setSearch] = useState("");
   const [entries, setEntries] = useState<SearchEntry[] | null>(null);
   const router = useRouter();
   const { startRecording, startTyping } = useComposer();
   const { resolvedTheme, setTheme } = useTheme();
 
+  const setOpen = (next: boolean) => {
+    setOpenState(next);
+    if (next) {
+      getSearchEntries().then(setEntries, () => {});
+    } else {
+      setSearch("");
+    }
+  };
+
+  const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      setOpen(!open);
+    }
+  });
+
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        setOpen((v) => !v);
-      }
-    };
+    const onKeyDown = (event: KeyboardEvent) => onShortcut(event);
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  useEffect(() => {
-    if (!open) {
-      setSearch("");
-      return;
-    }
-    let cancelled = false;
-    getSearchEntries()
-      .then((data) => {
-        if (!cancelled) {
-          setEntries(data);
-        }
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [open]);
 
   const close = () => setOpen(false);
 
