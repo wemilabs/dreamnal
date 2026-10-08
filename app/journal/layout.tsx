@@ -22,7 +22,7 @@ export default function JournalLayout({
             <JournalSidebar />
             <SidebarInset>
               <TopBar entryCrumb={crumb} />
-              <div className="mx-auto w-full max-w-180 flex-1 px-6 pt-10 pb-24 md:pb-10">
+              <div className="mx-auto w-full max-w-180 flex-1 px-6 pt-10 pb-24">
                 {children}
               </div>
             </SidebarInset>

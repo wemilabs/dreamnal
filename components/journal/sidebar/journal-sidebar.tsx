@@ -5,7 +5,6 @@ import {
   JournalNavMain,
 } from "@/components/journal/sidebar/journal-nav";
 import { NavUser } from "@/components/journal/sidebar/nav-user";
-import { SidebarRecordButton } from "@/components/journal/sidebar/sidebar-record-button";
 import {
   Sidebar,
   SidebarContent,
@@ -36,11 +35,6 @@ export function JournalSidebar() {
             d<span className="text-rec">.</span>
           </span>
         </Link>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarRecordButton />
-          </SidebarMenuItem>
-        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
