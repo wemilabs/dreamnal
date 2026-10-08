@@ -48,7 +48,7 @@ export async function SymbolsContent() {
         }
         return (
           <section key={kind} className="flex flex-col gap-1">
-            <h2 className="font-mono text-xs uppercase tracking-caps text-muted-foreground">
+            <h2 className="font-mono text-xs text-muted-foreground">
               {symbolsCopy.kinds[kind]}
             </h2>
             <ul className="flex flex-col">

@@ -25,7 +25,7 @@ export function LiveTranscriptCard() {
       </p>
       <div className="flex items-center justify-between border-t border-border pt-3.5">
         <span className="font-mono text-[13px] leading-4.5 text-muted-foreground">
-          Tue 6 Oct · 6:12 AM
+          Tue 6 Oct · 6:12 am
         </span>
         <span className="text-sm/tight font-semibold text-display-accent">
           Transcribing
