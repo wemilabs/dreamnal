@@ -15,7 +15,7 @@ export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-baseline gap-2 font-mono text-xs tracking-caps text-muted-foreground">
+        <div className="flex min-w-0 items-baseline gap-2 font-mono text-xs text-muted-foreground">
           <EntryDate iso={entry.createdAt.toISOString()} />
           {duration ? <span>· {duration}</span> : null}
         </div>

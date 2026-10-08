@@ -10,8 +10,7 @@ import { symbolsCopy } from "@/lib/symbols/copy";
 import { capitalizeLabel, LabelLine } from "./label-line";
 import { RhythmStats } from "./rhythm-stats";
 
-const sectionHeading =
-  "font-mono text-xs uppercase tracking-caps text-muted-foreground";
+const sectionHeading = "font-mono text-xs text-muted-foreground";
 const lineLink =
   "pressable block border-b border-border py-3 text-lead text-foreground";
 

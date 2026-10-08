@@ -11,7 +11,7 @@ export function formatEntryDate(date: Date | string): string {
   const parts = Object.fromEntries(
     entryDateFmt.formatToParts(new Date(date)).map((p) => [p.type, p.value]),
   );
-  return `${parts.weekday} ${parts.day} ${parts.month} · ${parts.hour}:${parts.minute} ${parts.dayPeriod}`.toUpperCase();
+  return `${parts.weekday} ${parts.day} ${parts.month} · ${parts.hour}:${parts.minute} ${parts.dayPeriod}`;
 }
 
 export function formatDuration(seconds: number): string {

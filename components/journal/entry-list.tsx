@@ -25,7 +25,7 @@ export async function EntryList() {
             >
               <EntryDate
                 iso={entry.createdAt.toISOString()}
-                className="font-mono text-xs tracking-caps text-muted-foreground"
+                className="font-mono text-xs text-muted-foreground"
               />
               {entry.title != null ? (
                 <ViewTransition
