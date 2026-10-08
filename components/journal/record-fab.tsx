@@ -21,18 +21,10 @@ export function RecordFab() {
         type="button"
         onClick={() => startRecording()}
         aria-label="Record a dream"
-        className="group pressable flex items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
+        className="pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
       >
         <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
           <Mic className="size-4.5" aria-hidden />
-        </span>
-        <span
-          aria-hidden
-          className="hidden grid-cols-[0fr] transition-[grid-template-columns] duration-300 ease-out group-hover:grid-cols-[1fr] group-focus-visible:grid-cols-[1fr] md:grid"
-        >
-          <span className="overflow-hidden whitespace-nowrap text-cta font-semibold">
-            <span className="block pr-4 pl-3">Record a dream</span>
-          </span>
         </span>
       </button>
     </div>
