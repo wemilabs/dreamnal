@@ -22,7 +22,7 @@ export function EntryDate({
     <time dateTime={iso} className={className}>
       {text ?? (
         <span className="opacity-0" aria-hidden="true">
-          MON 00 OCT · 00:00 AM
+          Mon 00 Oct · 00:00 am
         </span>
       )}
     </time>
