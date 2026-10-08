@@ -28,13 +28,14 @@ import {
   MAX_AUDIO_BYTES,
 } from "@/components/journal/recorder-mime";
 import { useRecorder } from "@/components/journal/use-recorder";
+import { dayKey } from "@/lib/calendar";
 
 export type ComposerOpenChangeDetails = { cancel: () => void };
 
 type ComposerContextValue = {
   state: ComposerState;
-  startRecording: () => void;
-  startTyping: () => void;
+  startRecording: (options?: { day?: string }) => void;
+  startTyping: (options?: { day?: string }) => void;
   cancelRecording: () => void;
   discard: () => void;
   finishRecording: () => void;
@@ -68,9 +69,9 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
 
   const hasHiddenDraft = !state.open && state.phase === "editing";
 
-  const beginRecording = async () => {
+  const beginRecording = async (day?: string) => {
     requestIdRef.current += 1;
-    dispatch({ type: "start" });
+    dispatch({ type: "start", day });
     const error = await recorder.start();
     if (error === "interrupted") {
       return;
@@ -91,22 +92,22 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   // beginRecording() runs synchronously up to its first await, which is
   // where recorder.start() creates the AudioContext, so it stays inside the
   // click's user-activation window.
-  const startRecording = () => {
+  const startRecording = (options?: { day?: string }) => {
     if (hasHiddenDraft) {
       dispatch({ type: "open" });
       return;
     }
     // iOS only fires haptics synchronously inside the tap handler.
     void trigger("nudge");
-    void beginRecording();
+    void beginRecording(options?.day);
   };
 
-  const startTyping = () => {
+  const startTyping = (options?: { day?: string }) => {
     if (hasHiddenDraft) {
       dispatch({ type: "open" });
       return;
     }
-    dispatch({ type: "type-instead" });
+    dispatch({ type: "type-instead", day: options?.day });
   };
 
   const finishRecording = () => {
@@ -194,6 +195,20 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   };
 
   const saveEntry = async (prev: EntryFormState, formData: FormData) => {
+    if (state.backdateDay && state.backdateDay !== dayKey(new Date())) {
+      const [year, month, day] = state.backdateDay.split("-").map(Number);
+      const now = new Date();
+      formData.set(
+        "createdAt",
+        new Date(
+          year,
+          month - 1,
+          day,
+          now.getHours(),
+          now.getMinutes(),
+        ).toISOString(),
+      );
+    }
     const result = await createEntry(prev, formData);
     if (result?.savedId) {
       onSaved(result.savedId);

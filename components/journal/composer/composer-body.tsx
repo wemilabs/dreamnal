@@ -55,7 +55,9 @@ export function ComposerBody() {
         source={state.source}
         audioDurationSeconds={state.duration}
         submitLabel="Save entry"
-        onRecordAgain={composer.startRecording}
+        onRecordAgain={() =>
+          composer.startRecording({ day: state.backdateDay ?? undefined })
+        }
         recordLabel={state.transcript ? "Record again" : "Record instead"}
         onDiscard={composer.discard}
       />

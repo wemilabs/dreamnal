@@ -178,12 +178,27 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
   opens a composer overlay (Drawer on mobile, Dialog on desktop) instead of
   navigating; recording → transcribing → editing → save
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
-- `/journal/{calendar,favorites,lucid,trash,settings}` — placeholder pages
+- `/journal/{favorites,lucid,trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
 
 Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
 `/journal/*` and bounces signed-in users off `/` and the auth pages.
+
+## Calendar
+
+- `/journal/calendar` maps `listEntries()` to `CalendarDream` ISO strings in
+  `components/journal/calendar/calendar-content.tsx`; `dream-calendar.tsx`
+  buckets dates in the browser's local timezone
+- The displayed month comes from the `?month=YYYY-MM` URL parameter. Month
+  changes use `history.replaceState` so browsing months does not add Back
+  entries
+- `lib/calendar.ts` contains local day/month keys and streak calculations. The
+  current streak ends today when there is an entry today, or yesterday when
+  there is not; the longest streak is counted across all recorded days
+- Backdated saves set the optional `createdAt` form field in the composer.
+  `createEntry` validates the ISO timestamp and rejects values before
+  2000-01-01 or more than five minutes in the future
 
 ## Symbols and patterns
 

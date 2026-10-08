@@ -107,6 +107,22 @@ export async function createEntry(
     };
   }
 
+  const createdAtValue = formData.get("createdAt");
+  let createdAt: Date | undefined;
+  if (createdAtValue !== null) {
+    const parsedCreatedAt = z.iso.datetime().safeParse(createdAtValue);
+    if (!parsedCreatedAt.success) {
+      return { error: "That date isn't valid." };
+    }
+    createdAt = new Date(parsedCreatedAt.data);
+    if (
+      createdAt.getTime() > Date.now() + 5 * 60 * 1000 ||
+      createdAt.getTime() < new Date("2000-01-01T00:00:00.000Z").getTime()
+    ) {
+      return { error: "That date isn't valid." };
+    }
+  }
+
   const id = crypto.randomUUID();
   const sealed = sealEntry({ userId: user.id, id, ...parsed.data });
   const [entry] = await db
@@ -116,6 +132,7 @@ export async function createEntry(
       ...sealed,
       id,
       userId: user.id,
+      ...(createdAt ? { createdAt } : {}),
     })
     .returning({ id: dreamEntries.id });
 
