@@ -27,7 +27,7 @@ export function JournalSidebar() {
         <Link
           href="/journal"
           aria-label="Dreamnal"
-          className="pressable flex items-center px-1 font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
+          className="pressable flex items-center px-1 text-2xl font-semibold leading-8 tracking-tight text-foreground"
         >
           <span className="truncate group-data-[collapsible=icon]:hidden">
             <Wordmark />

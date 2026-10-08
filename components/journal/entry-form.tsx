@@ -50,7 +50,7 @@ export function EntryForm({
       placeholder="Untitled dream"
       aria-label="Title"
       maxLength={120}
-      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 font-display text-editor-title tracking-[-0.02em] shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title"
+      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-editor-title font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title"
     />
   );
 

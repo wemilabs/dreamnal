@@ -40,7 +40,7 @@ export function NavUserClient({
         render={
           <SidebarMenuButton size="lg">
             <Avatar className="size-8 bg-petal">
-              <AvatarFallback className="bg-petal font-display text-xs font-semibold text-ink">
+              <AvatarFallback className="bg-petal text-xs font-semibold text-ink">
                 {initials}
               </AvatarFallback>
             </Avatar>

@@ -56,7 +56,7 @@ function Donut({
           ))}
           <Label
             position="center"
-            className="fill-foreground font-display text-section-title"
+            className="fill-foreground text-section-title font-semibold tabular-nums"
             value={center}
           />
         </Pie>

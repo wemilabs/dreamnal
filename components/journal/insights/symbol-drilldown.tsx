@@ -162,7 +162,7 @@ export function SymbolDrilldown({
       <Drawer open={open} onOpenChange={onOpenChange} showSwipeHandle>
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
-            <DrawerTitle className="font-display text-2xl tracking-[-0.02em]">
+            <DrawerTitle className="text-2xl font-semibold tracking-tight">
               {title}
             </DrawerTitle>
             <DrawerDescription>{kind}</DrawerDescription>
@@ -179,7 +179,7 @@ export function SymbolDrilldown({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-md">
         <SheetHeader>
-          <SheetTitle className="font-display text-2xl tracking-[-0.02em]">
+          <SheetTitle className="text-2xl font-semibold tracking-tight">
             {title}
           </SheetTitle>
           <SheetDescription>{kind}</SheetDescription>

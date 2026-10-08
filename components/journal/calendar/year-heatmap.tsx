@@ -58,7 +58,7 @@ export function YearHeatmap({
   return (
     <section className="flex flex-col gap-4 rounded-lg border border-border bg-card/60 p-4">
       <div className="flex items-baseline justify-between gap-4">
-        <h2 className="font-display text-subhead text-foreground">{year}</h2>
+        <h2 className="text-subhead font-semibold text-foreground">{year}</h2>
         <p className="text-control text-muted-foreground">
           {calendarCopy.nights(yearNights)}
         </p>

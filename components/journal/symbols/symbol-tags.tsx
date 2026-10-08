@@ -58,7 +58,7 @@ export function SymbolTags({
 
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-8">
-      <h2 className="font-display text-entry-title tracking-[-0.02em] text-foreground">
+      <h2 className="text-entry-title font-semibold tracking-tight text-foreground">
         {symbolsCopy.entryTags.heading}
       </h2>
 

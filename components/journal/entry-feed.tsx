@@ -121,7 +121,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
 
 function EntryCard({ entry }: { entry: FeedEntry }) {
   const title = (
-    <span className="font-display text-entry-title tracking-[-0.02em] text-foreground">
+    <span className="text-entry-title font-semibold tracking-tight text-foreground">
       {entry.title ?? titleFallback(entry.excerpt)}
     </span>
   );
