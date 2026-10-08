@@ -1,21 +1,14 @@
-import {
-  RecordDreamCta,
-  TypeInsteadButton,
-} from "@/components/journal/record-dream-cta";
+import { TypeInsteadButton } from "@/components/journal/record-dream-cta";
 
 export function EmptyState() {
   return (
-    <div className="flex flex-col items-start gap-6 pt-6">
+    <div className="flex flex-col items-start gap-6 pt-6 md:pt-0">
       <h2 className="text-section-title font-semibold tracking-tight text-foreground">
         Nothing written yet.
       </h2>
       <p className="text-lead text-muted-foreground">
-        Tonight’s dream won’t remember itself.
+        Whatever came to you fades fast. Keep it here.
       </p>
-      <div className="hidden flex-wrap items-center gap-6 md:flex">
-        <RecordDreamCta>Record a dream</RecordDreamCta>
-        <TypeInsteadButton />
-      </div>
       <p className="text-lead text-muted-foreground md:hidden">
         Tap the mic below to record it, or{" "}
         <TypeInsteadButton>type it instead</TypeInsteadButton>.

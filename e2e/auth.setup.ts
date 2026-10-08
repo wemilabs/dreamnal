@@ -43,7 +43,7 @@ setup("sign in and seed an entry", async ({ page }) => {
   await expect(entryLink.or(emptyHeading)).toBeVisible();
 
   if (await emptyHeading.isVisible()) {
-    await page.getByRole("button", { name: /type it instead/ }).click();
+    await page.getByRole("button", { name: "What do you remember?" }).click();
     const dialog = page.getByRole("dialog");
     await dialog.getByLabel("Title").fill(SEED_ENTRY_TITLE);
     await dialog.getByLabel("Dream").fill(SEED_ENTRY_BODY);
