@@ -12,6 +12,7 @@ export type ComposerState = {
   transcript: string;
   duration: number | null;
   source: "voice" | "text";
+  backdateDay: string | null;
   message: string | null;
   draftTitle: string;
   draftBody: string;
@@ -20,12 +21,12 @@ export type ComposerState = {
 export type ComposerAction =
   | { type: "open" }
   | { type: "close" }
-  | { type: "start" }
+  | { type: "start"; day?: string }
   | { type: "started" }
   | { type: "stop" }
   | { type: "transcribed"; text: string; duration: number }
   | { type: "failed"; message: string }
-  | { type: "type-instead" }
+  | { type: "type-instead"; day?: string }
   | { type: "draft"; title?: string; body?: string }
   | { type: "reset" };
 
@@ -35,6 +36,7 @@ export const initialComposerState: ComposerState = {
   transcript: "",
   duration: null,
   source: "text",
+  backdateDay: null,
   message: null,
   draftTitle: "",
   draftBody: "",
@@ -56,6 +58,7 @@ export function reduceComposer(
         phase: "starting",
         transcript: "",
         duration: null,
+        backdateDay: action.day ?? null,
         message: null,
         draftTitle: "",
         draftBody: "",
@@ -84,6 +87,7 @@ export function reduceComposer(
         transcript: "",
         duration: null,
         source: "text",
+        backdateDay: action.day ?? null,
         draftTitle: "",
         draftBody: "",
       };

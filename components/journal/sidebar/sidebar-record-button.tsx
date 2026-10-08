@@ -9,7 +9,7 @@ export function SidebarRecordButton() {
 
   return (
     <SidebarMenuButton
-      onClick={startRecording}
+      onClick={() => startRecording()}
       tooltip="Record a dream"
       className="bg-primary font-semibold text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground data-active:bg-primary data-active:text-primary-foreground"
     >

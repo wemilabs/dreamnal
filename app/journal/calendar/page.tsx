@@ -1,6 +1,8 @@
-import { CalendarDays } from "lucide-react";
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/journal/placeholder-page";
+import { Suspense, ViewTransition } from "react";
+import { CalendarContent } from "@/components/journal/calendar/calendar-content";
+import { CalendarSkeleton } from "@/components/journal/calendar/calendar-skeleton";
+import { PageFade } from "@/components/journal/page-fade";
 
 export const metadata: Metadata = {
   title: "Calendar",
@@ -8,10 +10,23 @@ export const metadata: Metadata = {
 
 export default function CalendarPage() {
   return (
-    <PlaceholderPage
-      title="Calendar"
-      description="Every night you recorded, laid out by month, with your streaks."
-      icon={CalendarDays}
-    />
+    <PageFade>
+      <h1 className="font-display text-page-title tracking-display text-foreground">
+        Calendar
+      </h1>
+      <div className="mt-8">
+        <Suspense
+          fallback={
+            <ViewTransition exit="reveal-out" default="none">
+              <CalendarSkeleton />
+            </ViewTransition>
+          }
+        >
+          <ViewTransition enter="reveal-in" default="none">
+            <CalendarContent />
+          </ViewTransition>
+        </Suspense>
+      </div>
+    </PageFade>
   );
 }

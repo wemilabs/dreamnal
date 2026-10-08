@@ -18,11 +18,24 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { dayKey, parseDayKey } from "@/lib/calendar";
+import { calendarCopy } from "@/lib/calendar-copy";
 
 export function ComposerOverlay() {
   const { state, onOpenChange } = useComposer();
   const isMobile = useIsMobile();
   const status = STATUS_TEXT[state.phase];
+  const backdate = state.backdateDay ? parseDayKey(state.backdateDay) : null;
+  const backdateLabel =
+    backdate && state.backdateDay !== dayKey(new Date())
+      ? calendarCopy.forDay(
+          new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+          }).format(backdate),
+        )
+      : null;
 
   if (isMobile) {
     return (
@@ -32,6 +45,11 @@ export function ComposerOverlay() {
             <DrawerTitle className="font-display text-2xl tracking-[-0.02em]">
               New dream
             </DrawerTitle>
+            {backdateLabel ? (
+              <p className="text-control text-muted-foreground">
+                {backdateLabel}
+              </p>
+            ) : null}
             <DrawerDescription className="sr-only" aria-live="polite">
               {status}
             </DrawerDescription>
@@ -56,6 +74,11 @@ export function ComposerOverlay() {
           <DialogTitle className="font-display text-2xl tracking-[-0.02em]">
             New dream
           </DialogTitle>
+          {backdateLabel ? (
+            <p className="text-control text-muted-foreground">
+              {backdateLabel}
+            </p>
+          ) : null}
           <DialogDescription className="sr-only" aria-live="polite">
             {status}
           </DialogDescription>

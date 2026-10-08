@@ -10,7 +10,11 @@ export function RecordDreamCta({ children }: { children?: ReactNode }) {
   const classes = recordCtaClasses("ink");
 
   return (
-    <button type="button" onClick={startRecording} className={classes.pill}>
+    <button
+      type="button"
+      onClick={() => startRecording()}
+      className={classes.pill}
+    >
       <span className={classes.disc}>
         <Mic className="size-4.5" aria-hidden />
       </span>
@@ -25,7 +29,7 @@ export function TypeInsteadButton({ children }: { children?: ReactNode }) {
   return (
     <button
       type="button"
-      onClick={startTyping}
+      onClick={() => startTyping()}
       className="pressable text-cta font-medium text-foreground underline decoration-foreground/30 decoration-1 underline-offset-[5px]"
     >
       {children ?? "or type it instead"}
