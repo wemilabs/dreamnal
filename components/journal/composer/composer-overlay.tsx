@@ -42,7 +42,7 @@ export function ComposerOverlay() {
       <Drawer open={state.open} onOpenChange={onOpenChange} showSwipeHandle>
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
-            <DrawerTitle className="font-display text-2xl tracking-[-0.02em]">
+            <DrawerTitle className="text-2xl font-semibold tracking-tight">
               New dream
             </DrawerTitle>
             {backdateLabel ? (
@@ -71,7 +71,7 @@ export function ComposerOverlay() {
         }
       >
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl tracking-[-0.02em]">
+          <DialogTitle className="text-2xl font-semibold tracking-tight">
             New dream
           </DialogTitle>
           {backdateLabel ? (

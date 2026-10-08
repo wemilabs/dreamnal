@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function SymbolsPage() {
   return (
     <PageFade>
-      <h1 className="font-display text-page-title tracking-display text-foreground">
+      <h1 className="text-page-title font-semibold tracking-tight text-foreground">
         {symbolsCopy.symbolsTitle}
       </h1>
       <div className="mt-8">

@@ -92,7 +92,7 @@ export function KpiRow({
           >
             <p className="text-sm text-muted-foreground">{tile.label}</p>
             <p className="flex items-baseline gap-1 whitespace-nowrap">
-              <span className="font-display text-section-title leading-none text-foreground">
+              <span className="text-section-title leading-none font-semibold tabular-nums text-foreground">
                 {tile.value}
               </span>
               {tile.unit ? (

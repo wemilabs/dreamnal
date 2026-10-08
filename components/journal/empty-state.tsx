@@ -6,7 +6,7 @@ import {
 export function EmptyState() {
   return (
     <div className="flex flex-col items-start gap-6 pt-6">
-      <h2 className="font-display text-section-title tracking-display text-foreground">
+      <h2 className="text-section-title font-semibold tracking-tight text-foreground">
         Nothing written yet.
       </h2>
       <p className="text-lead text-muted-foreground">

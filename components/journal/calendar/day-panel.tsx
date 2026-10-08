@@ -83,7 +83,7 @@ export function DayPanel({
     <section className="flex min-h-72 flex-col rounded-lg border border-border bg-card/60 p-4">
       {selectedDate ? (
         <>
-          <h2 className="font-display text-subhead text-foreground">
+          <h2 className="text-subhead font-semibold text-foreground">
             {calendarCopy.dayTitle(selectedDate)}
           </h2>
           {selectedDreams.length > 0 ? (
@@ -131,7 +131,7 @@ export function DayPanel({
         </>
       ) : (
         <>
-          <h2 className="font-display text-subhead text-foreground">
+          <h2 className="text-subhead font-semibold text-foreground">
             {calendarCopy.monthTitle(displayedMonth)}
           </h2>
           {monthGroups.length > 0 ? (
