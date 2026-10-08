@@ -83,6 +83,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
   }
 
   const today = new Date(now);
+  const latestId = entries[0]?.id;
 
   return (
     <div className="flex flex-col gap-10">
@@ -90,7 +91,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
         <section key={key} aria-labelledby={`day-${key}`}>
           <h2
             id={`day-${key}`}
-            className="mb-3 flex items-baseline justify-between gap-4 px-1 text-control font-medium text-muted-foreground"
+            className="mb-3 flex items-baseline justify-between gap-4 text-control font-medium text-muted-foreground"
           >
             <span>{dayLabel(group.date, today)}</span>
             {group.entries.length > 1 && (
@@ -99,15 +100,19 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
               </span>
             )}
           </h2>
-          <ul className="flex flex-col gap-3">
+          <ol className="relative ml-1.5 flex flex-col gap-3 border-l border-border">
             {group.entries.map((entry) => (
               <ViewTransition key={entry.id} enter="reveal-in" default="none">
-                <li>
+                <li className="group relative pl-5 sm:pl-6">
+                  <span
+                    aria-hidden
+                    className={`absolute top-5.75 -left-[5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
+                  />
                   <EntryCard entry={entry} />
                 </li>
               </ViewTransition>
             ))}
-          </ul>
+          </ol>
         </section>
       ))}
     </div>
