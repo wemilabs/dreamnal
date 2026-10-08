@@ -15,7 +15,7 @@ export function ChartCard({
   return (
     <section
       className={cn(
-        "flex min-w-0 flex-col gap-4 rounded-lg border border-border bg-card/60 p-4 md:p-5",
+        "@container flex min-w-0 flex-col gap-4 rounded-lg border border-border bg-card/60 p-4 md:p-5",
         className,
       )}
     >
