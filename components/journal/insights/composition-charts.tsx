@@ -74,7 +74,7 @@ function LegendList({
 }) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   return (
-    <ul className="flex flex-1 flex-col gap-2">
+    <ul className="flex w-full min-w-0 flex-col gap-2.5 @sm:flex-1">
       {data.map((d) => (
         <li key={d.key} className="flex items-center gap-2 text-control">
           <span
@@ -105,8 +105,8 @@ export function SourceChart({
     { key: "text", value: sources.text },
   ];
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-5">
+    <div className="flex flex-1 flex-col gap-5">
+      <div className="flex flex-col items-center gap-5 @sm:flex-row">
         <Donut
           config={sourceConfig}
           data={data}
@@ -114,7 +114,7 @@ export function SourceChart({
         />
         <LegendList config={sourceConfig} data={data} />
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p className="mt-auto border-t border-border pt-4 text-sm text-muted-foreground">
         {insightsCopy.sources.avgRecording}:{" "}
         <span className="font-mono text-foreground">
           {sources.avgRecordingSeconds === null
@@ -133,7 +133,7 @@ export function SymbolMixChart({ kinds }: { kinds: InsightsReport["kinds"] }) {
     return <EmptyChart>{insightsCopy.mix.empty}</EmptyChart>;
   }
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex flex-col items-center gap-5 @sm:flex-row">
       <Donut config={kindConfig} data={data} center={String(total)} />
       <LegendList config={kindConfig} data={data} />
     </div>
