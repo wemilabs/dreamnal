@@ -28,7 +28,7 @@ import { calendarCopy } from "@/lib/calendar-copy";
 const subscribeNoop = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => null;
-const monthName = new Intl.DateTimeFormat("en-US", { month: "long" });
+const monthName = new Intl.DateTimeFormat("en-US", { month: "short" });
 const DreamsByDayContext = createContext<Map<string, CalendarDream[]> | null>(
   null,
 );
@@ -144,26 +144,36 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
         {[
           {
             label: calendarCopy.currentStreak,
-            value: calendarCopy.days(current),
+            value: current,
+            unit: calendarCopy.days(current),
           },
           {
             label: calendarCopy.longestStreak,
-            value: calendarCopy.days(longest),
+            value: longest,
+            unit: calendarCopy.days(longest),
           },
           {
             label: calendarCopy.nightsIn(monthName.format(displayedMonth)),
             value: monthNights,
+            unit: null,
           },
         ].map((tile) => (
           <div
             key={tile.label}
-            className="rounded-lg border border-border bg-card/60 p-4"
+            className="rounded-lg border border-border bg-card/60 p-3 md:p-4"
           >
             <p className="font-mono text-xs uppercase tracking-caps text-muted-foreground">
               {tile.label}
             </p>
-            <p className="mt-3 font-display text-section-title leading-none text-foreground">
-              {tile.value}
+            <p className="mt-3 flex items-baseline gap-1 whitespace-nowrap">
+              <span className="font-display text-section-title leading-none text-foreground">
+                {tile.value}
+              </span>
+              {tile.unit ? (
+                <span className="text-control text-muted-foreground">
+                  {tile.unit}
+                </span>
+              ) : null}
             </p>
           </div>
         ))}
@@ -176,7 +186,7 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
         onSelectDay={selectHeatmapDay}
       />
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="flex flex-col gap-6">
         <DreamsByDayContext.Provider value={dreamsByDay}>
           <section className="rounded-lg border border-border bg-card/60 p-4">
             <div className="mb-3 flex justify-end">
@@ -200,7 +210,7 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
               endMonth={currentMonth}
               disabled={{ after: today }}
               showOutsideDays
-              className="w-full [--cell-size:--spacing(11)] md:[--cell-size:--spacing(14)]"
+              className="w-full bg-transparent p-0 [--cell-size:--spacing(11)] md:[--cell-size:--spacing(12)]"
               classNames={{
                 months: "relative flex w-full flex-col gap-4 md:flex-row",
                 month: "flex w-full flex-col gap-4",

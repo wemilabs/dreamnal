@@ -63,53 +63,99 @@ export function YearHeatmap({
           {calendarCopy.nights(yearNights)}
         </p>
       </div>
-      <div className="overflow-x-auto pb-1">
-        <div className="w-max">
+      <div
+        className="overflow-x-auto pb-1"
+        ref={(node) => {
+          if (!node) {
+            return;
+          }
+          if (year !== today.getFullYear()) {
+            node.scrollLeft = 0;
+            delete node.dataset.scrolledYear;
+            return;
+          }
+          if (node.dataset.scrolledYear === String(year)) {
+            return;
+          }
+          const todayCell = node.querySelector<HTMLElement>(
+            `[data-heatmap-day="${dayKey(today)}"]`,
+          );
+          if (!todayCell) {
+            return;
+          }
+          const containerBounds = node.getBoundingClientRect();
+          const cellBounds = todayCell.getBoundingClientRect();
+          const centeredScroll =
+            node.scrollLeft +
+            cellBounds.left -
+            containerBounds.left -
+            (node.clientWidth - cellBounds.width) / 2;
+          node.scrollLeft = Math.max(
+            0,
+            Math.min(centeredScroll, node.scrollWidth - node.clientWidth),
+          );
+          node.dataset.scrolledYear = String(year);
+        }}
+      >
+        <div className="flex w-max gap-2">
           <div
-            className="mb-2 grid h-4 gap-x-[3px] font-mono text-xs text-muted-foreground"
-            style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
+            className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-[3px] font-mono text-xs text-muted-foreground"
             aria-hidden="true"
           >
-            {monthStarts.map(({ column, label }) => (
-              <span key={label} style={{ gridColumn: column + 1 }}>
+            {calendarCopy.heatmapWeekdays.map(({ key, label }) => (
+              <span key={key} className="flex h-3 items-center leading-3">
                 {label}
               </span>
             ))}
           </div>
-          <div
-            className="grid gap-x-[3px]"
-            style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
-          >
-            {weeks.map((week) => (
-              <div key={week[0].key} className="grid grid-rows-7 gap-y-[3px]">
-                {week.map(({ key, inYear }) => {
-                  if (!inYear) {
-                    return (
-                      <span key={key} className="size-3" aria-hidden="true" />
-                    );
-                  }
-                  const date = parseDayKey(key);
-                  const count = counts.get(key) ?? 0;
-                  const future = date > today;
+          <div>
+            <div
+              className="mb-2 grid h-4 gap-x-[3px] font-mono text-xs text-muted-foreground"
+              style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
+              aria-hidden="true"
+            >
+              {monthStarts.map(({ column, label }) => (
+                <span key={label} style={{ gridColumn: column + 1 }}>
+                  {label}
+                </span>
+              ))}
+            </div>
+            <div
+              className="grid gap-x-[3px]"
+              style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
+            >
+              {weeks.map((week) => (
+                <div key={week[0].key} className="grid grid-rows-7 gap-y-[3px]">
+                  {week.map(({ key, inYear }) => {
+                    if (!inYear) {
+                      return (
+                        <span key={key} className="size-3" aria-hidden="true" />
+                      );
+                    }
+                    const date = parseDayKey(key);
+                    const count = counts.get(key) ?? 0;
+                    const future = date > today;
 
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      disabled={future}
-                      onClick={() => onSelectDay(date)}
-                      className={`size-3 rounded-[2px] ${levelClasses[intensity(count)]} ${
-                        future
-                          ? "cursor-default opacity-30"
-                          : "cursor-pointer hover:ring-1 hover:ring-ring focus-visible:outline-2 focus-visible:outline-ring"
-                      }`}
-                      aria-label={calendarCopy.dayWithCount(date, count)}
-                      title={calendarCopy.dayWithCount(date, count)}
-                    />
-                  );
-                })}
-              </div>
-            ))}
+                    return (
+                      <button
+                        key={key}
+                        data-heatmap-day={key}
+                        type="button"
+                        disabled={future}
+                        onClick={() => onSelectDay(date)}
+                        className={`size-3 rounded-[2px] ${levelClasses[intensity(count)]} ${
+                          future
+                            ? "cursor-default opacity-30"
+                            : "cursor-pointer hover:ring-1 hover:ring-ring focus-visible:outline-2 focus-visible:outline-ring"
+                        }`}
+                        aria-label={calendarCopy.dayWithCount(date, count)}
+                        title={calendarCopy.dayWithCount(date, count)}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

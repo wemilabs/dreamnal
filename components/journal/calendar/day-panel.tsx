@@ -17,44 +17,37 @@ function DreamRow({ dream }: { dream: CalendarDream }) {
     <li className="border-b border-border py-3 last:border-0">
       <IntentPrefetchLink
         href={`/journal/${dream.id}` as Route}
-        className="pressable flex items-start gap-2.5"
+        className="pressable flex w-full flex-col items-start gap-1.5"
       >
-        <span className="mt-0.5 flex shrink-0 items-center gap-1.5 text-muted-foreground">
+        <span className="block w-full text-control text-foreground">
+          {dream.title}
+        </span>
+        <span className="flex items-center font-mono text-xs text-muted-foreground">
           {dream.source === "voice" ? (
             <Mic className="size-3.5" aria-hidden />
           ) : (
             <PenLine className="size-3.5" aria-hidden />
           )}
-          <time
-            dateTime={dream.createdAt}
-            className="font-mono text-xs tabular-nums"
-          >
+          <time dateTime={dream.createdAt} className="ml-1.5 tabular-nums">
             {calendarCopy.time(createdAt)}
           </time>
           {dream.source === "voice" && dream.audioDurationSeconds != null ? (
-            <span className="font-mono text-xs">
-              {formatDuration(dream.audioDurationSeconds)}
-            </span>
+            <span> · {formatDuration(dream.audioDurationSeconds)}</span>
           ) : null}
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-control text-foreground">
-            {dream.title}
+        {dream.symbols.length > 0 ? (
+          <span className="flex w-full flex-wrap gap-1.5">
+            {dream.symbols.map((symbol) => (
+              <Badge
+                key={symbol}
+                variant="outline"
+                className="h-auto px-1.5 py-0.5 text-xs"
+              >
+                {symbol}
+              </Badge>
+            ))}
           </span>
-          {dream.symbols.length > 0 ? (
-            <span className="mt-2 flex flex-wrap gap-1.5">
-              {dream.symbols.map((symbol) => (
-                <Badge
-                  key={symbol}
-                  variant="outline"
-                  className="h-auto px-1.5 py-0.5 text-xs"
-                >
-                  {symbol}
-                </Badge>
-              ))}
-            </span>
-          ) : null}
-        </span>
+        ) : null}
       </IntentPrefetchLink>
     </li>
   );

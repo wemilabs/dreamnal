@@ -3,8 +3,16 @@ export const calendarCopy = {
   currentStreak: "Current streak",
   longestStreak: "Longest streak",
   nightsIn: (month: string) => `Nights in ${month}`,
-  days: (count: number) =>
-    count === 0 ? "0" : `${count} ${count === 1 ? "day" : "days"}`,
+  days: (count: number) => (count === 1 ? "day" : "days"),
+  heatmapWeekdays: [
+    { key: "sun", label: "" },
+    { key: "mon", label: "Mon" },
+    { key: "tue", label: "" },
+    { key: "wed", label: "Wed" },
+    { key: "thu", label: "" },
+    { key: "fri", label: "Fri" },
+    { key: "sat", label: "" },
+  ],
   dreams: (count: number) => `${count} ${count === 1 ? "dream" : "dreams"}`,
   nights: (count: number) => `${count} ${count === 1 ? "night" : "nights"}`,
   less: "Less",
