@@ -50,7 +50,7 @@ export function EntryForm({
       placeholder="Untitled dream"
       aria-label="Title"
       maxLength={120}
-      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 font-display text-[28px] tracking-[-0.02em] shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-[28px]"
+      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 font-display text-editor-title tracking-[-0.02em] shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title"
     />
   );
 
@@ -97,7 +97,7 @@ export function EntryForm({
           required
           aria-label="Dream"
           placeholder="Start with the last thing you remember…"
-          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-lg leading-body text-foreground shadow-none md:text-lg"
+          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-lead text-foreground shadow-none"
         />
         <div className="flex items-center justify-between">
           <span className="font-mono text-xs text-muted-foreground">
@@ -121,7 +121,7 @@ export function EntryForm({
         <button
           type="submit"
           disabled={pending}
-          className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-[15px] font-semibold text-primary-foreground disabled:opacity-60"
+          className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground disabled:opacity-60"
         >
           {pending ? pendingLabel : submitLabel}
         </button>
@@ -129,7 +129,7 @@ export function EntryForm({
           <button
             type="button"
             onClick={onRecordAgain}
-            className="pressable text-[15px] font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
+            className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
           >
             {recordLabel}
           </button>
@@ -138,7 +138,7 @@ export function EntryForm({
           <button
             type="button"
             onClick={onDiscard}
-            className="pressable text-[15px] font-medium text-rec underline decoration-rec/30 underline-offset-[5px]"
+            className="pressable text-control font-medium text-rec underline decoration-rec/30 underline-offset-[5px]"
           >
             Discard
           </button>

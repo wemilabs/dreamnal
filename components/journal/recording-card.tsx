@@ -91,14 +91,14 @@ export function RecordingCard({
         <button
           type="button"
           onClick={onCancel}
-          className="pressable text-[15px] font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
+          className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
         >
           Cancel
         </button>
         <button
           type="button"
           onClick={onDone}
-          className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-[15px] font-semibold text-primary-foreground"
+          className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground"
         >
           Done
         </button>

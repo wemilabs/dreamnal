@@ -37,6 +37,10 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   preset, neutral base color, CSS variables; `cn` from the `cn` package
 - Biome 2.4.2 for lint + format (no ESLint); `drizzle/` is generated and ignored
 - `next-themes` for light/dark (class attribute, system default)
+- Type scale: use the named `--text-*` tokens in `app/globals.css` (e.g.
+  `text-page-title`, `text-lead`, `text-control`), not arbitrary `text-[Npx]`.
+  Register any new token in the `cn` config in `lib/utils.ts` so class merging
+  treats it as a font size
 - Fonts via `next/font/google`: Bodoni Moda (`--font-bodoni` → `font-display`),
   Hanken Grotesk (`--font-hanken` → `font-sans`), Geist Mono
   (`--font-geist-mono` → `font-mono`)
@@ -237,7 +241,7 @@ Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 

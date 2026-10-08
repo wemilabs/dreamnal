@@ -48,7 +48,7 @@ export function RhythmStats({ timestamps }: { timestamps: string[] }) {
           <p className="font-mono text-xs uppercase tracking-caps text-muted-foreground">
             {tile.label}
           </p>
-          <p className="mt-3 font-display text-[32px] leading-none text-foreground">
+          <p className="mt-3 font-display text-section-title leading-none text-foreground">
             {tile.value === undefined ? (
               <span className="opacity-0" aria-hidden="true">
                 0

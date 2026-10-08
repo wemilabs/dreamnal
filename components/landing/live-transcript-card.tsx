@@ -19,7 +19,7 @@ export function LiveTranscriptCard() {
         </span>
       </div>
       <Waveform />
-      <p className="font-display text-[21px] leading-7.75 tracking-[-0.01em] text-foreground">
+      <p className="font-display text-subhead tracking-[-0.01em] text-foreground">
         I was back at my grandmother’s house, except every door opened onto the
         sea, and the hallway kept getting longer the faster I walked…
       </p>

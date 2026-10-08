@@ -4,10 +4,10 @@ import { SignInForm } from "@/components/auth/sign-in-form";
 export default function SignInPage() {
   return (
     <>
-      <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
+      <h1 className="font-display text-page-title tracking-display text-foreground">
         Welcome back.
       </h1>
-      <p className="mt-3 text-lg leading-body text-muted-foreground">
+      <p className="mt-3 text-lead text-muted-foreground">
         Pick up right where the night left off.
       </p>
       <div className="mt-8 rounded-lg border border-(--glass-border) bg-(--glass-bg) p-6 shadow-(--glass-shadow) backdrop-blur-xl">

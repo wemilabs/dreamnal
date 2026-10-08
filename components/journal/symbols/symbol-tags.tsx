@@ -58,12 +58,12 @@ export function SymbolTags({
 
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-8">
-      <h2 className="font-display text-[26px] leading-snug tracking-[-0.02em] text-foreground">
+      <h2 className="font-display text-entry-title tracking-[-0.02em] text-foreground">
         {symbolsCopy.entryTags.heading}
       </h2>
 
       {optimisticItems.length === 0 ? (
-        <p className="text-[15px] text-muted-foreground">
+        <p className="text-control text-muted-foreground">
           {symbolsCopy.entryTags.none}
         </p>
       ) : (

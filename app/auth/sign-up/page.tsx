@@ -4,10 +4,10 @@ import { SignUpForm } from "@/components/auth/sign-up-form";
 export default function SignUpPage() {
   return (
     <>
-      <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
+      <h1 className="font-display text-page-title tracking-display text-foreground">
         Start your journal.
       </h1>
-      <p className="mt-3 text-lg leading-body text-muted-foreground">
+      <p className="mt-3 text-lead text-muted-foreground">
         Thirty seconds now, years of dreams later.
       </p>
       <div className="mt-8 rounded-lg border border-(--glass-border) bg-(--glass-bg) p-6 shadow-(--glass-shadow) backdrop-blur-xl">

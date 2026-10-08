@@ -16,9 +16,7 @@ export async function SymbolsContent() {
   const entries = await listEntries();
   if (entries.length < MIN_DREAMS_FOR_PATTERNS) {
     return (
-      <p className="text-lg leading-body text-muted-foreground">
-        {symbolsCopy.empty}
-      </p>
+      <p className="text-lead text-muted-foreground">{symbolsCopy.empty}</p>
     );
   }
 
@@ -33,7 +31,7 @@ export async function SymbolsContent() {
   );
   if (recurring.length === 0) {
     return (
-      <p className="text-lg leading-body text-muted-foreground">
+      <p className="text-lead text-muted-foreground">
         {symbolsCopy.noRecurring}
       </p>
     );
@@ -57,7 +55,7 @@ export async function SymbolsContent() {
               {group.map((stat) => (
                 <li key={`${stat.kind}\u0000${stat.label}`}>
                   <details className="border-b border-border">
-                    <summary className="pressable cursor-pointer list-none py-3 text-lg leading-body text-foreground [&::-webkit-details-marker]:hidden">
+                    <summary className="pressable cursor-pointer list-none py-3 text-lead text-foreground [&::-webkit-details-marker]:hidden">
                       <LabelLine stat={stat} />
                     </summary>
                     <ul className="flex flex-col gap-1 pb-4 pl-1">
@@ -70,7 +68,7 @@ export async function SymbolsContent() {
                           <li key={id}>
                             <IntentPrefetchLink
                               href={`/journal/${id}` as Route}
-                              className="pressable flex items-baseline justify-between gap-4 py-1.5 text-[15px]"
+                              className="pressable flex items-baseline justify-between gap-4 py-1.5 text-control"
                             >
                               <span className="text-foreground">
                                 {entry.title ??

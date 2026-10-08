@@ -7,7 +7,7 @@ export function RetryButton() {
     <Button
       size="lg"
       onClick={() => window.location.reload()}
-      className="pressable rounded-full px-6 text-[15px] font-semibold"
+      className="pressable rounded-full px-6 text-control font-semibold"
     >
       Try again
     </Button>

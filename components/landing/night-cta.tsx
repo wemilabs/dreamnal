@@ -20,7 +20,7 @@ export function NightCta() {
           by the bed.
         </span>
       </h2>
-      <p className="flex w-115 max-w-full flex-wrap justify-center text-center text-[18px] leading-body text-night-muted">
+      <p className="flex w-115 max-w-full flex-wrap justify-center text-center text-lead text-night-muted">
         Night mode keeps the screen dim, so checking it at 3 AM won’t wake you
         up all the way.
       </p>
