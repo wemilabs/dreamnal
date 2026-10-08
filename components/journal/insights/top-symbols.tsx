@@ -69,57 +69,61 @@ export function TopSymbols({
   onSelect: (symbol: SymbolItem) => void;
 }) {
   const { topSymbols, rising, fading, range } = report;
-  if (topSymbols.length === 0) {
+  if (topSymbols.length === 0 && rising.length === 0 && fading.length === 0) {
     return <EmptyChart>{insightsCopy.top.empty}</EmptyChart>;
   }
-  const max = topSymbols[0].count;
+  const max = topSymbols[0]?.count ?? 0;
 
   return (
     <div className="flex flex-col gap-6">
-      <ul className="flex flex-col gap-1">
-        {topSymbols.map((stat) => (
-          <li key={`${stat.kind}\u0000${stat.label}`}>
-            <button
-              type="button"
-              onClick={() => onSelect(stat)}
-              className="pressable group flex w-full items-center gap-3 rounded-md py-1.5 text-left"
-            >
-              <span className="w-28 shrink-0 truncate text-control text-foreground sm:w-40">
-                {capitalizeLabel(stat.label)}
-              </span>
-              <span className="relative h-5 flex-1 overflow-hidden rounded-sm bg-muted/50">
-                <span
-                  className="absolute inset-y-0 left-0 rounded-sm opacity-80 transition-opacity group-hover:opacity-100"
-                  style={{
-                    width: `${Math.max(4, (stat.count / max) * 100)}%`,
-                    background: KIND_COLOR[stat.kind],
-                  }}
-                />
-              </span>
-              <span className="w-8 shrink-0 text-right font-mono text-sm text-muted-foreground tabular-nums">
-                {stat.count}
-              </span>
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className="flex flex-wrap gap-x-4 gap-y-1">
-        {(Object.keys(KIND_COLOR) as (keyof typeof KIND_COLOR)[]).map(
-          (kind) => (
-            <span
-              key={kind}
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
-            >
+      {topSymbols.length > 0 ? (
+        <ul className="flex flex-col gap-1">
+          {topSymbols.map((stat) => (
+            <li key={`${stat.kind}\u0000${stat.label}`}>
+              <button
+                type="button"
+                onClick={() => onSelect(stat)}
+                className="pressable group flex w-full items-center gap-3 rounded-md py-1.5 text-left"
+              >
+                <span className="w-28 shrink-0 truncate text-control text-foreground sm:w-40">
+                  {capitalizeLabel(stat.label)}
+                </span>
+                <span className="relative h-5 flex-1 overflow-hidden rounded-sm bg-muted/50">
+                  <span
+                    className="absolute inset-y-0 left-0 rounded-sm opacity-80 transition-opacity group-hover:opacity-100"
+                    style={{
+                      width: `${Math.max(4, (stat.count / max) * 100)}%`,
+                      background: KIND_COLOR[stat.kind],
+                    }}
+                  />
+                </span>
+                <span className="w-8 shrink-0 text-right font-mono text-sm text-muted-foreground tabular-nums">
+                  {stat.count}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {topSymbols.length > 0 ? (
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
+          {(Object.keys(KIND_COLOR) as (keyof typeof KIND_COLOR)[]).map(
+            (kind) => (
               <span
-                className="size-2 rounded-sm"
-                style={{ background: KIND_COLOR[kind] }}
-                aria-hidden="true"
-              />
-              {symbolsCopy.kinds[kind]}
-            </span>
-          ),
-        )}
-      </div>
+                key={kind}
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
+              >
+                <span
+                  className="size-2 rounded-sm"
+                  style={{ background: KIND_COLOR[kind] }}
+                  aria-hidden="true"
+                />
+                {symbolsCopy.kinds[kind]}
+              </span>
+            ),
+          )}
+        </div>
+      ) : null}
       {range.previous ? (
         <div className="grid gap-6 sm:grid-cols-2">
           <ChangeList

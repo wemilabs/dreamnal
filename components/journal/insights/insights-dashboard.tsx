@@ -75,9 +75,19 @@ export function InsightsDashboard({ dreams }: { dreams: InsightDream[] }) {
       <KpiRow report={report} period={period} />
 
       {report.total === 0 ? (
-        <p className="rounded-lg border border-border bg-card/60 p-6 text-center text-lead text-muted-foreground">
-          {insightsCopy.emptyPeriod}
-        </p>
+        <>
+          <p className="rounded-lg border border-border bg-card/60 p-6 text-center text-lead text-muted-foreground">
+            {insightsCopy.emptyPeriod}
+          </p>
+          {report.fading.length > 0 ? (
+            <ChartCard
+              title={insightsCopy.top.title}
+              hint={insightsCopy.tapHint}
+            >
+              <TopSymbols report={report} onSelect={openSymbol} />
+            </ChartCard>
+          ) : null}
+        </>
       ) : (
         <>
           <ChartCard title={insightsCopy.timeline.title}>

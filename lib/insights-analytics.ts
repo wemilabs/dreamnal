@@ -93,6 +93,13 @@ function stepMonth(date: Date, amount: number): Date {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1);
 }
 
+function monthsBefore(today: Date, n: number): Date {
+  const y = today.getFullYear();
+  const m = today.getMonth() - n;
+  const last = new Date(y, m + 1, 0).getDate();
+  return new Date(y, m, Math.min(today.getDate(), last));
+}
+
 function daysBetween(start: Date, end: Date): number {
   let days = 0;
   for (let d = start; d < end; d = stepDay(d, 1)) {
@@ -129,39 +136,26 @@ export function periodRange(
       bucket = "day";
       break;
     case "3m":
-      start = new Date(
-        today.getFullYear(),
-        today.getMonth() - 3,
-        today.getDate() + 1,
-      );
+      start = stepDay(monthsBefore(today, 3), 1);
       previous = {
-        start: new Date(
-          start.getFullYear(),
-          start.getMonth() - 3,
-          start.getDate(),
-        ),
+        start: stepDay(start, -daysBetween(start, end)),
         end: start,
       };
       bucket = "week";
       break;
     case "12m":
-      start = new Date(
-        today.getFullYear() - 1,
-        today.getMonth(),
-        today.getDate() + 1,
-      );
+      start = stepDay(monthsBefore(today, 12), 1);
       previous = {
-        start: new Date(
-          start.getFullYear() - 1,
-          start.getMonth(),
-          start.getDate(),
-        ),
+        start: stepDay(start, -daysBetween(start, end)),
         end: start,
       };
       bucket = "month";
       break;
     case "all": {
-      start = earliest === null ? today : localMidnight(earliest);
+      start =
+        earliest === null || localMidnight(earliest) > today
+          ? today
+          : localMidnight(earliest);
       previous = null;
       const days = daysBetween(start, end);
       bucket = days <= 31 ? "day" : days <= 180 ? "week" : "month";
