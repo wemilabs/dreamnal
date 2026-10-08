@@ -4,9 +4,9 @@ import type { RefObject } from "react";
 import { useEffect, useEffectEvent, useRef } from "react";
 
 const BAR_COUNT = 48;
-// Eight minutes at 48 kbps ≈ 2.9 MB — keeps the blob under the platform's
+// Nine minutes at 48 kbps ≈ 3.2 MB — keeps the blob under the platform's
 // 4.5 MB Server Action request cap (Vercel Functions limit).
-const MAX_SECONDS = 480;
+const MAX_SECONDS = 540;
 
 export function RecordingCard({
   analyserRef,
@@ -45,8 +45,8 @@ export function RecordingCard({
         timer.textContent = `${Math.floor(elapsed / 60)}:${String(
           Math.floor(elapsed % 60),
         ).padStart(2, "0")}`;
-        // xAI caps request size and nobody records a dream longer than ten
-        // minutes — stop cleanly rather than erroring on upload.
+        // Auto-submit at the cap instead of letting the upload fail the size
+        // check.
         if (elapsed >= MAX_SECONDS) {
           onDoneEvent();
           return;

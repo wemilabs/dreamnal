@@ -99,7 +99,7 @@ export function YearHeatmap({
       >
         <div className="flex w-max gap-2">
           <div
-            className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-[3px] tabular-nums text-xs text-muted-foreground"
+            className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-0.75 tabular-nums text-xs text-muted-foreground"
             aria-hidden="true"
           >
             {calendarCopy.heatmapWeekdays.map(({ key, label }) => (
@@ -110,7 +110,7 @@ export function YearHeatmap({
           </div>
           <div>
             <div
-              className="mb-2 grid h-4 gap-x-[3px] tabular-nums text-xs text-muted-foreground"
+              className="mb-2 grid h-4 gap-x-0.75 tabular-nums text-xs text-muted-foreground"
               style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
               aria-hidden="true"
             >
@@ -121,11 +121,11 @@ export function YearHeatmap({
               ))}
             </div>
             <div
-              className="grid gap-x-[3px]"
+              className="grid gap-x-0.75"
               style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
             >
               {weeks.map((week) => (
-                <div key={week[0].key} className="grid grid-rows-7 gap-y-[3px]">
+                <div key={week[0].key} className="grid grid-rows-7 gap-y-0.75">
                   {week.map(({ key, inYear }) => {
                     if (!inYear) {
                       return (
@@ -143,7 +143,7 @@ export function YearHeatmap({
                         type="button"
                         disabled={future}
                         onClick={() => onSelectDay(date)}
-                        className={`size-3 rounded-[2px] ${levelClasses[intensity(count)]} ${
+                        className={`size-3 rounded-xs ${levelClasses[intensity(count)]} ${
                           future
                             ? "cursor-default opacity-30"
                             : "cursor-pointer hover:ring-1 hover:ring-ring focus-visible:outline-2 focus-visible:outline-ring"
@@ -164,7 +164,7 @@ export function YearHeatmap({
         {[0, 1, 2, 3].map((level) => (
           <span
             key={level}
-            className={`size-3 rounded-[2px] ${levelClasses[level as 0 | 1 | 2 | 3]}`}
+            className={`size-3 rounded-xs ${levelClasses[level as 0 | 1 | 2 | 3]}`}
             aria-hidden="true"
           />
         ))}
