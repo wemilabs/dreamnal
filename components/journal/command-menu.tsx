@@ -1,6 +1,8 @@
 "use client";
 
-import { Mic, Moon, PenLine, Sun } from "lucide-react";
+import { CommandLoading, defaultFilter } from "cmdk";
+import { BookOpen, Mic, Moon, PenLine, Sun } from "lucide-react";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
@@ -8,8 +10,10 @@ import {
   type ReactNode,
   useContext,
   useEffect,
+  useEffectEvent,
   useState,
 } from "react";
+import { getSearchEntries } from "@/app/journal/actions";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { JOURNAL_NAV_LINKS } from "@/components/journal/sidebar/nav-items";
 import {
@@ -21,6 +25,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  DREAM_VALUE_PREFIX,
+  matchSnippet,
+  type SearchEntry,
+  scoreDream,
+} from "@/lib/dream-search";
+import { titleFallback } from "@/lib/format";
 
 type CommandMenuContextValue = {
   open: boolean;
@@ -38,18 +49,31 @@ export function useCommandMenu() {
 }
 
 export function CommandMenuProvider({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(false);
+  const [search, setSearch] = useState("");
+  const [entries, setEntries] = useState<SearchEntry[] | null>(null);
   const router = useRouter();
   const { startRecording, startTyping } = useComposer();
   const { resolvedTheme, setTheme } = useTheme();
 
+  const setOpen = (next: boolean) => {
+    setOpenState(next);
+    if (next) {
+      getSearchEntries().then(setEntries, () => {});
+    } else {
+      setSearch("");
+    }
+  };
+
+  const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      setOpen(!open);
+    }
+  });
+
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        setOpen((v) => !v);
-      }
-    };
+    const onKeyDown = (event: KeyboardEvent) => onShortcut(event);
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
@@ -64,10 +88,58 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
         open={open}
         onOpenChange={setOpen}
       >
-        <Command>
-          <CommandInput placeholder="Search dreams, pages, actions…" />
+        <Command
+          filter={(value, search, keywords) =>
+            value.startsWith(DREAM_VALUE_PREFIX)
+              ? scoreDream(search, keywords ?? [])
+              : defaultFilter(value, search, keywords)
+          }
+        >
+          <CommandInput
+            placeholder="Search dreams, pages, actions…"
+            value={search}
+            onValueChange={setSearch}
+          />
           <CommandList className="max-h-[min(18rem,45svh)] overscroll-contain">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>
+              {entries === null && search.trim() !== ""
+                ? ""
+                : "No results found."}
+            </CommandEmpty>
+            {entries === null && search.trim() !== "" && (
+              <CommandLoading className="py-6 text-center text-sm text-muted-foreground">
+                Searching dreams…
+              </CommandLoading>
+            )}
+            {search.trim() !== "" && entries !== null && (
+              <CommandGroup heading="Dreams">
+                {entries.map((e) => {
+                  const title = e.title ?? titleFallback(e.body);
+                  const snippet = matchSnippet(e.body, search);
+                  return (
+                    <CommandItem
+                      key={e.id}
+                      value={`${DREAM_VALUE_PREFIX}${e.id}`}
+                      keywords={[title, e.body, ...e.labels]}
+                      onSelect={() => {
+                        close();
+                        router.push(`/journal/${e.id}` as Route);
+                      }}
+                    >
+                      <BookOpen aria-hidden />
+                      <div className="min-w-0">
+                        <div className="truncate">{title}</div>
+                        {snippet !== null && (
+                          <div className="line-clamp-1 text-xs text-muted-foreground">
+                            {snippet}
+                          </div>
+                        )}
+                      </div>
+                    </CommandItem>
+                  );
+                })}
+              </CommandGroup>
+            )}
             <CommandGroup heading="Actions">
               <CommandItem
                 value="record a dream"

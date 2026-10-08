@@ -9,6 +9,8 @@ import { db } from "@/db";
 import { dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
 import { openEntry, openSymbols, sealEntry } from "@/lib/crypto/entries";
+import type { SearchEntry } from "@/lib/dream-search";
+import { listSearchEntries } from "@/lib/entries";
 import { scheduleSymbolRefresh } from "@/lib/symbols/refresh";
 import { transcribeAudio } from "@/lib/transcribe";
 
@@ -50,6 +52,10 @@ export async function transcribeRecording(
   } catch {
     return { status: "error", message: "Transcription failed, try again" };
   }
+}
+
+export async function getSearchEntries(): Promise<SearchEntry[]> {
+  return listSearchEntries();
 }
 
 const entryInput = z.object({

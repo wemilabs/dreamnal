@@ -87,6 +87,9 @@ disables the editor's own organize/sort-imports on save so they don't fight.
   on `userId`; mutations `updateTag` the same key and re-check the session.
   `listEntriesForUser` returns ciphertext; `listEntries` decrypts outside the
   cache and derives a 280-char `excerpt` (`Array.from`, surrogate-safe)
+- Command menu: Ctrl/Cmd+K loads decrypted dreams via the `getSearchEntries`
+  action on open and filters client-side (`lib/dream-search.ts`), since
+  ciphertext can't be searched in the DB
 - Partial Prefetching: default links prefetch the shared App Shell.
   `components/journal/intent-prefetch-link.tsx` upgrades to
   `prefetch={true}` (per-link, resolves URL data + session-cached content) on
