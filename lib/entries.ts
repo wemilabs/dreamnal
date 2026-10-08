@@ -22,6 +22,7 @@ export async function listEntries() {
       audioDurationSeconds: entry.audioDurationSeconds,
       createdAt: entry.createdAt,
       symbols: openSymbols(row)?.items ?? [],
+      wordCount: entry.body.trim().split(/\s+/).filter(Boolean).length,
       excerpt: Array.from(entry.body).slice(0, 280).join(""),
     };
   });

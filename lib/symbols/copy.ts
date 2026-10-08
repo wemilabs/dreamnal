@@ -10,13 +10,6 @@ export const symbolsCopy = {
     thing: "Things",
     feeling: "Feelings",
   },
-  rhythm: {
-    total: "Dreams recorded",
-    thisMonth: "This month",
-    lastMonth: "Last month",
-  },
-  keepsComingBack: "Keeps coming back",
-  seenTogether: "Seen together",
   allSymbols: "See all symbols",
   dreams: (n: number) => (n === 1 ? "1 dream" : `${n} dreams`),
   lastOn: "last on",

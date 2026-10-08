@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense, ViewTransition } from "react";
+import { InsightsContent } from "@/components/journal/insights/insights-content";
+import { InsightsSkeleton } from "@/components/journal/insights/insights-skeleton";
 import { PageFade } from "@/components/journal/page-fade";
-import { InsightsContent } from "@/components/journal/symbols/insights-content";
-import { InsightsSkeleton } from "@/components/journal/symbols/insights-skeleton";
 import { symbolsCopy } from "@/lib/symbols/copy";
 
 export const metadata: Metadata = {
