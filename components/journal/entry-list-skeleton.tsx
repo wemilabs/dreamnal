@@ -2,17 +2,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function EntryListSkeleton() {
   return (
-    <ul className="flex flex-col" aria-hidden="true">
-      {[0, 1, 2].map((i) => (
-        <li
-          key={i}
-          className="flex flex-col gap-2.5 border-b border-border py-5"
-        >
-          <Skeleton className="h-3 w-36" />
-          <Skeleton className="h-7 w-2/3" />
-          <Skeleton className="h-4 w-full" />
-        </li>
-      ))}
-    </ul>
+    <div className="flex flex-col gap-3" aria-hidden="true">
+      <Skeleton className="h-4 w-20" />
+      <div className="ml-1.5 flex flex-col gap-3 border-l border-border">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="pl-5 sm:pl-6">
+            <div className="flex flex-col gap-2.5 rounded-2xl bg-card p-5 ring-1 ring-border/60">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-7 w-2/3" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

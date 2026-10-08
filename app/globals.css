@@ -18,6 +18,23 @@
   --color-night-muted: #93a3b8;
   --color-moon: #e4ebf2;
   --color-rec: #c2543f;
+  --color-kind-person: #c99a6b;
+  --color-kind-place: #6f8fb3;
+  --color-kind-thing: #8a9a7b;
+  --color-kind-feeling: #b07a9e;
+
+  --shadow-card:
+    0 1px 2px rgb(22 35 59 / 0.04), 0 4px 16px -8px rgb(22 35 59 / 0.12);
+  --shadow-dot-glow:
+    0 0 0 3px color-mix(in oklab, var(--color-fold) 18%, transparent),
+    0 0 10px 1px color-mix(in oklab, var(--color-fold) 45%, transparent);
+  --shadow-dot-glow-hover:
+    0 0 0 4px color-mix(in oklab, var(--color-fold) 28%, transparent),
+    0 0 16px 3px color-mix(in oklab, var(--color-fold) 70%, transparent);
+  --animate-glow: glow 2.4s var(--ease-in-out) infinite;
+
+  --shadow-card-hover:
+    0 2px 4px rgb(22 35 59 / 0.05), 0 12px 28px -10px rgb(22 35 59 / 0.2);
 
   --text-display: 6.5rem;
   --text-hero: clamp(48px, 6.4vw, 88px);
@@ -52,6 +69,16 @@
   --vt-exit: 120ms;
   --vt-enter: 200ms;
   --vt-move: 300ms;
+
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: var(--shadow-dot-glow);
+    }
+    50% {
+      box-shadow: var(--shadow-dot-glow-hover);
+    }
+  }
 }
 
 @theme inline {
