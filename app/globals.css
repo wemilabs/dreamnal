@@ -18,6 +18,15 @@
   --color-night-muted: #93a3b8;
   --color-moon: #e4ebf2;
   --color-rec: #c2543f;
+  --color-kind-person: #c99a6b;
+  --color-kind-place: #6f8fb3;
+  --color-kind-thing: #8a9a7b;
+  --color-kind-feeling: #b07a9e;
+
+  --shadow-card:
+    0 1px 2px rgb(22 35 59 / 0.04), 0 4px 16px -8px rgb(22 35 59 / 0.12);
+  --shadow-card-hover:
+    0 2px 4px rgb(22 35 59 / 0.05), 0 12px 28px -10px rgb(22 35 59 / 0.2);
 
   --text-display: 6.5rem;
   --text-hero: clamp(48px, 6.4vw, 88px);
