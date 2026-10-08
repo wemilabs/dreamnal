@@ -45,8 +45,8 @@ and pattern-finding, so every number shown can be checked by hand.
   already decrypts. Add `symbols` to the select in `listEntriesForUser`. The
   cache only ever holds ciphertext.
 - Migration via `pnpm db:generate` / `pnpm db:migrate`.
-- Backfill script for existing entries, modeled on
-  `scripts/encrypt-entries.ts`: idempotent, `--dry-run`, prints counts only.
+- Backfill script for existing entries (`scripts/extract-symbols.ts`):
+  idempotent, `--dry-run`, prints counts only.
 
 ## 3. Entry page (`/journal/[id]`)
 

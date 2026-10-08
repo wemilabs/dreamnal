@@ -10,6 +10,12 @@ App code lives at the repo root (no `src/`): `app/`, `components/`, `db/`,
 Biome owns import order (packages first, then `@/`); `.vscode/settings.json`
 disables the editor's own organize/sort-imports on save so they don't fight.
 
+## Git workflow
+
+Always work from `dev`. Merge `dev` into `main` only once the change is
+approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
+`dev` to `main` and push it so the two stay in sync.
+
 ## Commands
 
 - `pnpm dev` — dev server (Turbopack)
@@ -223,10 +229,11 @@ interprets. Code does all counting.
   dream's language. Never put a label in a URL
   (Symbols uses `<details>`). Local-time dates and month buckets are computed
   in client components (`LocalDay`, `RhythmStats`)
-- Backfill: `node --env-file=.env.local scripts/extract-symbols.ts [--dry-run]`.
-  It only touches rows where `symbols is null`
+- Backfill / repair: `node --env-file=.env.local scripts/extract-symbols.ts [--dry-run]`.
+  It only touches rows where `symbols is null`, which is what a failed
+  `after()` extraction leaves behind (there is no in-app retry)
 - Scripts run under plain node, which doesn't resolve `@/`. Use relative
-  `.ts` imports. `scripts/encrypt-entries.ts` currently fails for this reason
+  `.ts` imports
 
 ## Entry encryption
 
@@ -241,9 +248,9 @@ Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
 - `lib/crypto/entries.ts` exports `sealEntry` (used by actions) and `openEntry`
   (used by `lib/entries.ts` outside the `"use cache"` functions, so the cache
   only holds ciphertext)
-- Values without the `v1.` prefix pass through as legacy plaintext
-- Backfill: `node --env-file=.env.local scripts/encrypt-entries.ts [--dry-run]`.
-  Idempotent, guarded on the old `body`, prints counts only
+- Values without the `v1.` prefix pass through as legacy plaintext. Every row
+  is encrypted now; the one-off `scripts/encrypt-entries.ts` backfill was
+  removed (it's in git history if a plaintext dump ever needs restoring)
 - Losing `ENTRY_ENCRYPTION_KEY` loses every entry. The DB can't search
   title/body anymore
 
