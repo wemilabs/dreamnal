@@ -15,9 +15,7 @@ const signed = (n: number) => (n > 0 ? `+${n}` : String(n));
 
 function DeltaLine({ tile, period }: { tile: Tile; period: Period }) {
   if (tile.delta.previous === null) {
-    return tile.note ? (
-      <p className="text-sm text-muted-foreground">{tile.note}</p>
-    ) : null;
+    return null;
   }
   const diff = tile.delta.current - tile.delta.previous;
   const Icon = diff > 0 ? ArrowUpRight : diff < 0 ? ArrowDownRight : Minus;
@@ -99,6 +97,9 @@ export function KpiRow({
             ) : null}
           </p>
           <DeltaLine tile={tile} period={period} />
+          {tile.note ? (
+            <p className="text-sm text-muted-foreground">{tile.note}</p>
+          ) : null}
         </div>
       ))}
     </div>

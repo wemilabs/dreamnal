@@ -91,7 +91,7 @@ function DrilldownBody({
         ))}
       </dl>
       <ChartContainer config={config} className="aspect-auto h-36 w-full">
-        <BarChart data={series} margin={{ left: -20, right: 4 }}>
+        <BarChart data={series} margin={{ top: 8, left: -20, right: 4 }}>
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="label"
