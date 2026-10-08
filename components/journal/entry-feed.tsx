@@ -95,7 +95,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
           >
             <span>{dayLabel(group.date, today)}</span>
             {group.entries.length > 1 && (
-              <span className="font-mono text-xs font-normal">
+              <span className="tabular-nums text-xs font-normal">
                 {group.entries.length} dreams
               </span>
             )}
@@ -132,7 +132,7 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
       className="flex flex-col gap-1.5 rounded-2xl bg-card p-5 shadow-card ring-1 ring-border/60 outline-none transition-[translate,box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.99]"
       testId="entry-link"
     >
-      <span className="flex items-center justify-between gap-3 font-mono text-xs text-muted-foreground">
+      <span className="flex items-center justify-between gap-3 tabular-nums text-xs text-muted-foreground">
         <time dateTime={entry.createdAt}>
           {timeFmt.format(new Date(entry.createdAt)).toLowerCase()}
         </time>

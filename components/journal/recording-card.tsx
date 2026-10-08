@@ -69,7 +69,7 @@ export function RecordingCard({
         </div>
         <span
           ref={timerRef}
-          className="font-mono text-sm/tight text-muted-foreground"
+          className="tabular-nums text-sm/tight text-muted-foreground"
         >
           0:00
         </span>

@@ -48,7 +48,7 @@ export async function SymbolsContent() {
         }
         return (
           <section key={kind} className="flex flex-col gap-1">
-            <h2 className="font-mono text-xs text-muted-foreground">
+            <h2 className="tabular-nums text-xs text-muted-foreground">
               {symbolsCopy.kinds[kind]}
             </h2>
             <ul className="flex flex-col">
@@ -75,7 +75,7 @@ export async function SymbolsContent() {
                                   (titleFallback(entry.excerpt) ||
                                     symbolsCopy.untitled)}
                               </span>
-                              <span className="font-mono text-xs text-muted-foreground">
+                              <span className="tabular-nums text-xs text-muted-foreground">
                                 <LocalDay iso={entry.createdAt.toISOString()} />
                               </span>
                             </IntentPrefetchLink>

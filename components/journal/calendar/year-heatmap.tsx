@@ -99,7 +99,7 @@ export function YearHeatmap({
       >
         <div className="flex w-max gap-2">
           <div
-            className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-[3px] font-mono text-xs text-muted-foreground"
+            className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-[3px] tabular-nums text-xs text-muted-foreground"
             aria-hidden="true"
           >
             {calendarCopy.heatmapWeekdays.map(({ key, label }) => (
@@ -110,7 +110,7 @@ export function YearHeatmap({
           </div>
           <div>
             <div
-              className="mb-2 grid h-4 gap-x-[3px] font-mono text-xs text-muted-foreground"
+              className="mb-2 grid h-4 gap-x-[3px] tabular-nums text-xs text-muted-foreground"
               style={{ gridTemplateColumns: "repeat(53, 0.75rem)" }}
               aria-hidden="true"
             >
@@ -159,7 +159,7 @@ export function YearHeatmap({
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-end gap-2 font-mono text-xs text-muted-foreground">
+      <div className="flex items-center justify-end gap-2 tabular-nums text-xs text-muted-foreground">
         <span>{calendarCopy.less}</span>
         {[0, 1, 2, 3].map((level) => (
           <span

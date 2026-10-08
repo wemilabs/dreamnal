@@ -47,7 +47,7 @@ function ChangeList({
                 className="pressable flex w-full items-center justify-between gap-3 border-b border-border py-2 text-left text-control text-foreground"
               >
                 <span className="truncate">{capitalizeLabel(item.label)}</span>
-                <span className="shrink-0 font-mono text-sm text-muted-foreground tabular-nums">
+                <span className="shrink-0 tabular-nums text-sm text-muted-foreground">
                   {item.previous === 0
                     ? insightsCopy.top.isNew
                     : insightsCopy.top.change(item.current, item.previous)}
@@ -97,7 +97,7 @@ export function TopSymbols({
                     }}
                   />
                 </span>
-                <span className="w-8 shrink-0 text-right font-mono text-sm text-muted-foreground tabular-nums">
+                <span className="w-8 shrink-0 text-right tabular-nums text-sm text-muted-foreground">
                   {stat.count}
                 </span>
               </button>

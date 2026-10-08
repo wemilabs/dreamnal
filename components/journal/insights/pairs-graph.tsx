@@ -146,7 +146,7 @@ export function PairsGraph({
             <span className="truncate">
               {capitalizeLabel(pair.a.label)} + {capitalizeLabel(pair.b.label)}
             </span>
-            <span className="shrink-0 font-mono text-sm text-muted-foreground">
+            <span className="shrink-0 tabular-nums text-sm text-muted-foreground">
               {symbolsCopy.dreams(pair.count)}
             </span>
           </li>
