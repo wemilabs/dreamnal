@@ -106,7 +106,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
                 <li className="group relative pl-5 sm:pl-6">
                   <span
                     aria-hidden
-                    className={`absolute top-5.75 -left-[5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
+                    className={`absolute top-4.75 sm:top-5.75 -left-[5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
                   />
                   <EntryCard entry={entry} />
                 </li>
@@ -121,7 +121,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
 
 function EntryCard({ entry }: { entry: FeedEntry }) {
   const title = (
-    <span className="text-entry-title font-semibold tracking-tight text-foreground">
+    <span className="text-lead font-semibold tracking-tight text-foreground sm:text-subhead">
       {entry.title ?? titleFallback(entry.excerpt)}
     </span>
   );
@@ -129,7 +129,7 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
   return (
     <IntentPrefetchLink
       href={`/journal/${entry.id}` as Route}
-      className="flex flex-col gap-1.5 rounded-2xl bg-card p-5 shadow-card ring-1 ring-border/60 outline-none transition-[translate,box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.99]"
+      className="flex flex-col gap-1 rounded-2xl bg-card p-4 sm:gap-1.5 sm:p-5 shadow-card ring-1 ring-border/60 outline-none transition-[translate,box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.99]"
       testId="entry-link"
     >
       <span className="flex items-center justify-between gap-3 tabular-nums text-xs text-muted-foreground">
@@ -157,7 +157,7 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
       ) : (
         title
       )}
-      <span className="line-clamp-2 text-control leading-body text-muted-foreground">
+      <span className="line-clamp-2 text-sm leading-body text-muted-foreground">
         {entry.excerpt}
       </span>
       {entry.symbols.length > 0 && (
