@@ -21,7 +21,7 @@ export function PlaceholderPage({
 }) {
   return (
     <PageFade>
-      <h1 className="font-display text-[44px] leading-tight tracking-display text-foreground">
+      <h1 className="font-display text-page-title tracking-display text-foreground">
         {title}
       </h1>
       <Empty className="mt-8 rounded-lg border border-border border-dashed">

@@ -13,15 +13,13 @@ import { RhythmStats } from "./rhythm-stats";
 const sectionHeading =
   "font-mono text-xs uppercase tracking-caps text-muted-foreground";
 const lineLink =
-  "pressable block border-b border-border py-3 text-lg leading-body text-foreground";
+  "pressable block border-b border-border py-3 text-lead text-foreground";
 
 export async function InsightsContent() {
   const entries = await listEntries();
   if (entries.length < MIN_DREAMS_FOR_PATTERNS) {
     return (
-      <p className="text-lg leading-body text-muted-foreground">
-        {symbolsCopy.empty}
-      </p>
+      <p className="text-lead text-muted-foreground">{symbolsCopy.empty}</p>
     );
   }
 
@@ -40,7 +38,7 @@ export async function InsightsContent() {
       <section className="flex flex-col gap-3">
         <h2 className={sectionHeading}>{symbolsCopy.keepsComingBack}</h2>
         {top.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">
+          <p className="text-control text-muted-foreground">
             {symbolsCopy.noRecurring}
           </p>
         ) : (
@@ -78,7 +76,7 @@ export async function InsightsContent() {
       <div>
         <Link
           href="/journal/symbols"
-          className="pressable text-[15px] font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
+          className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
         >
           {symbolsCopy.allSymbols}
         </Link>

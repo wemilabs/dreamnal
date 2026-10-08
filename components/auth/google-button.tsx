@@ -27,7 +27,7 @@ export function GoogleButton() {
         type="button"
         onClick={continueWithGoogle}
         disabled={pending}
-        className="pressable flex w-full items-center justify-center rounded-full border border-border bg-card px-4 py-2.5 text-[15px] font-medium text-foreground disabled:opacity-60"
+        className="pressable flex w-full items-center justify-center rounded-full border border-border bg-card px-4 py-2.5 text-control font-medium text-foreground disabled:opacity-60"
       >
         {pending ? "Redirecting…" : "Continue with Google"}
       </button>

@@ -13,14 +13,14 @@ function RecordVignette() {
 function ReadBackVignette() {
   return (
     <div className="flex h-30 shrink-0 flex-col justify-center gap-1.5 rounded-[16px] bg-background px-7">
-      <span className="font-display text-lg leading-body text-muted-foreground">
+      <span className="font-display text-lead text-muted-foreground">
         …a lighthouse made of
       </span>
       <div className="flex items-center gap-2">
-        <span className="font-display text-lg leading-body text-muted-foreground line-through decoration-muted-foreground/60 decoration-1 [text-underline-position:from-font]">
+        <span className="font-display text-lead text-muted-foreground line-through decoration-muted-foreground/60 decoration-1 [text-underline-position:from-font]">
           glass ware
         </span>
-        <span className="rounded-[4px] bg-petal/60 px-1.5 font-display text-lg leading-body text-foreground">
+        <span className="rounded-[4px] bg-petal/60 px-1.5 font-display text-lead text-foreground">
           glassware
         </span>
         <span className="h-5.5 w-0.5 shrink-0 bg-foreground" />
@@ -36,7 +36,7 @@ function KeepVignette() {
         <span className="font-mono text-xs leading-4 text-muted-foreground">
           TUE 6 OCT
         </span>
-        <span className="font-display text-lg leading-6.5 text-foreground">
+        <span className="font-display text-lead text-foreground">
           The hallway to the sea
         </span>
       </div>
@@ -81,7 +81,7 @@ function StepCard({ step }: { step: Step }) {
       </span>
       <Vignette />
       <div className="flex flex-col gap-2">
-        <h3 className="text-[21px] font-semibold leading-body text-foreground">
+        <h3 className="text-subhead font-semibold text-foreground">
           {step.title}
         </h3>
         <p className="text-base leading-6.25 text-muted-foreground">
@@ -99,10 +99,10 @@ export function HowItWorks() {
       className="flex flex-col gap-18 bg-card px-6 pt-32 pb-30 lg:px-16"
     >
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <h2 className="w-full max-w-155 shrink-0 font-display text-[56px] leading-15 tracking-[-0.03em] text-foreground">
+        <h2 className="w-full max-w-155 shrink-0 font-display text-headline tracking-[-0.03em] text-foreground">
           Three steps, while you’re still half-asleep.
         </h2>
-        <p className="w-full max-w-102.75 shrink-0 text-[17px] leading-6.75 text-muted-foreground">
+        <p className="w-full max-w-102.75 shrink-0 text-lead text-muted-foreground">
           No forms, no folders to pick. Talk first and tidy up later, or never.
         </p>
       </div>

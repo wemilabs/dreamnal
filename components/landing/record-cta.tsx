@@ -29,7 +29,7 @@ export function recordCtaClasses(tone: RecordCtaTone) {
       "grid size-10 shrink-0 place-items-center rounded-full",
       styles.disc,
     ),
-    label: "text-[17px] font-semibold leading-6 whitespace-nowrap",
+    label: "text-cta font-semibold whitespace-nowrap",
   };
 }
 

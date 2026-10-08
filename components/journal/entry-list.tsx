@@ -33,16 +33,16 @@ export async function EntryList() {
                   share="title-morph"
                   default="none"
                 >
-                  <span className="font-display text-[26px] leading-snug tracking-[-0.02em] text-foreground">
+                  <span className="font-display text-entry-title tracking-[-0.02em] text-foreground">
                     {entry.title}
                   </span>
                 </ViewTransition>
               ) : (
-                <span className="font-display text-[26px] leading-snug tracking-[-0.02em] text-foreground">
+                <span className="font-display text-entry-title tracking-[-0.02em] text-foreground">
                   {titleFallback(entry.excerpt)}
                 </span>
               )}
-              <span className="line-clamp-2 text-[15px] leading-body text-muted-foreground">
+              <span className="line-clamp-2 text-control leading-body text-muted-foreground">
                 {entry.excerpt}
               </span>
               <span className="mt-1 flex items-center gap-1.5 text-muted-foreground">
