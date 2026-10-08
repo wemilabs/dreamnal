@@ -150,7 +150,7 @@ must fire from the composer's synchronous tap handlers because iOS only
 vibrates inside a user gesture.
 
 Deployment constraint: Vercel Functions cap request bodies at 4.5 MB, so
-recordings run at 48 kbps, auto-stop at 8 minutes (~2.9 MB), are rejected
+recordings run at 48 kbps, auto-stop at 9 minutes (~3.2 MB), are rejected
 client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 `transcribeRecording` action. `next.config.ts` sets `serverActions` /
 `proxyClientMaxBodySize` to `4.5mb` to match.
