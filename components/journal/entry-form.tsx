@@ -47,10 +47,10 @@ export function EntryForm({
       name="title"
       defaultValue={defaultTitle ?? ""}
       onChange={(e) => onTitleChange?.(e.target.value)}
-      placeholder="Untitled dream"
+      placeholder="Give it a name…"
       aria-label="Title"
       maxLength={120}
-      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-editor-title font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title"
+      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-subhead font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-cta placeholder:font-normal placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title md:placeholder:text-subhead"
     />
   );
 
@@ -97,7 +97,7 @@ export function EntryForm({
           required
           aria-label="Dream"
           placeholder="Start with the last thing you remember…"
-          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-lead text-foreground shadow-none"
+          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead"
         />
         <div className="flex items-center justify-between">
           <span className="tabular-nums text-xs text-muted-foreground">

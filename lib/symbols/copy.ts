@@ -22,5 +22,5 @@ export const symbolsCopy = {
     kindLabel: "Kind",
     remove: (label: string) => `Remove “${label}”`,
   },
-  untitled: "Untitled dream",
+  untitled: "Untitled",
 };

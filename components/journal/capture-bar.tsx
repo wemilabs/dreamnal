@@ -61,7 +61,7 @@ export function CaptureBar() {
         className="group flex h-10 flex-1 items-center gap-3 rounded-xl pr-3 pl-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span className="flex-1 text-control text-muted-foreground">
-          What did you dream last night?
+          What do you remember?
         </span>
         <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
           <Keyboard className="size-4" aria-hidden />

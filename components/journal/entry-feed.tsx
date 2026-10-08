@@ -106,7 +106,7 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
                 <li className="group relative pl-5 sm:pl-6">
                   <span
                     aria-hidden
-                    className={`absolute top-4.75 sm:top-5.75 -left-[5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
+                    className={`absolute top-4.75 sm:top-5.75 left-[-5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
                   />
                   <EntryCard entry={entry} />
                 </li>
