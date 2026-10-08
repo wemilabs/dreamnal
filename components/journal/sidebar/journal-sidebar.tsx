@@ -23,11 +23,11 @@ import { Wordmark } from "@/components/wordmark";
 export function JournalSidebar() {
   return (
     <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader className="gap-3 px-3 pt-4 pb-2">
+      <SidebarHeader className="gap-3 px-3 pt-4 pb-2 group-data-[collapsible=icon]:px-2">
         <Link
           href="/journal"
           aria-label="Dreamnal"
-          className="pressable flex items-center px-1 font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
+          className="pressable flex items-center px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
         >
           <span className="truncate group-data-[collapsible=icon]:hidden">
             <Wordmark />

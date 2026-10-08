@@ -20,7 +20,7 @@ export function PeriodPicker({
           aria-label={insightsCopy.periodNames[period]}
           onClick={() => onChange(period)}
           className={cn(
-            "pressable h-8 min-w-11 rounded-md px-3 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+            "pressable h-8 min-w-11 rounded-md px-3 text-sm font-medium tabular-nums text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
             period === value &&
               "bg-foreground text-background hover:text-background",
           )}

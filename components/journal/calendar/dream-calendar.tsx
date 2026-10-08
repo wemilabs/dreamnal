@@ -162,7 +162,7 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
             key={tile.label}
             className="rounded-lg border border-border bg-card/60 p-3 md:p-4"
           >
-            <p className="font-mono text-xs text-muted-foreground">
+            <p className="tabular-nums text-xs text-muted-foreground">
               {tile.label}
             </p>
             <p className="mt-3 flex items-baseline gap-1 whitespace-nowrap">

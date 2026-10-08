@@ -100,7 +100,7 @@ export function EntryForm({
           className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-lead text-foreground shadow-none"
         />
         <div className="flex items-center justify-between">
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="tabular-nums text-xs text-muted-foreground">
             {words} {words === 1 ? "word" : "words"}
           </span>
           {state?.fieldErrors?.body?.[0] ? (

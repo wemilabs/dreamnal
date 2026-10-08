@@ -85,7 +85,7 @@ function LegendList({
           <span className="min-w-0 flex-1 truncate text-foreground">
             {config[d.key]?.label}
           </span>
-          <span className="shrink-0 whitespace-nowrap font-mono text-sm text-muted-foreground tabular-nums">
+          <span className="shrink-0 whitespace-nowrap tabular-nums text-sm text-muted-foreground">
             {d.value}
             {total > 0 ? ` · ${Math.round((d.value / total) * 100)}%` : ""}
           </span>
@@ -116,7 +116,7 @@ export function SourceChart({
       </div>
       <p className="mt-auto border-t border-border pt-4 text-sm text-muted-foreground">
         {insightsCopy.sources.avgRecording}:{" "}
-        <span className="font-mono text-foreground">
+        <span className="tabular-nums text-foreground">
           {sources.avgRecordingSeconds === null
             ? insightsCopy.sources.noRecordings
             : formatDuration(sources.avgRecordingSeconds)}

@@ -48,7 +48,7 @@ export function NavUserClient({
               <span className="truncate text-sm font-medium">
                 {name || "Dreamer"}
               </span>
-              <span className="truncate font-mono text-xs text-muted-foreground">
+              <span className="truncate text-xs text-muted-foreground">
                 {email}
               </span>
             </span>
@@ -63,7 +63,7 @@ export function NavUserClient({
               <span className="text-sm font-medium text-foreground">
                 {name || "Dreamer"}
               </span>
-              <span className="font-mono text-xs">{email}</span>
+              <span className="text-xs">{email}</span>
             </span>
           </DropdownMenuLabel>
         </DropdownMenuGroup>

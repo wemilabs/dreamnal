@@ -22,7 +22,7 @@ function DreamRow({ dream }: { dream: CalendarDream }) {
         <span className="block w-full text-control text-foreground">
           {dream.title}
         </span>
-        <span className="flex items-center font-mono text-xs text-muted-foreground">
+        <span className="flex items-center tabular-nums text-xs text-muted-foreground">
           {dream.source === "voice" ? (
             <Mic className="size-3.5" aria-hidden />
           ) : (
@@ -100,7 +100,7 @@ export function DayPanel({
           {selectedDateIsPastOrToday ? (
             <div className="mt-auto pt-6">
               {selectedDay !== dayKey(today) ? (
-                <p className="mb-3 font-mono text-xs text-muted-foreground">
+                <p className="mb-3 tabular-nums text-xs text-muted-foreground">
                   {calendarCopy.addDreamForDay}
                 </p>
               ) : null}
@@ -143,7 +143,7 @@ export function DayPanel({
                     key={key}
                     className="border-b border-border py-2 last:border-0"
                   >
-                    <h3 className="font-mono text-xs text-muted-foreground">
+                    <h3 className="tabular-nums text-xs text-muted-foreground">
                       {calendarCopy.dayTitle(date)}
                     </h3>
                     <ul className="flex flex-col">
