@@ -4,6 +4,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export const metadata: Metadata = {
   title: "Trash",
+  description: "Deleted dreams live here until they’re gone for good.",
 };
 
 export default function TrashPage() {

@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { SignUpForm } from "@/components/auth/sign-up-form";
+
+export const metadata: Metadata = {
+  title: "Create your account",
+  description:
+    "Start a private dream journal. Record a dream when you wake, and Dreamnal turns your voice into an entry you can edit and keep.",
+};
 
 export default function SignUpModal() {
   return (

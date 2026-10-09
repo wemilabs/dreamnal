@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense, ViewTransition } from "react";
 import { EntryDetail } from "@/components/journal/entry-detail";
 import { EntryDetailSkeleton } from "@/components/journal/entry-detail-skeleton";
 import { PageFade } from "@/components/journal/page-fade";
 import { getEntry } from "@/lib/entries";
+
+export const metadata: Metadata = {
+  title: "Dream",
+  description:
+    "Read and edit this dream, write what you think it means, and mark it fulfilled.",
+};
 
 export default function EntryPage({
   params,

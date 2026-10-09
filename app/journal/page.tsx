@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense, ViewTransition } from "react";
 import { CaptureBar } from "@/components/journal/capture-bar";
 import { EntryList } from "@/components/journal/entry-list";
@@ -7,6 +8,12 @@ import {
   FilterChipsView,
 } from "@/components/journal/filter-chips";
 import { PageFade } from "@/components/journal/page-fade";
+
+export const metadata: Metadata = {
+  title: "My journal",
+  description:
+    "All your dreams, newest first. Filter to the ones you’ve interpreted or marked fulfilled.",
+};
 
 export default function JournalPage() {
   return (

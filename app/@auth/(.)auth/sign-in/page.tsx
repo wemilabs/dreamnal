@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { SignInForm } from "@/components/auth/sign-in-form";
+
+export const metadata: Metadata = {
+  title: "Sign in",
+  description:
+    "Sign in to Dreamnal and pick up your dream journal where the night left off.",
+};
 
 export default function SignInModal() {
   return (
