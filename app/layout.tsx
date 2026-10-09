@@ -52,7 +52,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children, auth }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
@@ -68,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           disableTransitionOnChange
         >
           {children}
+          {auth}
         </ThemeProvider>
         <PwaRegistrar />
         <Suspense fallback={null}>
