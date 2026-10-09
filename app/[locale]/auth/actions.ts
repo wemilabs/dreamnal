@@ -3,7 +3,7 @@
 import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { getActionLocale } from "@/i18n/action-locale";
-import { redirect } from "@/i18n/navigation";
+import { redirect } from "@/i18n/redirect";
 import { auth } from "@/lib/auth/server";
 
 export type AuthFormState = {

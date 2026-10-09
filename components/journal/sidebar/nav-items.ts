@@ -9,7 +9,7 @@ import {
   Tags,
   Trash2,
 } from "lucide-react";
-import type { AppHref } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 
 export type JournalNavItem = {
   titleKey:

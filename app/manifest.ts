@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
+import messages from "@/messages/en.json";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/journal",
     name: "Dreamnal",
     short_name: "Dreamnal",
-    description:
-      "Record your dreams the moment you wake. Dreamnal transcribes your voice into a journal entry you can edit and keep.",
+    description: messages.Metadata.description,
     lang: "en",
     dir: "ltr",
     start_url: "/journal",
@@ -43,14 +43,14 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "390x844",
         type: "image/png",
         form_factor: "narrow",
-        label: "Your dream journal",
+        label: messages.Pwa.screenshotLabel,
       },
       {
         src: "/screenshots/journal-wide.png",
         sizes: "1280x800",
         type: "image/png",
         form_factor: "wide",
-        label: "Your dream journal",
+        label: messages.Pwa.screenshotLabel,
       },
     ],
   };

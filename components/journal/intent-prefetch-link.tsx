@@ -1,7 +1,8 @@
 "use client";
 
 import { type ReactNode, useState } from "react";
-import { type AppHref, Link } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 
 type IntentPrefetchLinkProps = {
   href: AppHref;

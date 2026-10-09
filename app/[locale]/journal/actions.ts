@@ -8,7 +8,7 @@ import { MAX_AUDIO_BYTES } from "@/components/journal/recorder-mime";
 import { db } from "@/db";
 import { dreamEntries } from "@/db/schema";
 import { getActionLocale } from "@/i18n/action-locale";
-import { redirect } from "@/i18n/navigation";
+import { redirect } from "@/i18n/redirect";
 import { getCurrentUser } from "@/lib/auth/session";
 import { openEntry, openSymbols, sealEntry } from "@/lib/crypto/entries";
 import type { SearchEntry } from "@/lib/dream-search";

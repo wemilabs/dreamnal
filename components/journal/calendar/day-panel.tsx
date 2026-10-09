@@ -6,7 +6,7 @@ import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AppHref } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
 import type { CalendarDream } from "@/lib/calendar";
 import { dayKey, parseDayKey } from "@/lib/calendar";

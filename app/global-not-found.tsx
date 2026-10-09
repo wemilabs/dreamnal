@@ -1,5 +1,6 @@
 import { Bodoni_Moda, Geist_Mono, Hanken_Grotesk } from "next/font/google";
 import { Link } from "@/i18n/navigation";
+import messages from "@/messages/en.json";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -33,16 +34,16 @@ export default function GlobalNotFound() {
           style={{ backgroundImage: "var(--hero-bg)" }}
         >
           <h1 className="font-display text-headline tracking-display text-foreground">
-            This page drifted away.
+            {messages.NotFound.title}
           </h1>
           <p className="text-lead text-muted-foreground">
-            Like a dream at breakfast.
+            {messages.NotFound.description}
           </p>
           <Link
             href="/journal"
             className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground"
           >
-            Back to your journal
+            {messages.NotFound.back}
           </Link>
         </div>
       </body>

@@ -23,7 +23,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { type AppHref, Link } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
 import {
   type InsightDream,

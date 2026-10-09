@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import { saveMeaning } from "@/app/[locale]/journal/[id]/meaning-actions";
 import { Textarea } from "@/components/ui/textarea";
-import { CONFIDENCE_LEVELS } from "@/lib/meaning";
+import { CONFIDENCE_LEVELS, type Confidence } from "@/lib/meaning";
 import { FulfillDialog } from "./fulfill-dialog";
 
 export function MeaningForm({
@@ -19,13 +19,20 @@ export function MeaningForm({
   createdAt: string;
 }) {
   const t = useTranslations("Meaning");
-  const confidenceKeys = {
-    Unsure: "confidenceUnsure",
-    Hunch: "confidenceHunch",
-    Possible: "confidencePossible",
-    Likely: "confidenceLikely",
-    Certain: "confidenceCertain",
-  } as const;
+  const confidenceKeys: Record<
+    Confidence,
+    | "confidenceUnsure"
+    | "confidenceHunch"
+    | "confidencePossible"
+    | "confidenceLikely"
+    | "confidenceCertain"
+  > = {
+    10: "confidenceUnsure",
+    30: "confidenceHunch",
+    50: "confidencePossible",
+    75: "confidenceLikely",
+    100: "confidenceCertain",
+  };
   const [state, formAction, pending] = useActionState(saveMeaning, null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -71,7 +78,7 @@ export function MeaningForm({
                   defaultChecked={confidence === level.value}
                   className="peer sr-only"
                 />
-                {t(confidenceKeys[level.label])}
+                {t(confidenceKeys[level.value])}
               </label>
             ))}
           </div>

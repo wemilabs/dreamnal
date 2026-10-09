@@ -32,7 +32,7 @@ export function DeleteEntryButton({ id }: { id: string }) {
         <AlertDialogHeader>
           <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            It’s gone for good — some dreams don’t come back twice.
+            {t("deleteDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         {state?.error ? (

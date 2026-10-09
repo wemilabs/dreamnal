@@ -90,8 +90,9 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
 
 - English and French messages live in `messages/en.json` and
   `messages/fr.json`; keep their keys in sync. The supported locales are
-  `en` and `fr` (default `en`), with no visible URL prefix. App links and
-  navigation use `i18n/navigation.tsx` so paths remain unprefixed.
+  `en` and `fr` (default `en`), with no visible URL prefix. Links and client
+  navigation use `i18n/navigation.tsx`; server redirects use
+  `i18n/redirect.ts`.
 - Server Components get the locale from the hidden `[locale]` route segment
   through next-intl and `next/root-params`. Do not read cookies or headers for
   locale during render; static shells must remain static.

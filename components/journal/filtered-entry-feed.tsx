@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { EntryFeed, type FeedEntry } from "@/components/journal/entry-feed";
 import { matchesMeaningFilter, parseMeaningFilter } from "@/lib/meaning";
@@ -12,6 +13,7 @@ export function FilteredEntryFeed({
   entries: FeedEntry[];
   empty: ReactNode;
 }) {
+  const t = useTranslations("Journal");
   const filter = parseMeaningFilter(useSearchParams().get("filter"));
   const visible = entries.filter((entry) =>
     matchesMeaningFilter(entry, filter),
@@ -21,14 +23,14 @@ export function FilteredEntryFeed({
     if (filter === "interpreted") {
       return (
         <p className="text-control text-muted-foreground">
-          No interpreted dreams yet.
+          {t("noInterpretedDreams")}
         </p>
       );
     }
     if (filter === "fulfilled") {
       return (
         <p className="text-control text-muted-foreground">
-          No fulfilled dreams yet.
+          {t("noFulfilledDreams")}
         </p>
       );
     }

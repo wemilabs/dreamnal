@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { RefObject } from "react";
 import { useEffect, useEffectEvent, useRef } from "react";
 
@@ -19,6 +20,7 @@ export function RecordingCard({
   onDone: () => void;
   onCancel: () => void;
 }) {
+  const t = useTranslations("Composer");
   const barsRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<HTMLSpanElement>(null);
   const onDoneEvent = useEffectEvent(onDone);
@@ -64,7 +66,7 @@ export function RecordingCard({
         <div className="flex items-center gap-2.5">
           <span className="rec-dot size-2 shrink-0 rounded-full bg-rec" />
           <span className="text-sm/tight font-semibold text-foreground">
-            Listening
+            {t("listening")}
           </span>
         </div>
         <span
@@ -93,14 +95,14 @@ export function RecordingCard({
           onClick={onCancel}
           className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button
           type="button"
           onClick={onDone}
           className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground"
         >
-          Done
+          {t("done")}
         </button>
       </div>
     </div>

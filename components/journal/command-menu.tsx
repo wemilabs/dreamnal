@@ -24,7 +24,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { type AppHref, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import {
   DREAM_VALUE_PREFIX,
   matchSnippet,

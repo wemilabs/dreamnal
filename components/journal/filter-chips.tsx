@@ -2,7 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { type AppHref, Link } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import { type MeaningFilter, parseMeaningFilter } from "@/lib/meaning";
 
 const filters = [

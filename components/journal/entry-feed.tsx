@@ -6,7 +6,7 @@ import { useSyncExternalStore, ViewTransition } from "react";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
-import type { AppHref } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
 import { dayKey } from "@/lib/calendar";
 import { formatDuration, titleFallback } from "@/lib/format";
