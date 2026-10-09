@@ -22,10 +22,16 @@ type EntryFormProps = {
   titleTransitionName?: string;
 };
 
-function autosize(el: HTMLTextAreaElement | null) {
-  if (!el) return;
+function autosize(el: HTMLTextAreaElement) {
   el.style.height = "auto";
   el.style.height = `${el.scrollHeight + el.offsetHeight - el.clientHeight}px`;
+}
+
+function autosizeRef(el: HTMLTextAreaElement) {
+  autosize(el);
+  const onResize = () => autosize(el);
+  window.addEventListener("resize", onResize);
+  return () => window.removeEventListener("resize", onResize);
 }
 
 export function EntryForm({
@@ -94,7 +100,7 @@ export function EntryForm({
 
       <div className="grid gap-1.5">
         <Textarea
-          ref={autosize}
+          ref={autosizeRef}
           name="body"
           value={body}
           onChange={(e) => {
