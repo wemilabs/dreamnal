@@ -2,6 +2,10 @@ import { Suspense, ViewTransition } from "react";
 import { CaptureBar } from "@/components/journal/capture-bar";
 import { EntryList } from "@/components/journal/entry-list";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
+import {
+  FilterChips,
+  FilterChipsView,
+} from "@/components/journal/filter-chips";
 import { PageFade } from "@/components/journal/page-fade";
 
 export default function JournalPage() {
@@ -12,6 +16,9 @@ export default function JournalPage() {
       </h1>
       <div className="mt-8">
         <CaptureBar />
+        <Suspense fallback={<FilterChipsView active={null} />}>
+          <FilterChips />
+        </Suspense>
         <Suspense
           fallback={
             <ViewTransition exit="reveal-out" default="none">

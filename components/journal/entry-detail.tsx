@@ -4,6 +4,7 @@ import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
 import { EntryDate } from "./entry-date";
 import { EntryForm } from "./entry-form";
+import { MeaningSection } from "./meaning/meaning-section";
 import { SymbolTags } from "./symbols/symbol-tags";
 
 export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
@@ -32,6 +33,7 @@ export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
         audioDurationSeconds={entry.audioDurationSeconds}
         submitLabel="Save changes"
       />
+      <MeaningSection entry={entry} />
       <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />
     </div>
   );

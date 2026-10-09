@@ -1,24 +1,21 @@
 import { EmptyState } from "@/components/journal/empty-state";
-import { EntryFeed } from "@/components/journal/entry-feed";
+import { FilteredEntryFeed } from "@/components/journal/filtered-entry-feed";
 import { listEntries } from "@/lib/entries";
 
 export async function EntryList() {
   const entries = await listEntries();
-  if (entries.length === 0) {
-    return <EmptyState />;
-  }
+  const feedEntries = entries.map((entry) => ({
+    id: entry.id,
+    title: entry.title,
+    excerpt: entry.excerpt,
+    source: entry.source,
+    audioDurationSeconds: entry.audioDurationSeconds,
+    createdAt: entry.createdAt.toISOString(),
+    symbols: entry.symbols.slice(0, 3),
+    meaningConfidence: entry.meaningConfidence,
+    fulfilledOn: entry.fulfilledOn,
+    hasMeaning: entry.hasMeaning,
+  }));
 
-  return (
-    <EntryFeed
-      entries={entries.map((entry) => ({
-        id: entry.id,
-        title: entry.title,
-        excerpt: entry.excerpt,
-        source: entry.source,
-        audioDurationSeconds: entry.audioDurationSeconds,
-        createdAt: entry.createdAt.toISOString(),
-        symbols: entry.symbols.slice(0, 3),
-      }))}
-    />
-  );
+  return <FilteredEntryFeed entries={feedEntries} empty={<EmptyState />} />;
 }

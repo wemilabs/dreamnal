@@ -15,6 +15,8 @@ type EntrySecrets = {
   id: string;
   title: string | null;
   body: string;
+  meaning?: string | null;
+  fulfillmentNote?: string | null;
 };
 
 export function sealEntry(entry: EntrySecrets) {
@@ -35,6 +37,65 @@ export function openEntry<T extends EntrySecrets>(entry: T): T {
         ? null
         : decryptEntryField(key, entry.userId, entry.id, "title", entry.title),
     body: decryptEntryField(key, entry.userId, entry.id, "body", entry.body),
+    ...("meaning" in entry && entry.meaning != null
+      ? {
+          meaning: decryptEntryField(
+            key,
+            entry.userId,
+            entry.id,
+            "meaning",
+            entry.meaning,
+          ),
+        }
+      : {}),
+    ...("fulfillmentNote" in entry && entry.fulfillmentNote != null
+      ? {
+          fulfillmentNote: decryptEntryField(
+            key,
+            entry.userId,
+            entry.id,
+            "fulfillment",
+            entry.fulfillmentNote,
+          ),
+        }
+      : {}),
+  };
+}
+
+export function sealMeaning({
+  userId,
+  id,
+  meaning,
+  fulfillmentNote,
+}: {
+  userId: string;
+  id: string;
+  meaning?: string | null;
+  fulfillmentNote?: string | null;
+}): { meaning?: string | null; fulfillmentNote?: string | null } {
+  return {
+    ...(meaning === undefined
+      ? {}
+      : {
+          meaning:
+            meaning === null
+              ? null
+              : encryptEntryField(key, userId, id, "meaning", meaning),
+        }),
+    ...(fulfillmentNote === undefined
+      ? {}
+      : {
+          fulfillmentNote:
+            fulfillmentNote === null
+              ? null
+              : encryptEntryField(
+                  key,
+                  userId,
+                  id,
+                  "fulfillment",
+                  fulfillmentNote,
+                ),
+        }),
   };
 }
 
