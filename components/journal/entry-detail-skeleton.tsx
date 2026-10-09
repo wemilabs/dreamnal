@@ -8,7 +8,10 @@ export function EntryDetailSkeleton() {
       aria-hidden="true"
     >
       <div className="flex items-start justify-between gap-4">
-        <Skeleton className="mt-1.5 h-3 w-44" />
+        <div className="flex min-w-0 items-center gap-3">
+          <Skeleton className="size-9 shrink-0 rounded-full" />
+          <Skeleton className="h-3 w-44" />
+        </div>
         <Skeleton className="size-9 shrink-0 rounded-full" />
       </div>
       <div className="flex w-full flex-col gap-5">
