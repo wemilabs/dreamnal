@@ -13,6 +13,7 @@ export default function SignUpModal() {
           <Link
             href="/auth/sign-in"
             replace
+            scroll={false}
             className="pressable font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
           >
             Sign in
