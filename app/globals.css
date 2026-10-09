@@ -398,6 +398,16 @@
 ::view-transition-image-pair(.title-morph) {
   animation-name: vt-soften;
 }
+::view-transition-group(mobile-sidebar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(mobile-sidebar) {
+  display: none;
+}
+::view-transition-new(mobile-sidebar) {
+  animation: none;
+}
 
 @keyframes vt-fade {
   from {

@@ -21,7 +21,7 @@ export function LanguageSwitcher() {
   return (
     <fieldset
       aria-label={t("language")}
-      className="min-w-0 inline-flex rounded-xl border border-border bg-muted/40 p-1"
+      className="min-w-0 inline-flex self-end sm:self-auto rounded-xl border border-border bg-muted/40 p-1"
     >
       <legend className="sr-only">{t("language")}</legend>
       {languages.map((language) => (

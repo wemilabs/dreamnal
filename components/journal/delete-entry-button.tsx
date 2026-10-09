@@ -24,7 +24,7 @@ export function DeleteEntryButton({ id }: { id: string }) {
     <AlertDialog>
       <AlertDialogTrigger
         aria-label={t("deleteAria")}
-        className="pressable grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:border-rec/50 hover:text-rec"
+        className="pressable grid size-9 shrink-0 place-items-center text-rec"
       >
         <Trash2 className="size-4" aria-hidden />
       </AlertDialogTrigger>

@@ -24,7 +24,7 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
           <Link
             href="/journal"
             aria-label={t("backToJournal")}
-            className="pressable grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+            className="pressable grid size-9 shrink-0 place-items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" aria-hidden />
           </Link>

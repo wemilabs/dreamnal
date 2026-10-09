@@ -22,7 +22,10 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
 - `pnpm build` — production build
 - `pnpm lint` — `biome check`
 - `pnpm format` — `biome format --write`
-- `pnpm typecheck` — `tsc --noEmit`
+- `pnpm typecheck` — `next typegen && tsc --noEmit`. `i18n/paths.ts` imports
+  route types from `@/next-routes`, a tsconfig alias that tries
+  `.next/dev/types/routes.d.ts` (written by `next dev`) and then
+  `.next/types/routes.d.ts` (written by `next build`/`typegen`)
 - `pnpm test:e2e` — Playwright instant-navigation suite (builds + serves :3100;
   needs `E2E_EMAIL`/`E2E_PASSWORD` in `.env.local`; rig notes in
   `e2e/instant-nav.rig.md`)

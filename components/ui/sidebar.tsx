@@ -188,13 +188,21 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="w-(--sidebar-width) bg-sidebar p-0 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-sidebar-foreground [&>button]:hidden"
+          className="w-(--sidebar-width) bg-sidebar p-0 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-sidebar-foreground [&>button]:hidden [view-transition-name:mobile-sidebar]"
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
             } as React.CSSProperties
           }
           side={side}
+          onClick={(event) => {
+            if (
+              event.target instanceof Element &&
+              event.target.closest("a[href]")
+            ) {
+              setOpenMobile(false);
+            }
+          }}
         >
           <SheetHeader className="sr-only">
             <SheetTitle>{t("sidebar")}</SheetTitle>
