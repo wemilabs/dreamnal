@@ -22,6 +22,12 @@ type EntryFormProps = {
   titleTransitionName?: string;
 };
 
+function autosize(el: HTMLTextAreaElement | null) {
+  if (!el) return;
+  el.style.height = "auto";
+  el.style.height = `${el.scrollHeight + el.offsetHeight - el.clientHeight}px`;
+}
+
 export function EntryForm({
   action,
   entryId,
@@ -45,6 +51,7 @@ export function EntryForm({
   const titleInput = (
     <Input
       name="title"
+      autoComplete="off"
       defaultValue={defaultTitle ?? ""}
       onChange={(e) => onTitleChange?.(e.target.value)}
       placeholder="Give it a name…"
@@ -87,15 +94,20 @@ export function EntryForm({
 
       <div className="grid gap-1.5">
         <Textarea
+          ref={autosize}
           name="body"
           value={body}
           onChange={(e) => {
+            autosize(e.currentTarget);
             setBody(e.target.value);
             onBodyChange?.(e.target.value);
           }}
           autoFocus={!defaultBody}
           required
           aria-label="Dream"
+          autoComplete="off"
+          autoCapitalize="sentences"
+          enterKeyHint="enter"
           placeholder="Start with the last thing you remember…"
           className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead"
         />
