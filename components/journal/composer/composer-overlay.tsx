@@ -39,7 +39,9 @@ function ComposerDateField() {
         value={state.backdateDay ?? today}
         onChange={(event) => {
           const day = event.target.value;
-          setBackdateDay(day < MIN_DAY ? MIN_DAY : day > today ? null : day);
+          setBackdateDay(
+            !day || day > today ? null : day < MIN_DAY ? MIN_DAY : day,
+          );
         }}
         className="h-9 min-w-36 rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground tabular-nums outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-8 md:text-sm dark:scheme-dark dark:bg-input/30 [&::-webkit-date-and-time-value]:text-left"
       />
