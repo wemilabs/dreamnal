@@ -44,6 +44,7 @@ const nextConfig: NextConfig = {
     turbopackGc: true,
     turbopackLazyDynamicImports: true,
     exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
+    agentFeedback: true,
   },
 };
 
