@@ -212,7 +212,7 @@
     "currentStreak": "Série actuelle",
     "longestStreak": "Plus longue série",
     "nightsIn": "Nuits en {month}",
-    "days": "{count, plural, one {# jour} other {# jours}}",
+    "days": "{count, plural, one {jour} other {jours}}",
     "dayWithCount": "{date} : {count, plural, one {# rêve} other {# rêves}}",
     "weekdays": ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
     "dreams": "{count, plural, one {# rêve} other {# rêves}}",

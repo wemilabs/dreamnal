@@ -212,7 +212,7 @@
     "currentStreak": "Current streak",
     "longestStreak": "Longest streak",
     "nightsIn": "Nights in {month}",
-    "days": "{count, plural, one {# day} other {# days}}",
+    "days": "{count, plural, one {day} other {days}}",
     "dayWithCount": "{date}: {count, plural, one {# dream} other {# dreams}}",
     "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "dreams": "{count, plural, one {# dream} other {# dreams}}",
