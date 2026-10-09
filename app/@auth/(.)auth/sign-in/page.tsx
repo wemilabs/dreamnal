@@ -13,6 +13,7 @@ export default function SignInModal() {
           <Link
             href="/auth/sign-up"
             replace
+            scroll={false}
             className="pressable font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
           >
             Start your journal
