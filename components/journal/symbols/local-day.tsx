@@ -1,18 +1,19 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { useSyncExternalStore } from "react";
-
-const dayFmt = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-});
 
 const subscribeNoop = () => () => {};
 
 export function LocalDay({ iso }: { iso: string }) {
+  const locale = useLocale();
   const text = useSyncExternalStore(
     subscribeNoop,
-    () => dayFmt.format(new Date(iso)),
+    () =>
+      new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
+        month: "short",
+        day: "numeric",
+      }).format(new Date(iso)),
     () => null,
   );
 

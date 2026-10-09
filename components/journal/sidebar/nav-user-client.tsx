@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { signOut } from "@/app/auth/actions";
+import { signOut } from "@/app/[locale]/auth/actions";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ export function NavUserClient({
   name: string;
   email: string;
 }) {
+  const t = useTranslations("Journal");
   const { resolvedTheme, setTheme } = useTheme();
   const initials = name.trim()
     ? name
@@ -36,7 +38,7 @@ export function NavUserClient({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Account menu"
+        aria-label={t("accountMenu")}
         render={
           <SidebarMenuButton size="lg">
             <Avatar className="size-8 bg-petal">
@@ -46,7 +48,7 @@ export function NavUserClient({
             </Avatar>
             <span className="flex min-w-0 flex-1 flex-col items-start leading-tight">
               <span className="truncate text-sm font-medium">
-                {name || "Dreamer"}
+                {name || t("dreamer")}
               </span>
               <span className="truncate text-xs text-muted-foreground">
                 {email}
@@ -61,7 +63,7 @@ export function NavUserClient({
           <DropdownMenuLabel>
             <span className="flex flex-col gap-0.5">
               <span className="text-sm font-medium text-foreground">
-                {name || "Dreamer"}
+                {name || t("dreamer")}
               </span>
               <span className="text-xs">{email}</span>
             </span>
@@ -76,11 +78,11 @@ export function NavUserClient({
           >
             <Sun className="dark:hidden" aria-hidden />
             <Moon className="hidden dark:block" aria-hidden />
-            Toggle theme
+            {t("toggleTheme")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => signOut()}>
             <LogOut aria-hidden />
-            Sign out
+            {t("signOut")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

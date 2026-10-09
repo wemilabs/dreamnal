@@ -1,4 +1,5 @@
-import { updateEntry } from "@/app/journal/actions";
+import { getTranslations } from "next-intl/server";
+import { updateEntry } from "@/app/[locale]/journal/actions";
 import type { EntryWithSymbols } from "@/lib/entries";
 import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
@@ -7,7 +8,8 @@ import { EntryForm } from "./entry-form";
 import { MeaningSection } from "./meaning/meaning-section";
 import { SymbolTags } from "./symbols/symbol-tags";
 
-export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
+export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
+  const t = await getTranslations("Entry");
   const duration =
     entry.source === "voice" && entry.audioDurationSeconds != null
       ? formatDuration(entry.audioDurationSeconds)
@@ -31,7 +33,7 @@ export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
         defaultBody={entry.body}
         source={entry.source}
         audioDurationSeconds={entry.audioDurationSeconds}
-        submitLabel="Save changes"
+        submitLabel={t("saveChanges")}
       />
       <MeaningSection entry={entry} />
       <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />

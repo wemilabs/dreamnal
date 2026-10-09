@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import {
   Area,
   AreaChart,
@@ -16,17 +17,12 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import type { InsightsReport } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
+import { useInsightsCopy } from "./use-insights-copy";
 
-const dreamsConfig = {
-  dreams: { label: insightsCopy.timeline.series, color: "var(--chart-1)" },
-} satisfies ChartConfig;
-
-const wordsConfig = {
-  avgWords: { label: insightsCopy.length.series, color: "var(--chart-1)" },
-} satisfies ChartConfig;
-
-const hourLabel = (hour: number) => {
+const hourLabel = (hour: number, locale: string) => {
+  if (locale === "fr") {
+    return `${String(hour).padStart(2, "0")} h`;
+  }
   if (hour === 0) {
     return "12am";
   }
@@ -41,6 +37,10 @@ export function TimelineChart({
 }: {
   timeline: InsightsReport["timeline"];
 }) {
+  const insightsCopy = useInsightsCopy();
+  const dreamsConfig = {
+    dreams: { label: insightsCopy.timeline.series, color: "var(--chart-1)" },
+  } satisfies ChartConfig;
   return (
     <ChartContainer config={dreamsConfig} className="aspect-auto h-56 w-full">
       <BarChart data={timeline} margin={{ left: -20, right: 4 }}>
@@ -70,6 +70,10 @@ export function LengthChart({
 }: {
   timeline: InsightsReport["timeline"];
 }) {
+  const insightsCopy = useInsightsCopy();
+  const wordsConfig = {
+    avgWords: { label: insightsCopy.length.series, color: "var(--chart-1)" },
+  } satisfies ChartConfig;
   return (
     <ChartContainer config={wordsConfig} className="aspect-auto h-48 w-full">
       <AreaChart data={timeline} margin={{ left: -8, right: 4 }}>
@@ -124,8 +128,13 @@ export function HabitCharts({
   hours: number[];
   weekdays: number[];
 }) {
+  const locale = useLocale();
+  const insightsCopy = useInsightsCopy();
+  const dreamsConfig = {
+    dreams: { label: insightsCopy.habits.series, color: "var(--chart-1)" },
+  } satisfies ChartConfig;
   const hourData = hours.map((dreams, hour) => ({
-    label: hourLabel(hour),
+    label: hourLabel(hour, locale),
     dreams,
   }));
   const weekdayData = weekdays.map((dreams, i) => ({

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -38,6 +39,7 @@ const nextConfig: NextConfig = {
     ];
   },
   experimental: {
+    globalNotFound: true,
     serverActions: { bodySizeLimit: "4.5mb" },
     proxyClientMaxBodySize: "4.5mb",
     turbopackRustReactCompiler: true,
@@ -48,4 +50,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+
+export default withNextIntl(nextConfig);

@@ -1,8 +1,8 @@
 "use client";
 
 import { Search } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useCommandMenu } from "@/components/journal/command-menu";
 import {
   isNavItemActive,
@@ -17,17 +17,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Link } from "@/i18n/navigation";
 
-function NavLink({ item, active }: { item: JournalNavItem; active: boolean }) {
+function NavLink({
+  item,
+  active,
+  title,
+}: {
+  item: JournalNavItem;
+  active: boolean;
+  title: string;
+}) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         render={<Link href={item.href} />}
         isActive={active}
-        tooltip={item.title}
+        tooltip={title}
       >
         <item.icon aria-hidden />
-        <span>{item.title}</span>
+        <span>{title}</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
@@ -35,12 +44,14 @@ function NavLink({ item, active }: { item: JournalNavItem; active: boolean }) {
 
 export function JournalNavMain() {
   const pathname = usePathname();
+  const t = useTranslations("Journal");
   return (
     <SidebarMenu>
       {JOURNAL_NAV_ITEMS.map((item) => (
         <NavLink
           key={item.href}
           item={item}
+          title={t(item.titleKey)}
           active={isNavItemActive(item, pathname)}
         />
       ))}
@@ -50,14 +61,18 @@ export function JournalNavMain() {
 
 export function JournalNavBottom() {
   const pathname = usePathname();
+  const t = useTranslations("Journal");
   const { setOpen } = useCommandMenu();
   return (
     <SidebarMenu>
       <InstallAppButton />
       <SidebarMenuItem>
-        <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Search">
+        <SidebarMenuButton
+          onClick={() => setOpen(true)}
+          tooltip={t("navSearch")}
+        >
           <Search aria-hidden />
-          <span>Search</span>
+          <span>{t("navSearch")}</span>
           <Kbd className="ml-auto hidden group-data-[collapsible=icon]:hidden md:inline-flex">
             ⌘K
           </Kbd>
@@ -67,6 +82,7 @@ export function JournalNavBottom() {
         <NavLink
           key={item.href}
           item={item}
+          title={t(item.titleKey)}
           active={isNavItemActive(item, pathname)}
         />
       ))}

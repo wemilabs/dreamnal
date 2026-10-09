@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import type { LabelPair } from "@/lib/insights";
-import { insightsCopy } from "@/lib/insights-copy";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import type { SymbolItem } from "@/lib/symbols/schema";
 import { capitalizeLabel } from "../symbols/label-line";
+import { useSymbolsCopy } from "../symbols/use-symbols-copy";
 import { EmptyChart } from "./chart-card";
+import { useInsightsCopy } from "./use-insights-copy";
 
 const RADIUS = 68;
 const LABEL_OFFSET = 10;
@@ -21,6 +21,8 @@ export function PairsGraph({
   pairs: LabelPair[];
   onSelect: (symbol: SymbolItem) => void;
 }) {
+  const insightsCopy = useInsightsCopy();
+  const symbolsCopy = useSymbolsCopy();
   const [active, setActive] = useState<string | null>(null);
 
   if (pairs.length === 0) {

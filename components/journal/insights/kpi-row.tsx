@@ -1,7 +1,7 @@
 import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
 import type { Delta, InsightsReport, Period } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
 import { cn } from "@/lib/utils";
+import { useInsightsCopy } from "./use-insights-copy";
 
 type Tile = {
   label: string;
@@ -15,6 +15,7 @@ type Tile = {
 const signed = (n: number) => (n > 0 ? `+${n}` : String(n));
 
 function DeltaLine({ tile, period }: { tile: Tile; period: Period }) {
+  const insightsCopy = useInsightsCopy();
   if (tile.delta.previous === null) {
     return null;
   }
@@ -44,6 +45,7 @@ export function KpiRow({
   report: InsightsReport;
   period: Period;
 }) {
+  const insightsCopy = useInsightsCopy();
   const { kpis } = report;
   const pct = (r: number) => Math.round(r * 100);
   const tiles: Tile[] = [

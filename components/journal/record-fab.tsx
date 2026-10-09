@@ -1,11 +1,13 @@
 "use client";
 
 import { Mic } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { cn } from "@/lib/utils";
 
 export function RecordFab() {
+  const t = useTranslations("Journal");
   const { startRecording } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
 
@@ -20,7 +22,7 @@ export function RecordFab() {
       <button
         type="button"
         onClick={() => startRecording()}
-        aria-label="Record a dream"
+        aria-label={t("recordDreamAria")}
         className="pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
       >
         <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   createContext,
   type ReactNode,
@@ -16,7 +16,7 @@ import {
   createEntry,
   type EntryFormState,
   transcribeRecording,
-} from "@/app/journal/actions";
+} from "@/app/[locale]/journal/actions";
 import { ComposerOverlay } from "@/components/journal/composer/composer-overlay";
 import {
   type ComposerState,
@@ -28,6 +28,7 @@ import {
   MAX_AUDIO_BYTES,
 } from "@/components/journal/recorder-mime";
 import { useRecorder } from "@/components/journal/use-recorder";
+import { useRouter } from "@/i18n/navigation";
 import { dayKey } from "@/lib/calendar";
 
 export type ComposerOpenChangeDetails = { cancel: () => void };
@@ -61,6 +62,7 @@ export function useComposer() {
 }
 
 export function ComposerProvider({ children }: { children: ReactNode }) {
+  const t = useTranslations("Composer");
   const [state, dispatch] = useReducer(reduceComposer, initialComposerState);
   const router = useRouter();
   const recorder = useRecorder();
@@ -80,10 +82,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     if (error) {
       dispatch({
         type: "failed",
-        message:
-          error === "denied"
-            ? "We couldn’t reach the mic. Check the permission and try again, or type it instead."
-            : "This browser can’t record audio. Type it instead below.",
+        message: error === "denied" ? t("micError") : t("unsupported"),
       });
       return;
     }
@@ -119,15 +118,14 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
       if (!blob) {
         dispatch({
           type: "failed",
-          message: "Nothing was captured. Try again.",
+          message: t("nothingCaptured"),
         });
         return;
       }
       if (blob.size > MAX_AUDIO_BYTES) {
         dispatch({
           type: "failed",
-          message:
-            "That recording is too long to send. Try a shorter one, or type it instead.",
+          message: t("tooLong"),
         });
         return;
       }
@@ -187,9 +185,9 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
 
   const onSaved = (id: string) => {
     dispatch({ type: "reset" });
-    toast.success("Dream saved", {
+    toast.success(t("saved"), {
       action: {
-        label: "View",
+        label: t("view"),
         onClick: () => router.push(`/journal/${id}`),
       },
     });

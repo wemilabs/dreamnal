@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import {
   createContext,
   useContext,
@@ -8,11 +9,13 @@ import {
   useSyncExternalStore,
 } from "react";
 import type { DayButtonProps } from "react-day-picker";
+import { fr } from "react-day-picker/locale";
 import { CalendarSkeleton } from "@/components/journal/calendar/calendar-skeleton";
 import { DayPanel } from "@/components/journal/calendar/day-panel";
 import { YearHeatmap } from "@/components/journal/calendar/year-heatmap";
 import { Button } from "@/components/ui/button";
 import { Calendar, CalendarDayButton } from "@/components/ui/calendar";
+import type { AppLocale } from "@/i18n/routing";
 import {
   type CalendarDream,
   dayKey,
@@ -23,12 +26,14 @@ import {
   parseMonthKey,
   streaks,
 } from "@/lib/calendar";
-import { calendarCopy } from "@/lib/calendar-copy";
+import {
+  formatCalendarDay,
+  formatCalendarMonthShort,
+} from "@/lib/calendar-copy";
 
 const subscribeNoop = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => null;
-const monthName = new Intl.DateTimeFormat("en-US", { month: "short" });
 const DreamsByDayContext = createContext<Map<string, CalendarDream[]> | null>(
   null,
 );
@@ -45,6 +50,8 @@ function clampMonth(date: Date, earliest: Date, latest: Date): Date {
 }
 
 function CalendarDay({ day, children, ...props }: DayButtonProps) {
+  const locale = useLocale() as AppLocale;
+  const t = useTranslations("Calendar");
   const dreamsByDay = useContext(DreamsByDayContext);
   const key = dayKey(day.date);
   const count = dreamsByDay?.get(key)?.length ?? 0;
@@ -57,7 +64,10 @@ function CalendarDay({ day, children, ...props }: DayButtonProps) {
     <CalendarDayButton
       day={day}
       {...props}
-      aria-label={calendarCopy.dayWithCount(day.date, count)}
+      aria-label={t("dayWithCount", {
+        date: formatCalendarDay(day.date, locale),
+        count,
+      })}
     >
       {children}
       <i
@@ -69,6 +79,8 @@ function CalendarDay({ day, children, ...props }: DayButtonProps) {
 }
 
 export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
+  const locale = useLocale() as AppLocale;
+  const t = useTranslations("Calendar");
   const isReady = useSyncExternalStore(
     subscribeNoop,
     clientSnapshot,
@@ -143,17 +155,19 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
       <div className="grid grid-cols-3 gap-3">
         {[
           {
-            label: calendarCopy.currentStreak,
+            label: t("currentStreak"),
             value: current,
-            unit: calendarCopy.days(current),
+            unit: t("days", { count: current }),
           },
           {
-            label: calendarCopy.longestStreak,
+            label: t("longestStreak"),
             value: longest,
-            unit: calendarCopy.days(longest),
+            unit: t("days", { count: longest }),
           },
           {
-            label: calendarCopy.nightsIn(monthName.format(displayedMonth)),
+            label: t("nightsIn", {
+              month: formatCalendarMonthShort(displayedMonth, locale),
+            }),
             value: monthNights,
             unit: null,
           },
@@ -196,7 +210,7 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
                 size="sm"
                 onClick={goToToday}
               >
-                {calendarCopy.today}
+                {t("today")}
               </Button>
             </div>
             <Calendar
@@ -206,6 +220,7 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
               month={displayedMonth}
               onMonthChange={changeMonth}
               captionLayout="dropdown"
+              locale={locale === "fr" ? fr : undefined}
               startMonth={earliestMonth}
               endMonth={currentMonth}
               disabled={{ after: today }}

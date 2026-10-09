@@ -2,11 +2,11 @@
 
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import type { InsightsReport, SymbolChange } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import type { SymbolItem } from "@/lib/symbols/schema";
 import { capitalizeLabel } from "../symbols/label-line";
+import { useSymbolsCopy } from "../symbols/use-symbols-copy";
 import { EmptyChart } from "./chart-card";
+import { useInsightsCopy } from "./use-insights-copy";
 
 const KIND_COLOR = {
   person: "var(--chart-1)",
@@ -28,6 +28,7 @@ function ChangeList({
   direction: "up" | "down";
   onSelect: (symbol: SymbolItem) => void;
 }) {
+  const insightsCopy = useInsightsCopy();
   const Icon = direction === "up" ? ArrowUpRight : ArrowDownRight;
   return (
     <div className="flex min-w-0 flex-col gap-2">
@@ -68,6 +69,8 @@ export function TopSymbols({
   report: InsightsReport;
   onSelect: (symbol: SymbolItem) => void;
 }) {
+  const insightsCopy = useInsightsCopy();
+  const symbolsCopy = useSymbolsCopy();
   const { topSymbols, rising, fading, range } = report;
   if (topSymbols.length === 0 && rising.length === 0 && fading.length === 0) {
     return <EmptyChart>{insightsCopy.top.empty}</EmptyChart>;

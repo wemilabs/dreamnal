@@ -2,8 +2,7 @@
 
 import { CommandLoading, defaultFilter } from "cmdk";
 import { BookOpen, Mic, Moon, PenLine, Sun } from "lucide-react";
-import type { Route } from "next";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import {
   createContext,
@@ -13,7 +12,7 @@ import {
   useEffectEvent,
   useState,
 } from "react";
-import { getSearchEntries } from "@/app/journal/actions";
+import { getSearchEntries } from "@/app/[locale]/journal/actions";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { JOURNAL_NAV_LINKS } from "@/components/journal/sidebar/nav-items";
 import {
@@ -25,6 +24,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { type AppHref, useRouter } from "@/i18n/navigation";
 import {
   DREAM_VALUE_PREFIX,
   matchSnippet,
@@ -49,6 +49,7 @@ export function useCommandMenu() {
 }
 
 export function CommandMenuProvider({ children }: { children: ReactNode }) {
+  const t = useTranslations("Journal");
   const [open, setOpenState] = useState(false);
   const [search, setSearch] = useState("");
   const [entries, setEntries] = useState<SearchEntry[] | null>(null);
@@ -97,23 +98,21 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
           }
         >
           <CommandInput
-            placeholder="Search dreams, pages, actions…"
+            placeholder={t("commandPlaceholder")}
             value={search}
             onValueChange={setSearch}
           />
           <CommandList className="max-h-[min(18rem,45svh)] overscroll-contain md:max-h-[min(28rem,60svh)]">
             <CommandEmpty>
-              {entries === null && search.trim() !== ""
-                ? ""
-                : "No results found."}
+              {entries === null && search.trim() !== "" ? "" : t("noResults")}
             </CommandEmpty>
             {entries === null && search.trim() !== "" && (
               <CommandLoading className="py-6 text-center text-sm text-muted-foreground">
-                Searching dreams…
+                {t("searchingDreams")}
               </CommandLoading>
             )}
             {search.trim() !== "" && entries !== null && (
-              <CommandGroup heading="Dreams">
+              <CommandGroup heading={t("commandDreams")}>
                 {entries.map((e) => {
                   const title = e.title ?? titleFallback(e.body);
                   const snippet = matchSnippet(e.body, search);
@@ -124,7 +123,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                       keywords={[title, e.body, ...e.labels]}
                       onSelect={() => {
                         close();
-                        router.push(`/journal/${e.id}` as Route);
+                        router.push(`/journal/${e.id}` as AppHref);
                       }}
                     >
                       <BookOpen aria-hidden />
@@ -141,7 +140,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                 })}
               </CommandGroup>
             )}
-            <CommandGroup heading="Actions">
+            <CommandGroup heading={t("commandActions")}>
               <CommandItem
                 value="record a dream"
                 onSelect={() => {
@@ -150,7 +149,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                 }}
               >
                 <Mic aria-hidden />
-                Record a dream
+                {t("recordDream")}
               </CommandItem>
               <CommandItem
                 value="type a dream"
@@ -160,7 +159,7 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                 }}
               >
                 <PenLine aria-hidden />
-                Type a dream
+                {t("typeDream")}
               </CommandItem>
               <CommandItem
                 value="toggle theme"
@@ -171,23 +170,26 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
               >
                 <Sun className="dark:hidden" aria-hidden />
                 <Moon className="hidden dark:block" aria-hidden />
-                Toggle theme
+                {t("toggleTheme")}
               </CommandItem>
             </CommandGroup>
-            <CommandGroup heading="Go to">
-              {JOURNAL_NAV_LINKS.map((item) => (
-                <CommandItem
-                  key={item.href}
-                  value={item.title}
-                  onSelect={() => {
-                    close();
-                    router.push(item.href);
-                  }}
-                >
-                  <item.icon aria-hidden />
-                  {item.title}
-                </CommandItem>
-              ))}
+            <CommandGroup heading={t("goTo")}>
+              {JOURNAL_NAV_LINKS.map((item) => {
+                const title = t(item.titleKey);
+                return (
+                  <CommandItem
+                    key={item.href}
+                    value={title}
+                    onSelect={() => {
+                      close();
+                      router.push(item.href);
+                    }}
+                  >
+                    <item.icon aria-hidden />
+                    {title}
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           </CommandList>
         </Command>

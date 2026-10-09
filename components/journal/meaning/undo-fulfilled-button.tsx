@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState } from "react";
-import { unmarkFulfilled } from "@/app/journal/[id]/meaning-actions";
+import { unmarkFulfilled } from "@/app/[locale]/journal/[id]/meaning-actions";
 
 export function UndoFulfilledButton({ entryId }: { entryId: string }) {
+  const t = useTranslations("Meaning");
   const [state, formAction, pending] = useActionState(unmarkFulfilled, null);
 
   return (
@@ -14,7 +16,7 @@ export function UndoFulfilledButton({ entryId }: { entryId: string }) {
         disabled={pending}
         className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px] disabled:opacity-60"
       >
-        {pending ? "Undoing…" : "Undo fulfillment"}
+        {pending ? t("undoing") : t("undoFulfillment")}
       </button>
       {state?.error ? (
         <p role="alert" className="text-sm/tight text-rec">

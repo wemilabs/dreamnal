@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { authClient } from "@/lib/auth/client";
 
 export function GoogleButton() {
+  const t = useTranslations("Auth");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -16,7 +18,7 @@ export function GoogleButton() {
         newUserCallbackURL: "/journal",
       });
       if (error) {
-        setError("Couldn’t reach Google. Try again in a moment.");
+        setError(t("googleError"));
       }
     });
   };
@@ -29,7 +31,7 @@ export function GoogleButton() {
         disabled={pending}
         className="pressable flex w-full items-center justify-center rounded-full border border-border bg-card px-4 py-2.5 text-control font-medium text-foreground disabled:opacity-60"
       >
-        {pending ? "Redirecting…" : "Continue with Google"}
+        {pending ? t("redirecting") : t("continueWithGoogle")}
       </button>
       {error ? (
         <p role="alert" className="text-sm/tight text-rec">

@@ -1,3 +1,4 @@
+import type { AppLocale } from "@/i18n/routing";
 import { dayKey, monthKey, streaks } from "./calendar.ts";
 import {
   type LabelPair,
@@ -202,21 +203,21 @@ function bucketsFor(range: PeriodRange): BucketDef[] {
   return buckets;
 }
 
-const dayLabel = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-});
-const monthLabel = new Intl.DateTimeFormat("en-US", { month: "short" });
-const monthYearLabel = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  year: "numeric",
-});
-
-function labelBuckets(buckets: BucketDef[]): string[] {
+function labelBuckets(buckets: BucketDef[], locale: AppLocale): string[] {
   const multiYear =
     buckets.length > 0 &&
     buckets[0].start.getFullYear() !==
       buckets[buckets.length - 1].start.getFullYear();
+  const dateLocale = locale === "fr" ? "fr-FR" : "en-US";
+  const dayLabel = new Intl.DateTimeFormat(dateLocale, {
+    month: "short",
+    day: "numeric",
+  });
+  const monthLabel = new Intl.DateTimeFormat(dateLocale, { month: "short" });
+  const monthYearLabel = new Intl.DateTimeFormat(dateLocale, {
+    month: "short",
+    year: "numeric",
+  });
   return buckets.map((b) =>
     b.key.length === 7
       ? (multiYear ? monthYearLabel : monthLabel).format(b.start)
@@ -267,6 +268,7 @@ export function analyzeInsights(
   dreams: InsightDream[],
   period: Period,
   now: Date,
+  locale: AppLocale = "en",
 ): InsightsReport {
   const dated = dreams.map((d) => ({ ...d, date: new Date(d.createdAt) }));
   const earliest = dated.reduce<Date | null>(
@@ -303,7 +305,7 @@ export function analyzeInsights(
     .map((s) => s.label);
 
   const buckets = bucketsFor(range);
-  const labels = labelBuckets(buckets);
+  const labels = labelBuckets(buckets, locale);
   const bucketIndex = new Map(buckets.map((b, i) => [b.key, i]));
   const timeline: TimelinePoint[] = buckets.map((b, i) => ({
     key: b.key,
@@ -456,9 +458,10 @@ export function symbolSeries(
   dreams: InsightDream[],
   range: PeriodRange,
   symbol: { kind: SymbolKind; label: string },
+  locale: AppLocale = "en",
 ): { key: string; label: string; count: number }[] {
   const buckets = bucketsFor(range);
-  const labels = labelBuckets(buckets);
+  const labels = labelBuckets(buckets, locale);
   const series = buckets.map((b, i) => ({
     key: b.key,
     label: labels[i],

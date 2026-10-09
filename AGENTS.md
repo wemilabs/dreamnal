@@ -73,17 +73,31 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
   `GET POST PUT DELETE PATCH`
 - `lib/auth/client.ts` — `"use client"`, `authClient = createAuthClient()` from
   `@neondatabase/auth/next`; Google goes through `authClient.signIn.social`
-- `proxy.ts` (Next 16 middleware) — `auth.middleware({ loginUrl: "/auth/sign-in" })`
-  guards `/journal/*`. GETs on `/`, `/auth/sign-in`, `/auth/sign-up` probe the
-  same middleware against `/journal` (the SDK skips session checks on auth
-  pages) and 307 signed-in users to `/journal`; POSTs (Server Actions) skip
-  the probe
+- `proxy.ts` composes next-intl rewrites with the auth SDK middleware.
+  `/journal` and `/journal/*` requests are guarded, and GETs on `/`,
+  `/auth/sign-in`, and `/auth/sign-up` probe `/journal` to 307 signed-in users
+  there. Auth request-header overrides and `Set-Cookie` values are preserved
+  when requests continue through i18n; Server Action POSTs also pass through
+  i18n. `/api`, `/_next`, `/_vercel`, and dotted static assets bypass the proxy.
 - Google sign-in must pass `newUserCallbackURL` too: Neon sends first-time
   OAuth users there (default `/`) with the session verifier
 - Session: `const { data: session } = await auth.getSession()` — the user is at
   `session?.user`, never a top-level `user`
 - Server actions use `auth.signUp.email`, `auth.signIn.email`, `auth.signOut`;
   each returns `{ data, error }`
+
+## Internationalization
+
+- English and French messages live in `messages/en.json` and
+  `messages/fr.json`; keep their keys in sync. The supported locales are
+  `en` and `fr` (default `en`), with no visible URL prefix. App links and
+  navigation use `i18n/navigation.tsx` so paths remain unprefixed.
+- Server Components get the locale from the hidden `[locale]` route segment
+  through next-intl and `next/root-params`. Do not read cookies or headers for
+  locale during render; static shells must remain static.
+- Server Actions use `getActionLocale()` from `i18n/action-locale.ts`, which
+  validates `x-next-intl-locale`, then `NEXT_LOCALE`, then uses the default
+  locale. The locale cookie lasts one year.
 
 ## Cache Components / DAL
 
@@ -112,9 +126,10 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
   `reveal-out`/`reveal-in`; list titles morph to the entry form via
   `entry-title-${id}` (`share="title-morph"`). Every `<ViewTransition>` uses
   `default="none"`; CSS lives in `app/globals.css` (`vt-*` keyframes)
-- `ensureStatic = "navigation"` guards `/` (`app/page.tsx`), `/auth/*`
-  (`app/auth/layout.tsx`), and `/offline` (`app/offline/page.tsx`). Nothing
-  under `app/journal` exports it, because those routes read the session
+- `ensureStatic = "navigation"` guards `/` (`app/[locale]/page.tsx`),
+  `/auth/*` (`app/[locale]/auth/layout.tsx`), and `/offline`
+  (`app/[locale]/offline/page.tsx`). Nothing under `app/[locale]/journal`
+  exports it, because those routes read the session
 - e2e: `playwright.config.ts` builds with `EXPOSE_TESTING_API=1` and serves
   :3100; `e2e/auth.setup.ts` signs in as `E2E_EMAIL`/`E2E_PASSWORD` (sign-up
   fallback), stores `e2e/.auth/user.json`, seeds one titled entry via the
@@ -172,7 +187,8 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
   shows Add-to-Home-Screen steps on iOS, with an Android fallback steps
   dialog when `beforeinstallprompt` never fires. An `installed` flag set
   from `appinstalled` keeps the button hidden after a browser-menu install
-- `app/offline/page.tsx` — static, outside the `proxy.ts` matcher
+- `app/[locale]/offline/page.tsx` — static offline UI, localized through
+  `proxy.ts`
 - `next.config.ts` sets security headers globally and no-cache + CSP on `/sw.js`
 
 ## Routes
@@ -189,7 +205,8 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 - `/api/auth/[...path]` — Neon Auth handler
 
 Server Actions live next to their routes (`actions.ts`); `proxy.ts` guards
-`/journal/*` and bounces signed-in users off `/` and the auth pages.
+`/journal` and `/journal/*` and bounces signed-in users off `/` and the auth
+pages.
 
 ## Calendar
 
@@ -225,8 +242,8 @@ interprets. Code does all counting.
 - `lib/insights.ts` is pure (relative imports): `labelStats`,
   `keepsComingBack` (≥3), `recurringLabels` (≥2, Symbols page),
   `seenTogether`. Fewer than 3 dreams → empty state
-- UI copy (English) lives in `lib/symbols/copy.ts`; labels stay in the
-  dream's language. Never put a label in a URL
+- UI copy lives in the `Symbols` message namespace; labels stay in the dream's
+  language. Never put a label in a URL
   (Symbols uses `<details>`). Local-time dates and month buckets are computed
   in client components (`LocalDay`, `RhythmStats`)
 - Backfill / repair: `node --env-file=.env.local scripts/extract-symbols.ts [--dry-run]`.
@@ -260,8 +277,8 @@ Stored format: `v1.<b64url iv>.<b64url ct||tag>`.
   `<Suspense>` because it reads search params
 - Top-bar breadcrumbs: client `JournalBreadcrumbs` derives crumbs from
   `usePathname` via `crumbForPathname` in `nav-items.ts`. The entry title comes
-  from the `app/journal/@crumb` parallel slot (`[id]/page.tsx` calls `getEntry`)
-  and reaches `TopBar` as `entryCrumb`
+  from the `app/[locale]/journal/@crumb` parallel slot
+  (`[id]/page.tsx` calls `getEntry`) and reaches `TopBar` as `entryCrumb`
 
 <!-- BEGIN:nextjs-agent-rules -->
 

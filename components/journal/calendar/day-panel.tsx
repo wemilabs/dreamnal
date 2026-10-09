@@ -1,22 +1,29 @@
 "use client";
 
 import { Mic, PenLine } from "lucide-react";
-import type { Route } from "next";
+import { useLocale, useTranslations } from "next-intl";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import type { AppHref } from "@/i18n/navigation";
+import type { AppLocale } from "@/i18n/routing";
 import type { CalendarDream } from "@/lib/calendar";
 import { dayKey, parseDayKey } from "@/lib/calendar";
-import { calendarCopy } from "@/lib/calendar-copy";
+import {
+  formatCalendarDay,
+  formatCalendarMonth,
+  formatCalendarTime,
+} from "@/lib/calendar-copy";
 import { formatDuration } from "@/lib/format";
 
 function DreamRow({ dream }: { dream: CalendarDream }) {
+  const locale = useLocale() as AppLocale;
   const createdAt = new Date(dream.createdAt);
   return (
     <li className="border-b border-border py-3 last:border-0">
       <IntentPrefetchLink
-        href={`/journal/${dream.id}` as Route}
+        href={`/journal/${dream.id}` as AppHref}
         className="pressable flex w-full flex-col items-start gap-1.5"
       >
         <span className="block w-full text-control text-foreground">
@@ -29,7 +36,7 @@ function DreamRow({ dream }: { dream: CalendarDream }) {
             <PenLine className="size-3.5" aria-hidden />
           )}
           <time dateTime={dream.createdAt} className="ml-1.5 tabular-nums">
-            {calendarCopy.time(createdAt)}
+            {formatCalendarTime(createdAt, locale)}
           </time>
           {dream.source === "voice" && dream.audioDurationSeconds != null ? (
             <span> · {formatDuration(dream.audioDurationSeconds)}</span>
@@ -66,6 +73,8 @@ export function DayPanel({
   groups,
   today,
 }: DayPanelProps) {
+  const locale = useLocale() as AppLocale;
+  const t = useTranslations("Calendar");
   const { startRecording, startTyping } = useComposer();
   const selectedDate = selectedDay ? parseDayKey(selectedDay) : null;
   const selectedDreams = selectedDay ? (groups.get(selectedDay) ?? []) : [];
@@ -84,7 +93,7 @@ export function DayPanel({
       {selectedDate ? (
         <>
           <h2 className="text-subhead font-semibold text-foreground">
-            {calendarCopy.dayTitle(selectedDate)}
+            {formatCalendarDay(selectedDate, locale)}
           </h2>
           {selectedDreams.length > 0 ? (
             <ul className="mt-2 flex flex-col">
@@ -94,14 +103,14 @@ export function DayPanel({
             </ul>
           ) : (
             <p className="mt-4 text-control text-muted-foreground">
-              {calendarCopy.noDreamsThisDay}
+              {t("noDreamsThisDay")}
             </p>
           )}
           {selectedDateIsPastOrToday ? (
             <div className="mt-auto pt-6">
               {selectedDay !== dayKey(today) ? (
                 <p className="mb-3 tabular-nums text-xs text-muted-foreground">
-                  {calendarCopy.addDreamForDay}
+                  {t("addDreamForDay")}
                 </p>
               ) : null}
               <div className="flex gap-2">
@@ -114,7 +123,7 @@ export function DayPanel({
                   }
                 >
                   <Mic aria-hidden />
-                  {calendarCopy.record}
+                  {t("record")}
                 </Button>
                 <Button
                   type="button"
@@ -123,7 +132,7 @@ export function DayPanel({
                   onClick={() => startTyping({ day: selectedDay ?? undefined })}
                 >
                   <PenLine aria-hidden />
-                  {calendarCopy.type}
+                  {t("type")}
                 </Button>
               </div>
             </div>
@@ -132,7 +141,7 @@ export function DayPanel({
       ) : (
         <>
           <h2 className="text-subhead font-semibold text-foreground">
-            {calendarCopy.monthTitle(displayedMonth)}
+            {formatCalendarMonth(displayedMonth, locale)}
           </h2>
           {monthGroups.length > 0 ? (
             <div className="mt-2 flex flex-col">
@@ -144,7 +153,7 @@ export function DayPanel({
                     className="border-b border-border py-2 last:border-0"
                   >
                     <h3 className="tabular-nums text-xs text-muted-foreground">
-                      {calendarCopy.dayTitle(date)}
+                      {formatCalendarDay(date, locale)}
                     </h3>
                     <ul className="flex flex-col">
                       {dreams.map((dream) => (
@@ -157,7 +166,7 @@ export function DayPanel({
             </div>
           ) : (
             <p className="mt-4 text-control text-muted-foreground">
-              {calendarCopy.noDreamsThisMonth}
+              {t("noDreamsThisMonth")}
             </p>
           )}
         </>

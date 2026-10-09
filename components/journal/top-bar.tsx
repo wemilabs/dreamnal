@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { useCommandMenu } from "@/components/journal/command-menu";
@@ -11,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function TopBar({ entryCrumb }: { entryCrumb?: ReactNode }) {
+  const t = useTranslations("Journal");
   const { setOpen } = useCommandMenu();
 
   return (
@@ -27,7 +29,7 @@ export function TopBar({ entryCrumb }: { entryCrumb?: ReactNode }) {
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Search"
+          aria-label={t("searchAria")}
           className="md:hidden"
           onClick={() => setOpen(true)}
         >

@@ -1,7 +1,9 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Wordmark } from "@/components/wordmark";
+import { Link } from "@/i18n/navigation";
 
 export function Footer() {
+  const t = useTranslations("Landing");
   return (
     <footer className="flex flex-col items-center gap-4 border-t border-night-line bg-night px-6 py-7 md:flex-row md:justify-between lg:px-16">
       <Link
@@ -15,13 +17,13 @@ export function Footer() {
           href="/"
           className="pressable text-sm/tight text-night-muted hover:text-moon"
         >
-          Privacy
+          {t("privacy")}
         </Link>
         <Link
           href="/"
           className="pressable text-sm/tight text-night-muted hover:text-moon"
         >
-          Terms
+          {t("terms")}
         </Link>
         <span className="font-mono text-[13px] leading-4.5 text-night-muted">
           © 2026

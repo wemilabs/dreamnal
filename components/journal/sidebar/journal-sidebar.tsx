@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import {
   JournalNavBottom,
@@ -18,14 +18,16 @@ import {
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { Wordmark } from "@/components/wordmark";
+import { Link } from "@/i18n/navigation";
 
 export function JournalSidebar() {
+  const t = useTranslations("Journal");
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader className="gap-3 px-3 pt-4 pb-2 group-data-[collapsible=icon]:px-2">
         <Link
           href="/journal"
-          aria-label="Dreamnal"
+          aria-label={t("homeAria")}
           className="pressable flex items-center px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 font-display text-2xl font-medium italic leading-8 tracking-[-0.02em] text-foreground"
         >
           <span className="truncate group-data-[collapsible=icon]:hidden">
@@ -38,7 +40,7 @@ export function JournalSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Journal</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("sidebarGroup")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <Suspense fallback={<SidebarMenuSkeleton showIcon />}>
               <JournalNavMain />
