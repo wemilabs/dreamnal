@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { crumbForPathname } from "@/components/journal/sidebar/nav-items";
@@ -12,7 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export function JournalBreadcrumbs({ entryCrumb }: { entryCrumb?: ReactNode }) {
   const pathname = usePathname();

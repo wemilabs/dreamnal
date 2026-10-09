@@ -1,7 +1,6 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useCommandMenu } from "@/components/journal/command-menu";
 import {
@@ -17,7 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 function NavLink({
   item,
