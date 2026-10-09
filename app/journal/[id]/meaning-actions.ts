@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { updateTag } from "next/cache";
 import { z } from "zod";
 import { db } from "@/db";
@@ -81,10 +81,16 @@ export async function saveMeaning(
   const updated = await db
     .update(dreamEntries)
     .set({ ...values, updatedAt: new Date() })
-    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        isNull(dreamEntries.fulfilledOn),
+      ),
+    )
     .returning({ id: dreamEntries.id });
   if (updated.length === 0) {
-    return { error: notFoundError };
+    return { error: "Undo the fulfillment first" };
   }
 
   updateTag(`entries:${user.id}`);
@@ -164,10 +170,16 @@ export async function markFulfilled(
       meaningConfidence: 100,
       updatedAt: new Date(),
     })
-    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        isNotNull(dreamEntries.meaning),
+      ),
+    )
     .returning({ id: dreamEntries.id });
   if (updated.length === 0) {
-    return { error: notFoundError };
+    return { error: "Save a meaning first." };
   }
 
   updateTag(`entries:${user.id}`);

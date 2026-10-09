@@ -9,7 +9,8 @@ export async function EntryList({
   searchParams: Promise<{ filter?: string | string[] }>;
 }) {
   const params = await searchParams;
-  const filter = parseMeaningFilter(params.filter);
+  const raw = Array.isArray(params.filter) ? params.filter[0] : params.filter;
+  const filter = parseMeaningFilter(raw);
   const entries = await listEntries(filter);
   if (entries.length === 0) {
     if (filter === "interpreted") {
