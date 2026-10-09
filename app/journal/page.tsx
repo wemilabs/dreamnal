@@ -8,11 +8,7 @@ import {
 } from "@/components/journal/filter-chips";
 import { PageFade } from "@/components/journal/page-fade";
 
-export default function JournalPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ filter?: string | string[] }>;
-}) {
+export default function JournalPage() {
   return (
     <PageFade>
       <h1 className="text-page-title font-semibold tracking-tight text-foreground">
@@ -31,7 +27,7 @@ export default function JournalPage({
           }
         >
           <ViewTransition enter="reveal-in" default="none">
-            <EntryList searchParams={searchParams} />
+            <EntryList />
           </ViewTransition>
         </Suspense>
       </div>

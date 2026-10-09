@@ -25,6 +25,19 @@ export function parseMeaningFilter(value: unknown): MeaningFilter {
     : "all";
 }
 
+export function matchesMeaningFilter(
+  entry: { hasMeaning: boolean; fulfilledOn: string | null },
+  filter: MeaningFilter,
+): boolean {
+  if (filter === "all") {
+    return true;
+  }
+  if (filter === "interpreted") {
+    return entry.hasMeaning && entry.fulfilledOn === null;
+  }
+  return entry.fulfilledOn !== null;
+}
+
 export function isConfidence(n: number): n is Confidence {
   return CONFIDENCE_LEVELS.some((level) => level.value === n);
 }

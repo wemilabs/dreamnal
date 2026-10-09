@@ -12,6 +12,7 @@ import {
   CONFIDENCE_LEVELS,
   type Confidence,
   type MeaningFilter,
+  matchesMeaningFilter,
 } from "@/lib/meaning";
 import type { SymbolsPayload } from "@/lib/symbols/schema";
 
@@ -35,15 +36,7 @@ export async function listEntries(filter: MeaningFilter = "all") {
     };
   });
 
-  if (filter === "interpreted") {
-    return entries.filter(
-      (entry) => entry.hasMeaning && entry.fulfilledOn === null,
-    );
-  }
-  if (filter === "fulfilled") {
-    return entries.filter((entry) => entry.fulfilledOn !== null);
-  }
-  return entries;
+  return entries.filter((entry) => matchesMeaningFilter(entry, filter));
 }
 
 export async function listSearchEntries(): Promise<SearchEntry[]> {
