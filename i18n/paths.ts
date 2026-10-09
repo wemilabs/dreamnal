@@ -1,4 +1,4 @@
-import type { AppRoutes } from "@/.next/types/routes";
+import type { AppRoutes } from "@/next-routes";
 
 type Unprefixed<R> = R extends `/[locale]/[...${string}`
   ? never

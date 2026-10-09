@@ -51,15 +51,10 @@ export function YearHeatmap({
   const locale = useLocale() as AppLocale;
   const t = useTranslations("Calendar");
   const weekdayLabels = t.raw("weekdays") as string[];
-  const weekdays = [
-    "",
-    weekdayLabels[1],
-    "",
-    weekdayLabels[3],
-    "",
-    weekdayLabels[5],
-    "",
-  ];
+  const weekdays = weekdayLabels.map((label, day) => ({
+    day,
+    label: day % 2 === 1 ? label : "",
+  }));
   const weeks = weeksInYear(year);
   const yearNights = [...counts].filter(
     ([key, count]) => key.startsWith(`${year}-`) && count > 0,
@@ -122,8 +117,8 @@ export function YearHeatmap({
             className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-0.75 tabular-nums text-xs text-muted-foreground"
             aria-hidden="true"
           >
-            {weekdays.map((label) => (
-              <span key={label} className="flex h-3 items-center leading-3">
+            {weekdays.map(({ day, label }) => (
+              <span key={day} className="flex h-3 items-center leading-3">
                 {label}
               </span>
             ))}

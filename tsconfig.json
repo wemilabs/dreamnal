@@ -20,6 +20,10 @@
       }
     ],
     "paths": {
+      "@/next-routes*": [
+        "./.next/dev/types/routes.d.ts",
+        "./.next/types/routes.d.ts"
+      ],
       "@/*": ["./*"]
     }
   },
