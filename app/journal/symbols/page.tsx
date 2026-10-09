@@ -7,6 +7,8 @@ import { symbolsCopy } from "@/lib/symbols/copy";
 
 export const metadata: Metadata = {
   title: symbolsCopy.symbolsTitle,
+  description:
+    "Every person, place, thing and feeling tagged across your dreams.",
 };
 
 export default function SymbolsPage() {

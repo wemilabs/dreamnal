@@ -3,6 +3,7 @@ import { RetryButton } from "@/components/pwa/retry-button";
 
 export const metadata: Metadata = {
   title: "Offline",
+  description: "Dreamnal needs a connection to transcribe and save dreams.",
   robots: { index: false },
 };
 

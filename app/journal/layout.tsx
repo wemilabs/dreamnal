@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { CommandMenuProvider } from "@/components/journal/command-menu";
 import { ComposerProvider } from "@/components/journal/composer/composer-provider";
 import { RecordFab } from "@/components/journal/record-fab";
@@ -6,6 +7,10 @@ import { TopBar } from "@/components/journal/top-bar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function JournalLayout({
   children,

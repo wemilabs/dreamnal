@@ -4,6 +4,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export const metadata: Metadata = {
   title: "Settings",
+  description: "Profile, recording preferences, and data export.",
 };
 
 export default function SettingsPage() {

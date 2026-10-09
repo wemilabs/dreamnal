@@ -7,6 +7,8 @@ import { symbolsCopy } from "@/lib/symbols/copy";
 
 export const metadata: Metadata = {
   title: symbolsCopy.insightsTitle,
+  description:
+    "The people, places, things and feelings that keep coming back in your dreams, and how many dreams you’ve interpreted.",
 };
 
 export default function InsightsPage() {

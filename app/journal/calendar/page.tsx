@@ -6,6 +6,8 @@ import { PageFade } from "@/components/journal/page-fade";
 
 export const metadata: Metadata = {
   title: "Calendar",
+  description:
+    "Your dreams by day, with your current and longest recording streaks.",
 };
 
 export default function CalendarPage() {

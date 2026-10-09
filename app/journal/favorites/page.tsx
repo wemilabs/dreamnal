@@ -4,6 +4,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export const metadata: Metadata = {
   title: "Favorites",
+  description: "The dreams you starred.",
 };
 
 export default function FavoritesPage() {
