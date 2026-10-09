@@ -143,7 +143,8 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
             )}
             <CommandGroup heading={t("commandActions")}>
               <CommandItem
-                value="record a dream"
+                value={t("recordDream")}
+                keywords={["record a dream"]}
                 onSelect={() => {
                   close();
                   startRecording();
@@ -153,7 +154,8 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                 {t("recordDream")}
               </CommandItem>
               <CommandItem
-                value="type a dream"
+                value={t("typeDream")}
+                keywords={["type a dream"]}
                 onSelect={() => {
                   close();
                   startTyping();
@@ -163,7 +165,8 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                 {t("typeDream")}
               </CommandItem>
               <CommandItem
-                value="toggle theme"
+                value={t("toggleTheme")}
+                keywords={["toggle theme"]}
                 onSelect={() => {
                   close();
                   setTheme(resolvedTheme === "dark" ? "light" : "dark");

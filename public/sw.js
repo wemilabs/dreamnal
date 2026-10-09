@@ -1,4 +1,4 @@
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = `dreamnal-static-${VERSION}`;
 const PAGES_CACHE = `dreamnal-pages-${VERSION}`;
 const CURRENT_CACHES = new Set([STATIC_CACHE, PAGES_CACHE]);
@@ -12,15 +12,28 @@ const PRECACHE_URLS = [
 ];
 const STATIC_ASSET_RE = /\/_next\/static\/[^"'()<>\s\\]+/g;
 
+const refreshOffline = async () => {
+  try {
+    const offlineResponse = await fetch(OFFLINE_URL, { cache: "reload" });
+    if (offlineResponse.ok) {
+      const pages = await caches.open(PAGES_CACHE);
+      await pages.put(OFFLINE_URL, offlineResponse.clone());
+    }
+    return offlineResponse;
+  } catch {
+    return undefined;
+  }
+};
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
-      const offlineResponse = await fetch(OFFLINE_URL, { cache: "reload" });
-      if (!offlineResponse.ok) {
-        throw new Error(`Offline page fetch failed: ${offlineResponse.status}`);
+      const offlineResponse = await refreshOffline();
+      if (!offlineResponse?.ok) {
+        throw new Error(
+          `Offline page fetch failed: ${offlineResponse?.status ?? "unknown"}`,
+        );
       }
-      const pages = await caches.open(PAGES_CACHE);
-      await pages.put(OFFLINE_URL, offlineResponse.clone());
       const html = await offlineResponse.text();
       const assets = new Set(html.match(STATIC_ASSET_RE) ?? []);
       const staticCache = await caches.open(STATIC_CACHE);
@@ -32,6 +45,12 @@ self.addEventListener("install", (event) => {
       await self.skipWaiting();
     })(),
   );
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "refresh-offline") {
+    event.waitUntil(refreshOffline());
+  }
 });
 
 self.addEventListener("activate", (event) => {

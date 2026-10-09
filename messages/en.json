@@ -252,7 +252,7 @@
     "avgWords": "Words per dream",
     "longestStreak": "Longest streak",
     "currentStreak": "Current streak: {count, plural, one {# night} other {# nights}}",
-    "nights": "{count, plural, one {# night} other {# nights}}",
+    "nights": "{count, plural, one {night} other {nights}}",
     "noChange": "No change",
     "timelineTitle": "Dreams over time",
     "dreams": "Dreams",

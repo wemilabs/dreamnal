@@ -252,7 +252,7 @@
     "avgWords": "Mots par rêve",
     "longestStreak": "Plus longue série",
     "currentStreak": "Série actuelle : {count, plural, one {# nuit} other {# nuits}}",
-    "nights": "{count, plural, one {# nuit} other {# nuits}}",
+    "nights": "{count, plural, one {nuit} other {nuits}}",
     "noChange": "Aucun changement",
     "timelineTitle": "Rêves au fil du temps",
     "dreams": "Rêves",

@@ -33,6 +33,9 @@ export function LanguageSwitcher() {
             if (locale === language.locale) return;
             startTransition(async () => {
               await setLocale(language.locale);
+              navigator.serviceWorker?.controller?.postMessage({
+                type: "refresh-offline",
+              });
               router.refresh();
             });
           }}
