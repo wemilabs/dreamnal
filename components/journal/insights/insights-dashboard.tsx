@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { type ReactNode, useState, useSyncExternalStore } from "react";
 import {
   analyzeInsights,
   type InsightDream,
@@ -32,7 +32,13 @@ const rangeFmt = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-export function InsightsDashboard({ dreams }: { dreams: InsightDream[] }) {
+export function InsightsDashboard({
+  dreams,
+  meaning,
+}: {
+  dreams: InsightDream[];
+  meaning: ReactNode;
+}) {
   const isReady = useSyncExternalStore(
     subscribeNoop,
     clientSnapshot,
@@ -134,6 +140,8 @@ export function InsightsDashboard({ dreams }: { dreams: InsightDream[] }) {
           </ChartCard>
         </>
       )}
+
+      {meaning}
 
       <div>
         <Link

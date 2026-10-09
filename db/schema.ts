@@ -1,8 +1,10 @@
 import {
+  date,
   index,
   pgEnum,
   pgTable,
   real,
+  smallint,
   text,
   timestamp,
   uuid,
@@ -23,6 +25,10 @@ export const dreamEntries = pgTable(
     source: entrySource("source").notNull(),
     audioDurationSeconds: real("audio_duration_seconds"),
     symbols: text("symbols"),
+    meaning: text("meaning"),
+    meaningConfidence: smallint("meaning_confidence"),
+    fulfilledOn: date("fulfilled_on", { mode: "string" }),
+    fulfillmentNote: text("fulfillment_note"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

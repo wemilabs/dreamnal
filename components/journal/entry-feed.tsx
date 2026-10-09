@@ -1,12 +1,14 @@
 "use client";
 
-import { Mic, PenLine } from "lucide-react";
+import { Check, Mic, PenLine } from "lucide-react";
 import type { Route } from "next";
 import { useSyncExternalStore, ViewTransition } from "react";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
+import { Badge } from "@/components/ui/badge";
 import { dayKey } from "@/lib/calendar";
 import { formatDuration, titleFallback } from "@/lib/format";
+import { confidenceLabel } from "@/lib/meaning";
 import type { SymbolItem, SymbolKind } from "@/lib/symbols/schema";
 
 export type FeedEntry = {
@@ -17,6 +19,9 @@ export type FeedEntry = {
   audioDurationSeconds: number | null;
   createdAt: string;
   symbols: SymbolItem[];
+  meaningConfidence: number | null;
+  fulfilledOn: string | null;
+  hasMeaning: boolean;
 };
 
 const subscribeNoop = () => () => {};
@@ -120,6 +125,15 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
 }
 
 function EntryCard({ entry }: { entry: FeedEntry }) {
+  const confidence = confidenceLabel(entry.meaningConfidence);
+  const badge = entry.fulfilledOn ? (
+    <Badge variant="secondary">
+      <Check data-icon="inline-start" />
+      Fulfilled
+    </Badge>
+  ) : entry.hasMeaning && confidence ? (
+    <Badge variant="outline">{confidence}</Badge>
+  ) : null;
   const title = (
     <span className="text-lead font-semibold tracking-tight text-foreground sm:text-subhead">
       {entry.title ?? titleFallback(entry.excerpt)}
@@ -136,15 +150,18 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
         <time dateTime={entry.createdAt}>
           {timeFmt.format(new Date(entry.createdAt)).toLowerCase()}
         </time>
-        {entry.source === "voice" ? (
-          <span className="flex items-center gap-1">
-            <Mic className="size-3.5" aria-label="Voice" />
-            {entry.audioDurationSeconds != null &&
-              formatDuration(entry.audioDurationSeconds)}
-          </span>
-        ) : (
-          <PenLine className="size-3.5" aria-label="Typed" />
-        )}
+        <span className="flex items-center gap-2">
+          {badge}
+          {entry.source === "voice" ? (
+            <span className="flex items-center gap-1">
+              <Mic className="size-3.5" aria-label="Voice" />
+              {entry.audioDurationSeconds != null &&
+                formatDuration(entry.audioDurationSeconds)}
+            </span>
+          ) : (
+            <PenLine className="size-3.5" aria-label="Typed" />
+          )}
+        </span>
       </span>
       {entry.title != null ? (
         <ViewTransition
