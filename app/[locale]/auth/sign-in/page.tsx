@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { SignInForm } from "@/components/auth/sign-in-form";
-import { Link } from "@/i18n/navigation";
 
 export default async function SignInPage() {
   const t = await getTranslations("Auth");
@@ -17,12 +16,12 @@ export default async function SignInPage() {
       </div>
       <p className="mt-6 text-sm/tight text-muted-foreground">
         {t("newHere")}{" "}
-        <Link
+        <a
           href="/auth/sign-up"
           className="pressable font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
         >
           {t("startJournal")}
-        </Link>
+        </a>
       </p>
     </>
   );

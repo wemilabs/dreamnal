@@ -85,6 +85,8 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
   `session?.user`, never a top-level `user`
 - Server actions use `auth.signUp.email`, `auth.signIn.email`, `auth.signOut`;
   each returns `{ data, error }`
+- The auth modal slot lives at `app/[locale]/@auth`; direct auth URLs still
+  render the full-page forms.
 
 ## Internationalization
 

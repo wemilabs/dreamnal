@@ -70,6 +70,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({
   children,
+  auth,
 }: LayoutProps<"/[locale]">) {
   const locale = await getLocale();
 
@@ -87,7 +88,10 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            {children}
+            {auth}
+          </NextIntlClientProvider>
         </ThemeProvider>
         <PwaRegistrar />
         <Suspense fallback={null}>

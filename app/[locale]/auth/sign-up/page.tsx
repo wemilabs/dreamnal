@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { SignUpForm } from "@/components/auth/sign-up-form";
-import { Link } from "@/i18n/navigation";
 
 export default async function SignUpPage() {
   const t = await getTranslations("Auth");
@@ -17,12 +16,12 @@ export default async function SignUpPage() {
       </div>
       <p className="mt-6 text-sm/tight text-muted-foreground">
         {t("alreadyKeeping")}{" "}
-        <Link
+        <a
           href="/auth/sign-in"
           className="pressable font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
         >
           {t("signIn")}
-        </Link>
+        </a>
       </p>
     </>
   );

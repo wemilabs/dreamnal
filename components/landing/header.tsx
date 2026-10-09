@@ -23,6 +23,7 @@ export function Header() {
         <ThemeToggle />
         <Link
           href="/auth/sign-in"
+          scroll={false}
           className="pressable hidden text-control font-medium leading-tight whitespace-nowrap text-muted-foreground hover:text-foreground sm:block"
         >
           {t("signIn")}
