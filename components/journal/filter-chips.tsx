@@ -1,33 +1,35 @@
 "use client";
 
-import type { Route } from "next";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
 import { type MeaningFilter, parseMeaningFilter } from "@/lib/meaning";
 
 const filters = [
-  { value: "all", label: "All", href: "/journal" },
+  { value: "all", label: "filterAll", href: "/journal" },
   {
     value: "interpreted",
-    label: "Interpreted",
+    label: "filterInterpreted",
     href: "/journal?filter=interpreted",
   },
   {
     value: "fulfilled",
-    label: "Fulfilled",
+    label: "filterFulfilled",
     href: "/journal?filter=fulfilled",
   },
 ] as const;
 
 export function FilterChipsView({ active }: { active: MeaningFilter | null }) {
+  const t = useTranslations("Journal");
   return (
-    <nav aria-label="Filter dreams" className="mb-6 flex flex-wrap gap-2">
+    <nav aria-label={t("filterAria")} className="mb-6 flex flex-wrap gap-2">
       {filters.map((filter) => {
         const isActive = active === filter.value;
         return (
           <Link
             key={filter.value}
-            href={filter.href as Route}
+            href={filter.href as AppHref}
             aria-current={isActive ? "page" : undefined}
             className={`rounded-full px-3 py-1 text-sm font-medium ${
               isActive
@@ -35,7 +37,7 @@ export function FilterChipsView({ active }: { active: MeaningFilter | null }) {
                 : "border border-border text-muted-foreground hover:text-foreground"
             }`}
           >
-            {filter.label}
+            {t(filter.label)}
           </Link>
         );
       })}

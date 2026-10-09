@@ -1,7 +1,12 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
+import type { AppLocale } from "@/i18n/routing";
 import { dayKey, intensity, parseDayKey } from "@/lib/calendar";
-import { calendarCopy } from "@/lib/calendar-copy";
+import {
+  formatCalendarDay,
+  formatCalendarMonthShort,
+} from "@/lib/calendar-copy";
 
 const levelClasses = {
   0: "bg-muted",
@@ -43,6 +48,18 @@ export function YearHeatmap({
   today,
   onSelectDay,
 }: YearHeatmapProps) {
+  const locale = useLocale() as AppLocale;
+  const t = useTranslations("Calendar");
+  const weekdayLabels = t.raw("weekdays") as string[];
+  const weekdays = [
+    "",
+    weekdayLabels[1],
+    "",
+    weekdayLabels[3],
+    "",
+    weekdayLabels[5],
+    "",
+  ];
   const weeks = weeksInYear(year);
   const yearNights = [...counts].filter(
     ([key, count]) => key.startsWith(`${year}-`) && count > 0,
@@ -52,7 +69,10 @@ export function YearHeatmap({
     const firstWeek = weeks.findIndex((week) =>
       week.some((day) => day.key === dayKey(firstDay)),
     );
-    return { column: firstWeek, label: calendarCopy.monthShort(firstDay) };
+    return {
+      column: firstWeek,
+      label: formatCalendarMonthShort(firstDay, locale),
+    };
   });
 
   return (
@@ -60,7 +80,7 @@ export function YearHeatmap({
       <div className="flex items-baseline justify-between gap-4">
         <h2 className="text-subhead font-semibold text-foreground">{year}</h2>
         <p className="text-control text-muted-foreground">
-          {calendarCopy.nights(yearNights)}
+          {t("nights", { count: yearNights })}
         </p>
       </div>
       <div
@@ -102,8 +122,8 @@ export function YearHeatmap({
             className="mt-6 grid w-6 shrink-0 grid-rows-7 gap-y-0.75 tabular-nums text-xs text-muted-foreground"
             aria-hidden="true"
           >
-            {calendarCopy.heatmapWeekdays.map(({ key, label }) => (
-              <span key={key} className="flex h-3 items-center leading-3">
+            {weekdays.map((label) => (
+              <span key={label} className="flex h-3 items-center leading-3">
                 {label}
               </span>
             ))}
@@ -148,8 +168,14 @@ export function YearHeatmap({
                             ? "cursor-default opacity-30"
                             : "cursor-pointer hover:ring-1 hover:ring-ring focus-visible:outline-2 focus-visible:outline-ring"
                         }`}
-                        aria-label={calendarCopy.dayWithCount(date, count)}
-                        title={calendarCopy.dayWithCount(date, count)}
+                        aria-label={t("dayWithCount", {
+                          date: formatCalendarDay(date, locale),
+                          count,
+                        })}
+                        title={t("dayWithCount", {
+                          date: formatCalendarDay(date, locale),
+                          count,
+                        })}
                       />
                     );
                   })}
@@ -160,7 +186,7 @@ export function YearHeatmap({
         </div>
       </div>
       <div className="flex items-center justify-end gap-2 tabular-nums text-xs text-muted-foreground">
-        <span>{calendarCopy.less}</span>
+        <span>{t("less")}</span>
         {[0, 1, 2, 3].map((level) => (
           <span
             key={level}
@@ -168,7 +194,7 @@ export function YearHeatmap({
             aria-hidden="true"
           />
         ))}
-        <span>{calendarCopy.more}</span>
+        <span>{t("more")}</span>
       </div>
     </section>
   );

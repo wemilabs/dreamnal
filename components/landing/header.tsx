@@ -1,8 +1,10 @@
-import Link from "next/link";
-import { Wordmark } from "@/components/wordmark";
+import { useTranslations } from "next-intl";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Wordmark } from "@/components/wordmark";
+import { Link } from "@/i18n/navigation";
 
 export function Header() {
+  const t = useTranslations("Landing");
   return (
     <header className="relative z-10 flex items-center justify-between px-6 py-7 lg:px-16">
       <Link
@@ -16,7 +18,7 @@ export function Header() {
           href="#how-it-works"
           className="pressable hidden text-control font-medium leading-tight whitespace-nowrap text-muted-foreground hover:text-foreground sm:block"
         >
-          How it works
+          {t("howItWorks")}
         </a>
         <ThemeToggle />
         <Link
@@ -24,13 +26,13 @@ export function Header() {
           scroll={false}
           className="pressable hidden text-control font-medium leading-tight whitespace-nowrap text-muted-foreground hover:text-foreground sm:block"
         >
-          Sign in
+          {t("signIn")}
         </Link>
         <Link
           href="/journal"
           className="pressable flex shrink-0 items-center rounded-full bg-primary px-4.5 py-2.5 text-control font-semibold leading-tight whitespace-nowrap text-primary-foreground"
         >
-          Start your journal
+          {t("startJournal")}
         </Link>
       </nav>
     </header>

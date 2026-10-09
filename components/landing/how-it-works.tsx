@@ -1,4 +1,5 @@
 import { Mic } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 function RecordVignette() {
   return (
@@ -11,17 +12,18 @@ function RecordVignette() {
 }
 
 function ReadBackVignette() {
+  const t = useTranslations("Landing");
   return (
     <div className="flex h-30 shrink-0 flex-col justify-center gap-1.5 rounded-[16px] bg-background px-7">
       <span className="font-display text-lead text-muted-foreground">
-        …a lighthouse made of
+        {t("sampleCorrection")}
       </span>
       <div className="flex items-center gap-2">
         <span className="font-display text-lead text-muted-foreground line-through decoration-muted-foreground/60 decoration-1 [text-underline-position:from-font]">
-          glass ware
+          {t("sampleWrong")}
         </span>
         <span className="rounded-[4px] bg-petal/60 px-1.5 font-display text-lead text-foreground">
-          glassware
+          {t("sampleRight")}
         </span>
         <span className="h-5.5 w-0.5 shrink-0 bg-foreground" />
       </div>
@@ -30,14 +32,15 @@ function ReadBackVignette() {
 }
 
 function KeepVignette() {
+  const t = useTranslations("Landing");
   return (
     <div className="flex h-30 shrink-0 items-center rounded-[16px] bg-background px-7">
       <div className="flex w-full flex-col gap-1.5 rounded-md border border-border bg-card px-4.5 py-3.5">
         <span className="font-mono text-xs leading-4 text-muted-foreground">
-          Tue 6 Oct
+          {t("sampleDate")}
         </span>
         <span className="font-display text-lead text-foreground">
-          The hallway to the sea
+          {t("sampleEntryTitle")}
         </span>
       </div>
     </div>
@@ -45,47 +48,48 @@ function KeepVignette() {
 }
 
 type Step = {
-  label: string;
-  title: string;
-  body: string;
+  label: "stepOne" | "stepTwo" | "stepThree";
+  title: "stepOneTitle" | "stepTwoTitle" | "stepThreeTitle";
+  body: "stepOneBody" | "stepTwoBody" | "stepThreeBody";
   Vignette: () => React.ReactNode;
 };
 
 const STEPS: Step[] = [
   {
-    label: "01 — Record",
-    title: "Talk, eyes still closed",
-    body: "One tap starts recording. Ramble, pause, go back. Nothing you say is wasted.",
+    label: "stepOne",
+    title: "stepOneTitle",
+    body: "stepOneBody",
     Vignette: RecordVignette,
   },
   {
-    label: "02 — Read it back",
-    title: "Fix what it misheard",
-    body: "Grok turns your voice into text in seconds. Edit it like any note, or add what came back to you.",
+    label: "stepTwo",
+    title: "stepTwoTitle",
+    body: "stepTwoBody",
     Vignette: ReadBackVignette,
   },
   {
-    label: "03 — Keep",
-    title: "Save it to your journal",
-    body: "Every entry is dated and kept private to your account. Scroll back and watch the patterns surface.",
+    label: "stepThree",
+    title: "stepThreeTitle",
+    body: "stepThreeBody",
     Vignette: KeepVignette,
   },
 ];
 
 function StepCard({ step }: { step: Step }) {
+  const t = useTranslations("Landing");
   const { Vignette } = step;
   return (
     <div className="flex grow basis-0 flex-col gap-5 border-t border-border pt-6">
       <span className="font-mono text-[13px] leading-4.5 text-fold">
-        {step.label}
+        {t(step.label)}
       </span>
       <Vignette />
       <div className="flex flex-col gap-2">
         <h3 className="text-subhead font-semibold text-foreground">
-          {step.title}
+          {t(step.title)}
         </h3>
         <p className="text-base leading-6.25 text-muted-foreground">
-          {step.body}
+          {t(step.body)}
         </p>
       </div>
     </div>
@@ -93,6 +97,7 @@ function StepCard({ step }: { step: Step }) {
 }
 
 export function HowItWorks() {
+  const t = useTranslations("Landing");
   return (
     <section
       id="how-it-works"
@@ -100,10 +105,10 @@ export function HowItWorks() {
     >
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <h2 className="w-full max-w-155 shrink-0 font-display text-headline tracking-[-0.03em] text-foreground">
-          Three steps, while you’re still half-asleep.
+          {t("threeSteps")}
         </h2>
         <p className="w-full max-w-102.75 shrink-0 text-lead text-muted-foreground">
-          No forms, no folders to pick. Talk first and tidy up later, or never.
+          {t("stepsDescription")}
         </p>
       </div>
       <div className="flex flex-col gap-10 md:flex-row md:gap-10">

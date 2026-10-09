@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { PageFade } from "@/components/journal/page-fade";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,6 +20,7 @@ export function PlaceholderPage({
   description: string;
   icon: LucideIcon;
 }) {
+  const t = useTranslations("Journal");
   return (
     <PageFade>
       <h1 className="text-page-title font-semibold tracking-tight text-foreground">
@@ -33,7 +35,7 @@ export function PlaceholderPage({
           <EmptyDescription>{description}</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Badge variant="secondary">Coming soon</Badge>
+          <Badge variant="secondary">{t("comingSoon")}</Badge>
         </EmptyContent>
       </Empty>
     </PageFade>

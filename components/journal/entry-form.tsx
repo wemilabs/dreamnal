@@ -1,7 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState, useState, ViewTransition } from "react";
-import type { EntryFormState } from "@/app/journal/actions";
+import type { EntryFormState } from "@/app/[locale]/journal/actions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -12,7 +13,7 @@ type EntryFormProps = {
   defaultBody?: string;
   source: "voice" | "text";
   audioDurationSeconds?: number | null;
-  submitLabel: string;
+  submitLabel?: string;
   pendingLabel?: string;
   onRecordAgain?: () => void;
   recordLabel?: string;
@@ -42,14 +43,15 @@ export function EntryForm({
   source,
   audioDurationSeconds,
   submitLabel,
-  pendingLabel = "Saving…",
+  pendingLabel,
   onRecordAgain,
-  recordLabel = "Record again",
+  recordLabel,
   onDiscard,
   onTitleChange,
   onBodyChange,
   titleTransitionName,
 }: EntryFormProps) {
+  const t = useTranslations("Entry");
   const [state, formAction, pending] = useActionState(action, null);
   const [body, setBody] = useState(defaultBody);
   const words = body.trim() ? body.trim().split(/\s+/).length : 0;
@@ -60,8 +62,8 @@ export function EntryForm({
       autoComplete="off"
       defaultValue={defaultTitle ?? ""}
       onChange={(e) => onTitleChange?.(e.target.value)}
-      placeholder="Give it a name…"
-      aria-label="Title"
+      placeholder={t("titlePlaceholder")}
+      aria-label={t("titleAria")}
       maxLength={120}
       className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-subhead font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-cta placeholder:font-normal placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title md:placeholder:text-subhead"
     />
@@ -110,16 +112,16 @@ export function EntryForm({
           }}
           autoFocus={!defaultBody}
           required
-          aria-label="Dream"
+          aria-label={t("dreamAria")}
           autoComplete="off"
           autoCapitalize="sentences"
           enterKeyHint="enter"
-          placeholder="Start with the last thing you remember…"
+          placeholder={t("bodyPlaceholder")}
           className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead"
         />
         <div className="flex items-center justify-between">
           <span className="tabular-nums text-xs text-muted-foreground">
-            {words} {words === 1 ? "word" : "words"}
+            {t("wordCount", { count: words })}
           </span>
           {state?.fieldErrors?.body?.[0] ? (
             <p role="alert" className="text-sm/tight text-rec">
@@ -141,7 +143,7 @@ export function EntryForm({
           disabled={pending}
           className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground disabled:opacity-60"
         >
-          {pending ? pendingLabel : submitLabel}
+          {pending ? (pendingLabel ?? t("saving")) : (submitLabel ?? t("save"))}
         </button>
         {onRecordAgain ? (
           <button
@@ -149,7 +151,7 @@ export function EntryForm({
             onClick={onRecordAgain}
             className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
           >
-            {recordLabel}
+            {recordLabel ?? t("recordAgain")}
           </button>
         ) : null}
         {onDiscard ? (
@@ -158,7 +160,7 @@ export function EntryForm({
             onClick={onDiscard}
             className="pressable text-control font-medium text-rec underline decoration-rec/30 underline-offset-[5px]"
           >
-            Discard
+            {t("discard")}
           </button>
         ) : null}
       </div>

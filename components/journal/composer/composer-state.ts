@@ -104,12 +104,3 @@ export function reduceComposer(
       return { ...initialComposerState };
   }
 }
-
-export const STATUS_TEXT: Record<Phase, string> = {
-  idle: "Ready to record",
-  starting: "Starting",
-  recording: "Recording",
-  transcribing: "Transcribing",
-  editing: "Editing entry",
-  error: "Error",
-};

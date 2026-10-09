@@ -1,13 +1,18 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 export function TranscribingCard({ className }: { className?: string }) {
+  const t = useTranslations("Composer");
+
   return (
     <div className={cn("flex w-full flex-col gap-6", className)}>
       <div className="flex items-center gap-2.5">
         <span className="rec-dot size-2 shrink-0 rounded-full bg-fold" />
         <span className="text-sm/tight font-semibold text-foreground">
-          Writing it down…
+          {t("writingItDown")}
         </span>
       </div>
       <div className="flex flex-col gap-2.5" aria-hidden="true">

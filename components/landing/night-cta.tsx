@@ -1,6 +1,8 @@
+import { useTranslations } from "next-intl";
 import { RecordCta } from "./record-cta";
 
 export function NightCta() {
+  const t = useTranslations("Landing");
   return (
     <section
       className="flex flex-col items-center gap-8 overflow-clip px-6 pt-36 pb-32 lg:px-16"
@@ -10,22 +12,21 @@ export function NightCta() {
       }}
     >
       <span className="font-mono text-[13px] leading-4.5 text-night-muted">
-        Tonight
+        {t("tonight")}
       </span>
       <h2 className="flex flex-col items-center font-display">
         <span className="flex flex-wrap justify-center text-center text-night-cta tracking-display text-moon">
-          Leave it open
+          {t("nightTitle")}
         </span>
         <span className="flex flex-wrap justify-center text-center text-night-cta italic tracking-[-0.03em] text-petal">
-          by the bed.
+          {t("nightTitleAccent")}
         </span>
       </h2>
       <p className="flex w-115 max-w-full flex-wrap justify-center text-center text-lead text-night-muted">
-        Night mode keeps the screen dim, so checking it at 3 AM won’t wake you
-        up all the way.
+        {t("nightDescription")}
       </p>
       <RecordCta tone="moon" href="/journal">
-        Start your journal
+        {t("startJournal")}
       </RecordCta>
     </section>
   );

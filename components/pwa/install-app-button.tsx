@@ -1,39 +1,31 @@
 "use client";
 
 import { Download, EllipsisVertical, Share, SquarePlus } from "lucide-react";
-import {
-  type InstallStep,
-  InstallStepsItem,
-} from "@/components/pwa/install-steps-item";
+import { useTranslations } from "next-intl";
+import { InstallStepsItem } from "@/components/pwa/install-steps-item";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { promptInstall, useInstallStatus } from "@/lib/pwa/install-prompt";
 
-const IOS_STEPS: InstallStep[] = [
-  { icon: Share, text: "Tap Share in Safari’s toolbar." },
-  { icon: SquarePlus, text: "Tap “Add to Home Screen”." },
-];
-
-const ANDROID_STEPS: InstallStep[] = [
-  { icon: EllipsisVertical, text: "Open your browser’s menu (⋮)." },
-  { icon: SquarePlus, text: "Tap “Install app” or “Add to Home screen”." },
-];
-
 export function InstallAppButton() {
+  const t = useTranslations("Pwa");
   const status = useInstallStatus();
+  const iosSteps = [
+    { icon: Share, text: t("safariShare") },
+    { icon: SquarePlus, text: t("addToHomeScreen") },
+  ];
+  const androidSteps = [
+    { icon: EllipsisVertical, text: t("browserMenu") },
+    { icon: SquarePlus, text: t("installOrAdd") },
+  ];
 
   if (status === "ios") {
-    return (
-      <InstallStepsItem
-        description="Keep your journal on the Home Screen."
-        steps={IOS_STEPS}
-      />
-    );
+    return <InstallStepsItem description={t("keepJournal")} steps={iosSteps} />;
   }
   if (status === "android") {
     return (
       <InstallStepsItem
-        description="Keep your journal on your Home screen. Already installed? Open it from there."
-        steps={ANDROID_STEPS}
+        description={t("alreadyInstalled")}
+        steps={androidSteps}
       />
     );
   }
@@ -44,10 +36,10 @@ export function InstallAppButton() {
     <SidebarMenuItem>
       <SidebarMenuButton
         onClick={() => void promptInstall()}
-        tooltip="Install app"
+        tooltip={t("install")}
       >
         <Download aria-hidden />
-        <span>Install app</span>
+        <span>{t("install")}</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

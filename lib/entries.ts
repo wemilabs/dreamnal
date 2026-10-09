@@ -83,7 +83,7 @@ export type MeaningStats = {
   interpreted: number;
   fulfilled: number;
   avgDaysToFulfillment: number | null;
-  byConfidence: { value: Confidence; label: string; count: number }[];
+  byConfidence: { value: Confidence; count: number }[];
 };
 
 export async function getMeaningStats(): Promise<MeaningStats> {
@@ -141,9 +141,8 @@ async function getMeaningStatsForUser(userId: string): Promise<MeaningStats> {
       totals?.avgDaysToFulfillment == null
         ? null
         : Number(totals.avgDaysToFulfillment),
-    byConfidence: CONFIDENCE_LEVELS.map(({ value, label }) => ({
+    byConfidence: CONFIDENCE_LEVELS.map(({ value }) => ({
       value,
-      label,
       count: counts.get(value) ?? 0,
     })),
   };

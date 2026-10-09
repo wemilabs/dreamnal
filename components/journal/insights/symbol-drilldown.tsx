@@ -1,7 +1,6 @@
 "use client";
 
-import type { Route } from "next";
-import Link from "next/link";
+import { useLocale } from "next-intl";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   type ChartConfig,
@@ -24,25 +23,18 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "@/i18n/navigation";
+import type { AppHref } from "@/i18n/paths";
+import type { AppLocale } from "@/i18n/routing";
 import {
   type InsightDream,
   type PeriodRange,
   symbolSeries,
 } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import type { SymbolItem } from "@/lib/symbols/schema";
 import { capitalizeLabel } from "../symbols/label-line";
-
-const config = {
-  count: { label: insightsCopy.drilldown.series, color: "var(--chart-1)" },
-} satisfies ChartConfig;
-
-const dateFmt = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
+import { useSymbolsCopy } from "../symbols/use-symbols-copy";
+import { useInsightsCopy } from "./use-insights-copy";
 
 const hasSymbol = (dream: InsightDream, symbol: SymbolItem) =>
   dream.symbols.some((s) => s.kind === symbol.kind && s.label === symbol.label);
@@ -56,6 +48,20 @@ function DrilldownBody({
   dreams: InsightDream[];
   range: PeriodRange;
 }) {
+  const locale = useLocale() as AppLocale;
+  const insightsCopy = useInsightsCopy();
+  const symbolsCopy = useSymbolsCopy();
+  const config = {
+    count: {
+      label: insightsCopy.drilldown.series,
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig;
+  const dateFmt = new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
   const all = dreams
     .filter((d) => hasSymbol(d, symbol))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -63,7 +69,7 @@ function DrilldownBody({
     const t = new Date(d.createdAt);
     return t >= range.start && t < range.end;
   });
-  const series = symbolSeries(dreams, range, symbol);
+  const series = symbolSeries(dreams, range, symbol, locale);
   const first = all.at(-1);
   const last = all[0];
 
@@ -119,7 +125,7 @@ function DrilldownBody({
           {inPeriod.map((dream) => (
             <li key={dream.id}>
               <Link
-                href={`/journal/${dream.id}` as Route}
+                href={`/journal/${dream.id}` as AppHref}
                 className="pressable flex items-baseline justify-between gap-3 border-b border-border py-2.5"
               >
                 <span className="truncate text-control text-foreground">
@@ -151,6 +157,7 @@ export function SymbolDrilldown({
   range: PeriodRange;
 }) {
   const isMobile = useIsMobile();
+  const insightsCopy = useInsightsCopy();
   const title = symbol ? capitalizeLabel(symbol.label) : "";
   const kind = symbol ? insightsCopy.kindNames[symbol.kind] : "";
   const body = symbol ? (

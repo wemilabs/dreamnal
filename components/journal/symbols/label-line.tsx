@@ -1,5 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { LabelStat } from "@/lib/insights";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import { LocalDay } from "./local-day";
 
 export function capitalizeLabel(label: string): string {
@@ -7,10 +9,11 @@ export function capitalizeLabel(label: string): string {
 }
 
 export function LabelLine({ stat }: { stat: LabelStat }) {
+  const t = useTranslations("Symbols");
   return (
     <>
-      {capitalizeLabel(stat.label)}: {symbolsCopy.dreams(stat.count)},{" "}
-      {symbolsCopy.lastOn} <LocalDay iso={stat.lastAt} />
+      {capitalizeLabel(stat.label)}: {t("dreams", { count: stat.count })},{" "}
+      {t("lastOn")} <LocalDay iso={stat.lastAt} />
     </>
   );
 }

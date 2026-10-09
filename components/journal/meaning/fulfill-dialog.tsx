@@ -1,7 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
-import { markFulfilled } from "@/app/journal/[id]/meaning-actions";
+import { markFulfilled } from "@/app/[locale]/journal/[id]/meaning-actions";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ function FulfillForm({
   entryId: string;
   createdAt: string;
 }) {
+  const t = useTranslations("Meaning");
   const [state, formAction, pending] = useActionState(markFulfilled, null);
   const min = dayKey(new Date(createdAt));
   const max = dayKey(new Date());
@@ -36,7 +38,7 @@ function FulfillForm({
     <form action={formAction} className="flex flex-col gap-4">
       <input type="hidden" name="id" value={entryId} />
       <label className="flex flex-col gap-2 text-control text-muted-foreground">
-        <span>When did it happen?</span>
+        <span>{t("fulfillmentWhen")}</span>
         <input
           type="date"
           name="fulfilledOn"
@@ -59,12 +61,12 @@ function FulfillForm({
       </label>
 
       <div className="flex flex-col gap-2 text-control text-muted-foreground">
-        <label htmlFor="fulfillment-note">What happened? (optional)</label>
+        <label htmlFor="fulfillment-note">{t("fulfillmentWhat")}</label>
         <Textarea
           id="fulfillment-note"
           name="note"
           maxLength={2000}
-          placeholder="The dream played out when…"
+          placeholder={t("fulfillmentPlaceholder")}
           autoComplete="off"
           className="min-h-24 resize-none rounded-lg border border-border bg-card/60 p-4 text-sm md:text-control"
         />
@@ -86,7 +88,7 @@ function FulfillForm({
         disabled={pending}
         className="pressable w-fit rounded-full bg-primary px-5 py-2 text-control font-semibold text-primary-foreground disabled:opacity-60"
       >
-        {pending ? "Confirming…" : "Confirm"}
+        {pending ? t("confirming") : t("confirm")}
       </button>
     </form>
   );
@@ -103,6 +105,7 @@ export function FulfillDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useTranslations("Meaning");
   const isMobile = useIsMobile();
 
   if (isMobile) {
@@ -111,10 +114,10 @@ export function FulfillDialog({
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
             <DrawerTitle className="text-2xl font-semibold tracking-tight">
-              It came true?
+              {t("fulfillTitle")}
             </DrawerTitle>
             <DrawerDescription className="sr-only">
-              Record a date and an optional note for this entry.
+              {t("fulfillDescription")}
             </DrawerDescription>
           </DrawerHeader>
           {open ? (
@@ -132,10 +135,10 @@ export function FulfillDialog({
       <DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold tracking-tight">
-            It came true?
+            {t("fulfillTitle")}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Record a date and an optional note for this entry.
+            {t("fulfillDescription")}
           </DialogDescription>
         </DialogHeader>
         {open ? <FulfillForm entryId={entryId} createdAt={createdAt} /> : null}

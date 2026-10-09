@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { updateEntry } from "@/app/journal/actions";
+import { getTranslations } from "next-intl/server";
+import { updateEntry } from "@/app/[locale]/journal/actions";
+import { Link } from "@/i18n/navigation";
 import type { EntryWithSymbols } from "@/lib/entries";
 import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
@@ -9,7 +10,8 @@ import { EntryForm } from "./entry-form";
 import { MeaningSection } from "./meaning/meaning-section";
 import { SymbolTags } from "./symbols/symbol-tags";
 
-export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
+export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
+  const t = await getTranslations("Entry");
   const duration =
     entry.source === "voice" && entry.audioDurationSeconds != null
       ? formatDuration(entry.audioDurationSeconds)
@@ -21,7 +23,7 @@ export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
         <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/journal"
-            aria-label="Back to journal"
+            aria-label={t("backToJournal")}
             className="pressable grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" aria-hidden />
@@ -42,7 +44,7 @@ export function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
         defaultBody={entry.body}
         source={entry.source}
         audioDurationSeconds={entry.audioDurationSeconds}
-        submitLabel="Save changes"
+        submitLabel={t("saveChanges")}
       />
       <MeaningSection entry={entry} />
       <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />

@@ -1,9 +1,10 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { ComposerBody } from "@/components/journal/composer/composer-body";
 import { useComposer } from "@/components/journal/composer/composer-provider";
-import { STATUS_TEXT } from "@/components/journal/composer/composer-state";
+import type { Phase } from "@/components/journal/composer/composer-state";
 import {
   Dialog,
   DialogContent,
@@ -19,19 +20,21 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { AppLocale } from "@/i18n/routing";
 import { dayKey, parseDayKey } from "@/lib/calendar";
-import { calendarCopy } from "@/lib/calendar-copy";
+import { formatCalendarDayShort } from "@/lib/calendar-copy";
 
 const MIN_DAY = "2000-01-01";
 
 function ComposerDateField() {
   const { state, setBackdateDay } = useComposer();
+  const t = useTranslations("Composer");
   const today = dayKey(new Date());
 
   return (
     <label className="flex w-fit items-center gap-2 text-control text-muted-foreground">
       <CalendarDays aria-hidden className="size-4 shrink-0" />
-      <span className="sr-only">Date of the dream</span>
+      <span className="sr-only">{t("dateAria")}</span>
       <input
         type="date"
         min={MIN_DAY}
@@ -50,21 +53,25 @@ function ComposerDateField() {
 }
 
 export function ComposerOverlay() {
+  const locale = useLocale() as AppLocale;
+  const t = useTranslations("Composer");
   const { state, onOpenChange } = useComposer();
   const isMobile = useIsMobile();
-  const status = STATUS_TEXT[state.phase];
+  const statuses: Record<Phase, string> = {
+    idle: t("ready"),
+    starting: t("starting"),
+    recording: t("recording"),
+    transcribing: t("transcribing"),
+    editing: t("editing"),
+    error: t("error"),
+  };
+  const status = statuses[state.phase];
   const backdate = state.backdateDay ? parseDayKey(state.backdateDay) : null;
   const backdateLabel =
     state.phase !== "editing" &&
     backdate &&
     state.backdateDay !== dayKey(new Date())
-      ? calendarCopy.forDay(
-          new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-          }).format(backdate),
-        )
+      ? t("forDay", { date: formatCalendarDayShort(backdate, locale) })
       : null;
 
   if (isMobile) {
@@ -73,7 +80,7 @@ export function ComposerOverlay() {
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
             <DrawerTitle className="text-2xl font-semibold tracking-tight">
-              New dream
+              {t("newDream")}
             </DrawerTitle>
             {state.phase === "editing" ? (
               <ComposerDateField />
@@ -104,7 +111,7 @@ export function ComposerOverlay() {
       >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold tracking-tight">
-            New dream
+            {t("newDream")}
           </DialogTitle>
           {state.phase === "editing" ? (
             <ComposerDateField />

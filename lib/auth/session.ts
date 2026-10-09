@@ -1,6 +1,6 @@
 import "server-only";
 
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/redirect";
 import { auth } from "./server";
 
 export type SessionUser = {

@@ -8,10 +8,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import type { InsightsReport } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
 import type { SymbolItem } from "@/lib/symbols/schema";
 import { capitalizeLabel } from "../symbols/label-line";
 import { EmptyChart } from "./chart-card";
+import { useInsightsCopy } from "./use-insights-copy";
 
 const COLORS = [
   "var(--chart-1)",
@@ -30,6 +30,7 @@ export function ToneChart({
   feelings: string[];
   onSelect: (symbol: SymbolItem) => void;
 }) {
+  const insightsCopy = useInsightsCopy();
   if (feelings.length === 0) {
     return <EmptyChart>{insightsCopy.tone.empty}</EmptyChart>;
   }

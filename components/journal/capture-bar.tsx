@@ -1,6 +1,7 @@
 "use client";
 
 import { Keyboard, Mic } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSyncExternalStore } from "react";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 
@@ -48,6 +49,8 @@ function observeCaptureBar(node: HTMLElement | null) {
 }
 
 export function CaptureBar() {
+  const tEntry = useTranslations("Entry");
+  const tComposer = useTranslations("Composer");
   const { startRecording, startTyping } = useComposer();
 
   return (
@@ -61,11 +64,11 @@ export function CaptureBar() {
         className="group flex h-10 flex-1 items-center gap-3 rounded-xl pr-3 pl-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span className="flex-1 text-control text-muted-foreground">
-          What do you remember?
+          {tEntry("bodyPlaceholder")}
         </span>
         <span className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
           <Keyboard className="size-4" aria-hidden />
-          Type
+          {tComposer("type")}
         </span>
       </button>
       <button
@@ -76,7 +79,7 @@ export function CaptureBar() {
         <span className="grid size-8 place-items-center rounded-full bg-petal text-ink">
           <Mic className="size-4" aria-hidden />
         </span>
-        Record
+        {tComposer("record")}
       </button>
     </div>
   );

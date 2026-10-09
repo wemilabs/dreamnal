@@ -1,35 +1,51 @@
+import { getTranslations } from "next-intl/server";
 import { ChartCard } from "@/components/journal/insights/chart-card";
 import type { MeaningStats } from "@/lib/entries";
+import type { Confidence } from "@/lib/meaning";
 
 function pct(value: number, total: number): number {
   return total === 0 ? 0 : Math.round((value * 100) / total);
 }
 
-export function MeaningInsights({ stats }: { stats: MeaningStats }) {
+export async function MeaningInsights({ stats }: { stats: MeaningStats }) {
+  const t = await getTranslations("Insights");
+  const meaningT = await getTranslations("Meaning");
+  const confidenceKeys = {
+    10: "confidenceUnsure",
+    30: "confidenceHunch",
+    50: "confidencePossible",
+    75: "confidenceLikely",
+    100: "confidenceCertain",
+  } as const satisfies Record<Confidence, string>;
   const maxCount = Math.max(...stats.byConfidence.map((level) => level.count));
   const tiles = [
     {
-      label: "Interpreted",
+      label: t("interpreted"),
       value: `${pct(stats.interpreted, stats.total)}%`,
-      detail: `${stats.interpreted} of ${stats.total} dreams`,
+      detail: t("meaningInterpretedDetail", {
+        count: stats.interpreted,
+        total: stats.total,
+      }),
     },
     {
-      label: "Fulfilled",
+      label: t("fulfilled"),
       value: String(stats.fulfilled),
-      detail: `${pct(stats.fulfilled, stats.total)}% of all dreams`,
+      detail: t("meaningFulfilledDetail", {
+        percent: pct(stats.fulfilled, stats.total),
+      }),
     },
     {
-      label: "Avg days to fulfillment",
+      label: t("avgDaysToFulfillment"),
       value:
         stats.avgDaysToFulfillment === null
           ? "—"
           : String(Math.round(stats.avgDaysToFulfillment)),
-      detail: "From dream to fulfilled date",
+      detail: t("fromDreamToFulfilled"),
     },
   ];
 
   return (
-    <ChartCard title="Meaning" hint="From the meanings you wrote">
+    <ChartCard title={t("meaning")} hint={t("meaningHint")}>
       <div className="grid gap-3 @sm:grid-cols-3">
         {tiles.map((tile) => (
           <div
@@ -46,11 +62,13 @@ export function MeaningInsights({ stats }: { stats: MeaningStats }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-medium text-foreground">Confidence</h3>
+        <h3 className="text-sm font-medium text-foreground">
+          {t("confidence")}
+        </h3>
         {stats.byConfidence.map((level) => (
           <div key={level.value} className="flex items-center gap-3">
             <span className="w-20 shrink-0 text-sm text-muted-foreground">
-              {level.label}
+              {meaningT(confidenceKeys[level.value])}
             </span>
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
               <div

@@ -1,21 +1,30 @@
-const entryDateFmt = new Intl.DateTimeFormat("en-GB", {
-  weekday: "short",
-  day: "numeric",
-  month: "short",
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true,
-});
+import type { AppLocale } from "@/i18n/routing";
 
-export function formatEntryDate(date: Date | string): string {
-  const parts = Object.fromEntries(
-    entryDateFmt.formatToParts(new Date(date)).map((p) => [p.type, p.value]),
+export function formatEntryDate(
+  date: Date | string,
+  locale: AppLocale = "en",
+): string {
+  const formatter = new Intl.DateTimeFormat(
+    locale === "fr" ? "fr-FR" : "en-GB",
+    {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "2-digit",
+      ...(locale === "en" ? { hour12: true } : { hour12: false }),
+    },
   );
-  return `${parts.weekday} ${parts.day} ${parts.month} · ${parts.hour}:${parts.minute} ${parts.dayPeriod}`;
+  const parts = Object.fromEntries(
+    formatter.formatToParts(new Date(date)).map((p) => [p.type, p.value]),
+  );
+  return locale === "en"
+    ? `${parts.weekday} ${parts.day} ${parts.month} · ${parts.hour}:${parts.minute} ${parts.dayPeriod}`
+    : `${parts.weekday} ${parts.day} ${parts.month} · ${parts.hour}:${parts.minute}`;
 }
 
-export function formatDay(isoDate: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
+export function formatDay(isoDate: string, locale: AppLocale = "en"): string {
+  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",

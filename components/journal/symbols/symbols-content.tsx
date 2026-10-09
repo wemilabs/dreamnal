@@ -1,5 +1,6 @@
-import type { Route } from "next";
+import { getTranslations } from "next-intl/server";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
+import type { AppHref } from "@/i18n/paths";
 import { listEntries } from "@/lib/entries";
 import { titleFallback } from "@/lib/format";
 import {
@@ -7,17 +8,15 @@ import {
   MIN_DREAMS_FOR_PATTERNS,
   recurringLabels,
 } from "@/lib/insights";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import { SYMBOL_KINDS } from "@/lib/symbols/schema";
 import { LabelLine } from "./label-line";
 import { LocalDay } from "./local-day";
 
 export async function SymbolsContent() {
+  const t = await getTranslations("Symbols");
   const entries = await listEntries();
   if (entries.length < MIN_DREAMS_FOR_PATTERNS) {
-    return (
-      <p className="text-lead text-muted-foreground">{symbolsCopy.empty}</p>
-    );
+    return <p className="text-lead text-muted-foreground">{t("empty")}</p>;
   }
 
   const recurring = recurringLabels(
@@ -31,9 +30,7 @@ export async function SymbolsContent() {
   );
   if (recurring.length === 0) {
     return (
-      <p className="text-lead text-muted-foreground">
-        {symbolsCopy.noRecurring}
-      </p>
+      <p className="text-lead text-muted-foreground">{t("noRecurring")}</p>
     );
   }
 
@@ -49,7 +46,15 @@ export async function SymbolsContent() {
         return (
           <section key={kind} className="flex flex-col gap-1">
             <h2 className="tabular-nums text-xs text-muted-foreground">
-              {symbolsCopy.kinds[kind]}
+              {t(
+                kind === "person"
+                  ? "people"
+                  : kind === "place"
+                    ? "places"
+                    : kind === "thing"
+                      ? "things"
+                      : "feelings",
+              )}
             </h2>
             <ul className="flex flex-col">
               {group.map((stat) => (
@@ -67,13 +72,13 @@ export async function SymbolsContent() {
                         return (
                           <li key={id}>
                             <IntentPrefetchLink
-                              href={`/journal/${id}` as Route}
+                              href={`/journal/${id}` as AppHref}
                               className="pressable flex items-baseline justify-between gap-4 py-1.5 text-control"
                             >
                               <span className="text-foreground">
                                 {entry.title ??
                                   (titleFallback(entry.excerpt) ||
-                                    symbolsCopy.untitled)}
+                                    t("untitled"))}
                               </span>
                               <span className="tabular-nums text-xs text-muted-foreground">
                                 <LocalDay iso={entry.createdAt.toISOString()} />

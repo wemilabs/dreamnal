@@ -1,17 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useLocale } from "next-intl";
 import { type ReactNode, useState, useSyncExternalStore } from "react";
+import { Link } from "@/i18n/navigation";
+import type { AppLocale } from "@/i18n/routing";
 import {
   analyzeInsights,
   type InsightDream,
   type Period,
   parsePeriod,
 } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import type { SymbolItem } from "@/lib/symbols/schema";
+import { useSymbolsCopy } from "../symbols/use-symbols-copy";
 import { HabitCharts, LengthChart, TimelineChart } from "./activity-charts";
 import { ChartCard } from "./chart-card";
 import { SourceChart, SymbolMixChart } from "./composition-charts";
@@ -22,16 +23,11 @@ import { PeriodPicker } from "./period-picker";
 import { SymbolDrilldown } from "./symbol-drilldown";
 import { ToneChart } from "./tone-chart";
 import { TopSymbols } from "./top-symbols";
+import { useInsightsCopy } from "./use-insights-copy";
 
 const subscribeNoop = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => null;
-const rangeFmt = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
-
 export function InsightsDashboard({
   dreams,
   meaning,
@@ -39,6 +35,9 @@ export function InsightsDashboard({
   dreams: InsightDream[];
   meaning: ReactNode;
 }) {
+  const locale = useLocale() as AppLocale;
+  const insightsCopy = useInsightsCopy();
+  const symbolsCopy = useSymbolsCopy();
   const isReady = useSyncExternalStore(
     subscribeNoop,
     clientSnapshot,
@@ -53,7 +52,15 @@ export function InsightsDashboard({
   }
 
   const period = parsePeriod(searchParams.get("period"));
-  const report = analyzeInsights(dreams, period, new Date());
+  const report = analyzeInsights(dreams, period, new Date(), locale);
+  const rangeFmt = new Intl.DateTimeFormat(
+    locale === "fr" ? "fr-FR" : "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
   const lastDay = new Date(
     report.range.end.getFullYear(),
     report.range.end.getMonth(),

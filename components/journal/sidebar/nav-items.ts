@@ -9,26 +9,34 @@ import {
   Tags,
   Trash2,
 } from "lucide-react";
-import type { Route } from "next";
+import type { AppHref } from "@/i18n/paths";
 
 export type JournalNavItem = {
-  title: string;
-  href: Route;
+  titleKey:
+    | "navJournal"
+    | "navCalendar"
+    | "navInsights"
+    | "navSymbols"
+    | "navFavorites"
+    | "navLucid"
+    | "navTrash"
+    | "navSettings";
+  href: AppHref;
   icon: LucideIcon;
 };
 
 export const JOURNAL_NAV_ITEMS: JournalNavItem[] = [
-  { title: "Journal", href: "/journal", icon: BookOpen },
-  { title: "Calendar", href: "/journal/calendar", icon: CalendarDays },
-  { title: "Insights", href: "/journal/insights", icon: ChartSpline },
-  { title: "Symbols & tags", href: "/journal/symbols", icon: Tags },
-  { title: "Favorites", href: "/journal/favorites", icon: Star },
-  { title: "Lucid dreams", href: "/journal/lucid", icon: Eye },
+  { titleKey: "navJournal", href: "/journal", icon: BookOpen },
+  { titleKey: "navCalendar", href: "/journal/calendar", icon: CalendarDays },
+  { titleKey: "navInsights", href: "/journal/insights", icon: ChartSpline },
+  { titleKey: "navSymbols", href: "/journal/symbols", icon: Tags },
+  { titleKey: "navFavorites", href: "/journal/favorites", icon: Star },
+  { titleKey: "navLucid", href: "/journal/lucid", icon: Eye },
 ];
 
 export const JOURNAL_BOTTOM_NAV_ITEMS: JournalNavItem[] = [
-  { title: "Trash", href: "/journal/trash", icon: Trash2 },
-  { title: "Settings", href: "/journal/settings", icon: Settings },
+  { titleKey: "navTrash", href: "/journal/trash", icon: Trash2 },
+  { titleKey: "navSettings", href: "/journal/settings", icon: Settings },
 ];
 
 export const JOURNAL_NAV_LINKS = [
@@ -53,7 +61,7 @@ export function isNavItemActive(
 
 export type JournalCrumb =
   | { kind: "journal" }
-  | { kind: "nav"; title: string }
+  | { kind: "nav"; titleKey: JournalNavItem["titleKey"] }
   | { kind: "entry" };
 
 export function crumbForPathname(pathname: string): JournalCrumb {
@@ -65,5 +73,5 @@ export function crumbForPathname(pathname: string): JournalCrumb {
       item.href !== "/journal" &&
       (pathname === item.href || pathname.startsWith(`${item.href}/`)),
   );
-  return match ? { kind: "nav", title: match.title } : { kind: "entry" };
+  return match ? { kind: "nav", titleKey: match.titleKey } : { kind: "entry" };
 }

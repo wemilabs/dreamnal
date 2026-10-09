@@ -1,12 +1,15 @@
+import { getTranslations } from "next-intl/server";
 import type { EntryWithSymbols } from "@/lib/entries";
 import { FulfilledCard } from "./fulfilled-card";
 import { MeaningForm } from "./meaning-form";
 
-export function MeaningSection({ entry }: { entry: EntryWithSymbols }) {
+export async function MeaningSection({ entry }: { entry: EntryWithSymbols }) {
+  const t = await getTranslations("Meaning");
+
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-8">
       <h2 className="text-entry-title font-semibold tracking-tight text-foreground">
-        Meaning
+        {t("meaning")}
       </h2>
       {entry.fulfilledOn ? (
         <FulfilledCard

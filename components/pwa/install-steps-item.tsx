@@ -1,6 +1,7 @@
 "use client";
 
 import { Download, type LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   Dialog,
   DialogContent,
@@ -20,16 +21,18 @@ export function InstallStepsItem({
   description: string;
   steps: InstallStep[];
 }) {
+  const t = useTranslations("Pwa");
+
   return (
     <SidebarMenuItem>
       <Dialog>
-        <DialogTrigger render={<SidebarMenuButton tooltip="Install app" />}>
+        <DialogTrigger render={<SidebarMenuButton tooltip={t("install")} />}>
           <Download aria-hidden />
-          <span>Install app</span>
+          <span>{t("install")}</span>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Install Dreamnal</DialogTitle>
+            <DialogTitle>{t("installDreamnal")}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           <ol className="flex flex-col gap-3 text-sm text-foreground">

@@ -1,9 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useOptimistic, useState, useTransition } from "react";
-import { saveSymbols } from "@/app/journal/[id]/symbol-actions";
+import { saveSymbols } from "@/app/[locale]/journal/[id]/symbol-actions";
 import { Input } from "@/components/ui/input";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import {
   normalizeLabel,
   SYMBOL_KINDS,
@@ -18,6 +18,7 @@ export function SymbolTags({
   entryId: string;
   items: SymbolItem[];
 }) {
+  const t = useTranslations("Symbols");
   const [optimisticItems, setOptimisticItems] = useOptimistic(items);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -59,13 +60,11 @@ export function SymbolTags({
   return (
     <section className="flex flex-col gap-4 border-t border-border pt-8">
       <h2 className="text-entry-title font-semibold tracking-tight text-foreground">
-        {symbolsCopy.entryTags.heading}
+        {t("heading")}
       </h2>
 
       {optimisticItems.length === 0 ? (
-        <p className="text-control text-muted-foreground">
-          {symbolsCopy.entryTags.none}
-        </p>
+        <p className="text-control text-muted-foreground">{t("none")}</p>
       ) : (
         <div className="flex flex-col gap-4">
           {SYMBOL_KINDS.map((groupKind) => {
@@ -76,7 +75,7 @@ export function SymbolTags({
             return (
               <div key={groupKind} className="grid gap-2">
                 <span className="tabular-nums text-xs text-muted-foreground">
-                  {symbolsCopy.kinds[groupKind]}
+                  {t(kindKey(groupKind))}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {group.map((item) => (
@@ -87,7 +86,7 @@ export function SymbolTags({
                       {item.label}
                       <button
                         type="button"
-                        aria-label={symbolsCopy.entryTags.remove(item.label)}
+                        aria-label={t("remove", { label: item.label })}
                         onClick={() => remove(item)}
                         disabled={pending}
                         className="pressable text-muted-foreground hover:text-rec disabled:opacity-60"
@@ -114,19 +113,19 @@ export function SymbolTags({
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           maxLength={60}
-          placeholder={symbolsCopy.entryTags.addPlaceholder}
-          aria-label={symbolsCopy.entryTags.addPlaceholder}
+          placeholder={t("addPlaceholder")}
+          aria-label={t("addPlaceholder")}
           className="w-48"
         />
         <select
           value={kind}
           onChange={(e) => setKind(e.target.value as SymbolKind)}
-          aria-label={symbolsCopy.entryTags.kindLabel}
+          aria-label={t("kind")}
           className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
         >
           {SYMBOL_KINDS.map((k) => (
             <option key={k} value={k}>
-              {symbolsCopy.kinds[k]}
+              {t(kindKey(k))}
             </option>
           ))}
         </select>
@@ -135,7 +134,7 @@ export function SymbolTags({
           disabled={pending || draft.trim() === ""}
           className="pressable rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
         >
-          {symbolsCopy.entryTags.add}
+          {t("add")}
         </button>
       </form>
 
@@ -146,4 +145,13 @@ export function SymbolTags({
       ) : null}
     </section>
   );
+}
+
+function kindKey(kind: SymbolKind) {
+  return {
+    person: "people",
+    place: "places",
+    thing: "things",
+    feeling: "feelings",
+  }[kind] as "people" | "places" | "things" | "feelings";
 }

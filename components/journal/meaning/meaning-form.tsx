@@ -1,9 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
-import { saveMeaning } from "@/app/journal/[id]/meaning-actions";
+import { saveMeaning } from "@/app/[locale]/journal/[id]/meaning-actions";
 import { Textarea } from "@/components/ui/textarea";
-import { CONFIDENCE_LEVELS } from "@/lib/meaning";
+import { CONFIDENCE_LEVELS, type Confidence } from "@/lib/meaning";
 import { FulfillDialog } from "./fulfill-dialog";
 
 export function MeaningForm({
@@ -17,6 +18,21 @@ export function MeaningForm({
   confidence: number | null;
   createdAt: string;
 }) {
+  const t = useTranslations("Meaning");
+  const confidenceKeys: Record<
+    Confidence,
+    | "confidenceUnsure"
+    | "confidenceHunch"
+    | "confidencePossible"
+    | "confidenceLikely"
+    | "confidenceCertain"
+  > = {
+    10: "confidenceUnsure",
+    30: "confidenceHunch",
+    50: "confidencePossible",
+    75: "confidenceLikely",
+    100: "confidenceCertain",
+  };
   const [state, formAction, pending] = useActionState(saveMeaning, null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -29,8 +45,8 @@ export function MeaningForm({
             name="meaning"
             defaultValue={meaning ?? ""}
             maxLength={4000}
-            placeholder="What do you think it means?"
-            aria-label="Meaning"
+            placeholder={t("placeholder")}
+            aria-label={t("meaningAria")}
             autoComplete="off"
             className="min-h-28 resize-none rounded-lg border border-border bg-card/60 p-4 text-sm md:text-control"
           />
@@ -43,11 +59,11 @@ export function MeaningForm({
 
         <fieldset className="flex flex-col gap-2">
           <legend className="text-xs text-muted-foreground">
-            How sure are you?
+            {t("sureAria")}
           </legend>
           <div
             role="radiogroup"
-            aria-label="How sure are you?"
+            aria-label={t("sureAria")}
             className="flex flex-wrap gap-2"
           >
             {CONFIDENCE_LEVELS.map((level) => (
@@ -62,7 +78,7 @@ export function MeaningForm({
                   defaultChecked={confidence === level.value}
                   className="peer sr-only"
                 />
-                {level.label}
+                {t(confidenceKeys[level.value])}
               </label>
             ))}
           </div>
@@ -85,7 +101,7 @@ export function MeaningForm({
             disabled={pending}
             className="pressable rounded-full bg-primary px-5 py-2 text-control font-semibold text-primary-foreground disabled:opacity-60"
           >
-            {pending ? "Saving…" : "Save"}
+            {pending ? t("saving") : t("save")}
           </button>
           {meaning !== null ? (
             <button
@@ -93,7 +109,7 @@ export function MeaningForm({
               onClick={() => setDialogOpen(true)}
               className="pressable rounded-full border border-border px-5 py-2 text-control font-medium"
             >
-              Mark as fulfilled
+              {t("markFulfilled")}
             </button>
           ) : null}
         </div>

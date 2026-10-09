@@ -1,18 +1,12 @@
 export const CONFIDENCE_LEVELS = [
-  { value: 10, label: "Unsure" },
-  { value: 30, label: "Hunch" },
-  { value: 50, label: "Possible" },
-  { value: 75, label: "Likely" },
-  { value: 100, label: "Certain" },
+  { value: 10 },
+  { value: 30 },
+  { value: 50 },
+  { value: 75 },
+  { value: 100 },
 ] as const;
 
 export type Confidence = (typeof CONFIDENCE_LEVELS)[number]["value"];
-
-export function confidenceLabel(value: number | null): string | null {
-  return (
-    CONFIDENCE_LEVELS.find((level) => level.value === value)?.label ?? null
-  );
-}
 
 export const MEANING_FILTERS = ["all", "interpreted", "fulfilled"] as const;
 

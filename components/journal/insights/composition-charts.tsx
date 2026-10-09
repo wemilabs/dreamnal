@@ -9,22 +9,10 @@ import {
 } from "@/components/ui/chart";
 import { formatDuration } from "@/lib/format";
 import type { InsightsReport } from "@/lib/insights-analytics";
-import { insightsCopy } from "@/lib/insights-copy";
-import { symbolsCopy } from "@/lib/symbols/copy";
 import { SYMBOL_KINDS } from "@/lib/symbols/schema";
+import { useSymbolsCopy } from "../symbols/use-symbols-copy";
 import { EmptyChart } from "./chart-card";
-
-const sourceConfig = {
-  voice: { label: insightsCopy.sources.voice, color: "var(--chart-1)" },
-  text: { label: insightsCopy.sources.text, color: "var(--chart-3)" },
-} satisfies ChartConfig;
-
-const kindConfig = {
-  person: { label: symbolsCopy.kinds.person, color: "var(--chart-1)" },
-  place: { label: symbolsCopy.kinds.place, color: "var(--chart-2)" },
-  thing: { label: symbolsCopy.kinds.thing, color: "var(--chart-3)" },
-  feeling: { label: symbolsCopy.kinds.feeling, color: "var(--chart-5)" },
-} satisfies ChartConfig;
+import { useInsightsCopy } from "./use-insights-copy";
 
 function Donut({
   config,
@@ -100,6 +88,11 @@ export function SourceChart({
 }: {
   sources: InsightsReport["sources"];
 }) {
+  const insightsCopy = useInsightsCopy();
+  const sourceConfig = {
+    voice: { label: insightsCopy.sources.voice, color: "var(--chart-1)" },
+    text: { label: insightsCopy.sources.text, color: "var(--chart-3)" },
+  } satisfies ChartConfig;
   const data = [
     { key: "voice", value: sources.voice },
     { key: "text", value: sources.text },
@@ -127,6 +120,14 @@ export function SourceChart({
 }
 
 export function SymbolMixChart({ kinds }: { kinds: InsightsReport["kinds"] }) {
+  const insightsCopy = useInsightsCopy();
+  const symbolsCopy = useSymbolsCopy();
+  const kindConfig = {
+    person: { label: symbolsCopy.kinds.person, color: "var(--chart-1)" },
+    place: { label: symbolsCopy.kinds.place, color: "var(--chart-2)" },
+    thing: { label: symbolsCopy.kinds.thing, color: "var(--chart-3)" },
+    feeling: { label: symbolsCopy.kinds.feeling, color: "var(--chart-5)" },
+  } satisfies ChartConfig;
   const data = SYMBOL_KINDS.map((kind) => ({ key: kind, value: kinds[kind] }));
   const total = data.reduce((sum, d) => sum + d.value, 0);
   if (total === 0) {
