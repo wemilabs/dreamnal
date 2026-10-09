@@ -46,7 +46,7 @@ setup("sign in and seed an entry", async ({ page }) => {
     await page.getByRole("button", { name: "What do you remember?" }).click();
     const dialog = page.getByRole("dialog");
     await dialog.getByLabel("Title").fill(SEED_ENTRY_TITLE);
-    await dialog.getByLabel("Dream").fill(SEED_ENTRY_BODY);
+    await dialog.getByLabel("Dream", { exact: true }).fill(SEED_ENTRY_BODY);
     await dialog.getByRole("button", { name: "Save entry" }).click();
     await expect(dialog).toBeHidden();
     await page.reload();
