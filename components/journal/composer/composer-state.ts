@@ -28,6 +28,7 @@ export type ComposerAction =
   | { type: "failed"; message: string }
   | { type: "type-instead"; day?: string }
   | { type: "draft"; title?: string; body?: string }
+  | { type: "set-day"; day: string | null }
   | { type: "reset" };
 
 export const initialComposerState: ComposerState = {
@@ -97,6 +98,8 @@ export function reduceComposer(
         draftTitle: action.title ?? state.draftTitle,
         draftBody: action.body ?? state.draftBody,
       };
+    case "set-day":
+      return { ...state, backdateDay: action.day };
     case "reset":
       return { ...initialComposerState };
   }

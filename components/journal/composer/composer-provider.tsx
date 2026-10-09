@@ -45,6 +45,7 @@ type ComposerContextValue = {
     formData: FormData,
   ) => Promise<EntryFormState>;
   onDraftChange: (draft: { title?: string; body?: string }) => void;
+  setBackdateDay: (day: string | null) => void;
   analyserRef: RefObject<AnalyserNode | null>;
   startedAtRef: RefObject<number>;
 };
@@ -220,6 +221,13 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "draft", ...draft });
   };
 
+  const setBackdateDay = (day: string | null) => {
+    dispatch({
+      type: "set-day",
+      day: day && day !== dayKey(new Date()) ? day : null,
+    });
+  };
+
   return (
     <ComposerContext.Provider
       value={{
@@ -232,6 +240,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
         onOpenChange,
         saveEntry,
         onDraftChange,
+        setBackdateDay,
         analyserRef: recorder.analyserRef,
         startedAtRef: recorder.startedAtRef,
       }}
