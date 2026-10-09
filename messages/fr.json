@@ -5,11 +5,15 @@
     "description": "Notez vos rêves dès le réveil. Dreamnal transcrit votre voix en entrée de journal, que vous pouvez modifier et conserver."
   },
   "NotFound": {
+    "metadataTitle": "Page introuvable",
+    "metadataDescription": "Cette page s’est égarée. Retournez à votre journal.",
     "title": "Cette page s’est évaporée.",
     "description": "Comme un rêve au petit-déjeuner.",
     "back": "Retour à votre journal"
   },
   "Offline": {
+    "metadataTitle": "Hors ligne",
+    "metadataDescription": "Dreamnal a besoin d’une connexion pour transcrire et enregistrer vos rêves.",
     "title": "Vous êtes hors ligne.",
     "description": "Dreamnal a besoin d’une connexion pour transcrire et enregistrer vos rêves. Nous serons là à votre retour.",
     "retry": "Réessayer"
@@ -19,6 +23,9 @@
     "signInDescription": "Reprenez là où la nuit vous a laissé.",
     "signUpTitle": "Commencez votre journal.",
     "signUpDescription": "Trente secondes maintenant, des années de rêves ensuite.",
+    "signUpMetadataTitle": "Créez votre compte",
+    "signInMetadataDescription": "Connectez-vous à Dreamnal et reprenez votre journal de rêves là où la nuit vous a laissé.",
+    "signUpMetadataDescription": "Commencez un journal de rêves privé. Notez un rêve à votre réveil, et Dreamnal transforme votre voix en une entrée que vous pouvez modifier et conserver.",
     "newHere": "Vous découvrez Dreamnal ?",
     "startJournal": "Commencer votre journal",
     "alreadyKeeping": "Vous en tenez déjà un ?",
@@ -46,6 +53,7 @@
     "signUpError": "Création du compte impossible. Essayez avec une autre adresse e-mail."
   },
   "Landing": {
+    "metadataTitle": "Dreamnal | Dites-le avant que tout s’efface",
     "howItWorks": "Comment ça marche",
     "signIn": "Se connecter",
     "startJournal": "Commencer votre journal",
@@ -85,6 +93,7 @@
   },
   "Journal": {
     "title": "Mon journal",
+    "metadataDescription": "Tous vos rêves, du plus récent au plus ancien. Filtrez ceux que vous avez interprétés ou marqués comme réalisés.",
     "sidebarGroup": "Journal",
     "navJournal": "Journal",
     "navCalendar": "Calendrier",
@@ -133,6 +142,9 @@
     "emptyPromptAction": "écrivez-le"
   },
   "Entry": {
+    "metadataTitle": "Rêve",
+    "metadataDescription": "Lisez et modifiez ce rêve, notez ce que vous pensez qu’il signifie, puis marquez-le comme réalisé.",
+    "backToJournal": "Retour à votre journal",
     "titlePlaceholder": "Donnez-lui un titre…",
     "titleAria": "Titre",
     "dreamAria": "Rêve",
@@ -196,6 +208,7 @@
   },
   "Calendar": {
     "title": "Calendrier",
+    "metadataDescription": "Vos rêves au fil des jours, avec vos séries d’enregistrement actuelle et la plus longue.",
     "currentStreak": "Série actuelle",
     "longestStreak": "Plus longue série",
     "nightsIn": "Nuits en {month}",
@@ -217,6 +230,7 @@
   },
   "Insights": {
     "title": "Tendances",
+    "metadataDescription": "Les personnes, les lieux, les choses et les émotions qui reviennent dans vos rêves, ainsi que le nombre de rêves que vous avez interprétés.",
     "period": "Période",
     "periodShort7d": "7 j",
     "periodShort30d": "30 j",
@@ -289,6 +303,7 @@
   },
   "Symbols": {
     "title": "Symboles et tags",
+    "metadataDescription": "Chaque personne, chaque lieu, chaque objet et chaque émotion associés à vos rêves.",
     "footer": "Dreamnal compte ce que vous écrivez, sans en interpréter le sens.",
     "empty": "Notez encore quelques rêves pour voir ce qui revient.",
     "noRecurring": "Rien ne revient pour le moment.",
@@ -343,6 +358,7 @@
   },
   "Settings": {
     "title": "Paramètres",
+    "metadataDescription": "Profil, préférences d’enregistrement et exportation des données.",
     "language": "Langue",
     "languageDescription": "Choisissez la langue à utiliser dans Dreamnal.",
     "english": "English",

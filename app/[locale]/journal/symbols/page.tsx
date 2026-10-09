@@ -7,7 +7,7 @@ import { SymbolsSkeleton } from "@/components/journal/symbols/symbols-skeleton";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Symbols");
-  return { title: t("title") };
+  return { title: t("title"), description: t("metadataDescription") };
 }
 
 export default async function SymbolsPage() {

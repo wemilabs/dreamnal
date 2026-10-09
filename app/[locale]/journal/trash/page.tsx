@@ -5,7 +5,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Journal");
-  return { title: t("navTrash") };
+  return { title: t("navTrash"), description: t("trashDescription") };
 }
 
 export default async function TrashPage() {

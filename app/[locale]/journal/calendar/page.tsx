@@ -7,7 +7,7 @@ import { PageFade } from "@/components/journal/page-fade";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Calendar");
-  return { title: t("title") };
+  return { title: t("title"), description: t("metadataDescription") };
 }
 
 export default async function CalendarPage() {

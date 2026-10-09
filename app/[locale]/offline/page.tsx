@@ -4,7 +4,11 @@ import { RetryButton } from "@/components/pwa/retry-button";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Offline");
-  return { title: t("title"), robots: { index: false } };
+  return {
+    title: t("metadataTitle"),
+    description: t("metadataDescription"),
+    robots: { index: false },
+  };
 }
 
 export const ensureStatic = "navigation";

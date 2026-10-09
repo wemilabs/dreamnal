@@ -1,5 +1,7 @@
+import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { updateEntry } from "@/app/[locale]/journal/actions";
+import { Link } from "@/i18n/navigation";
 import type { EntryWithSymbols } from "@/lib/entries";
 import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
@@ -18,9 +20,18 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-baseline gap-2 tabular-nums text-xs text-muted-foreground">
-          <EntryDate iso={entry.createdAt.toISOString()} />
-          {duration ? <span>· {duration}</span> : null}
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/journal"
+            aria-label={t("backToJournal")}
+            className="pressable grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" aria-hidden />
+          </Link>
+          <div className="flex min-w-0 items-baseline gap-2 tabular-nums text-xs text-muted-foreground">
+            <EntryDate iso={entry.createdAt.toISOString()} />
+            {duration ? <span>· {duration}</span> : null}
+          </div>
         </div>
         <DeleteEntryButton id={entry.id} />
       </div>

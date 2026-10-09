@@ -1,7 +1,16 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { SignUpForm } from "@/components/auth/sign-up-form";
 import { Link } from "@/i18n/navigation";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Auth");
+  return {
+    title: t("signUpMetadataTitle"),
+    description: t("signUpMetadataDescription"),
+  };
+}
 
 export default async function SignUpModal() {
   const t = await getTranslations("Auth");

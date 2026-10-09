@@ -5,7 +5,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Journal");
-  return { title: t("navLucid") };
+  return { title: t("navLucid"), description: t("lucidDescription") };
 }
 
 export default async function LucidPage() {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Suspense, ViewTransition } from "react";
 import { CaptureBar } from "@/components/journal/capture-bar";
@@ -8,6 +9,11 @@ import {
   FilterChipsView,
 } from "@/components/journal/filter-chips";
 import { PageFade } from "@/components/journal/page-fade";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Journal");
+  return { title: t("title"), description: t("metadataDescription") };
+}
 
 export default async function JournalPage() {
   const t = await getTranslations("Journal");

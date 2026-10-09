@@ -5,7 +5,7 @@ import { PlaceholderPage } from "@/components/journal/placeholder-page";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Journal");
-  return { title: t("navFavorites") };
+  return { title: t("navFavorites"), description: t("favoritesDescription") };
 }
 
 export default async function FavoritesPage() {

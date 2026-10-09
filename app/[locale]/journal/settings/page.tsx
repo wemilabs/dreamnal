@@ -4,7 +4,7 @@ import { LanguageSwitcher } from "@/components/journal/settings/language-switche
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Settings");
-  return { title: t("title") };
+  return { title: t("title"), description: t("metadataDescription") };
 }
 
 export default async function SettingsPage() {

@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import { Bodoni_Moda, Geist_Mono, Hanken_Grotesk } from "next/font/google";
 import { Link } from "@/i18n/navigation";
 import messages from "@/messages/en.json";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: messages.NotFound.metadataTitle,
+  description: messages.NotFound.metadataDescription,
+};
 
 const bodoni = Bodoni_Moda({
   variable: "--font-bodoni",

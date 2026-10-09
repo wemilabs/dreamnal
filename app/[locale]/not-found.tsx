@@ -1,10 +1,14 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-export default function NotFound() {
-  const t = useTranslations("NotFound");
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("NotFound");
+  return { title: t("metadataTitle"), description: t("metadataDescription") };
+}
+
+export default async function NotFound() {
+  const t = await getTranslations("NotFound");
   return (
     <div
       className="flex min-h-svh flex-col items-center justify-center gap-6 px-6 text-center"

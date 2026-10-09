@@ -5,11 +5,15 @@
     "description": "Record your dreams the moment you wake. Dreamnal transcribes your voice into a journal entry you can edit and keep."
   },
   "NotFound": {
+    "metadataTitle": "Page not found",
+    "metadataDescription": "This page drifted away. Head back to your journal.",
     "title": "This page drifted away.",
     "description": "Like a dream at breakfast.",
     "back": "Back to your journal"
   },
   "Offline": {
+    "metadataTitle": "Offline",
+    "metadataDescription": "Dreamnal needs a connection to transcribe and save dreams.",
     "title": "You’re offline.",
     "description": "Dreamnal needs a connection to transcribe and save dreams. We’ll be here when you’re back.",
     "retry": "Try again"
@@ -19,6 +23,9 @@
     "signInDescription": "Pick up right where the night left off.",
     "signUpTitle": "Start your journal.",
     "signUpDescription": "Thirty seconds now, years of dreams later.",
+    "signUpMetadataTitle": "Create your account",
+    "signInMetadataDescription": "Sign in to Dreamnal and pick up your dream journal where the night left off.",
+    "signUpMetadataDescription": "Start a private dream journal. Record a dream when you wake, and Dreamnal turns your voice into an entry you can edit and keep.",
     "newHere": "New here?",
     "startJournal": "Start your journal",
     "alreadyKeeping": "Already keeping one?",
@@ -46,6 +53,7 @@
     "signUpError": "Couldn’t create your account. Try a different email."
   },
   "Landing": {
+    "metadataTitle": "Dreamnal | Say it before it fades",
     "howItWorks": "How it works",
     "signIn": "Sign in",
     "startJournal": "Start your journal",
@@ -85,6 +93,7 @@
   },
   "Journal": {
     "title": "My journal",
+    "metadataDescription": "All your dreams, newest first. Filter to the ones you’ve interpreted or marked fulfilled.",
     "sidebarGroup": "Journal",
     "navJournal": "Journal",
     "navCalendar": "Calendar",
@@ -133,6 +142,9 @@
     "emptyPromptAction": "type it instead"
   },
   "Entry": {
+    "metadataTitle": "Dream",
+    "metadataDescription": "Read and edit this dream, write what you think it means, and mark it fulfilled.",
+    "backToJournal": "Back to journal",
     "titlePlaceholder": "Give it a name…",
     "titleAria": "Title",
     "dreamAria": "Dream",
@@ -196,6 +208,7 @@
   },
   "Calendar": {
     "title": "Calendar",
+    "metadataDescription": "Your dreams by day, with your current and longest recording streaks.",
     "currentStreak": "Current streak",
     "longestStreak": "Longest streak",
     "nightsIn": "Nights in {month}",
@@ -217,6 +230,7 @@
   },
   "Insights": {
     "title": "Insights",
+    "metadataDescription": "The people, places, things and feelings that keep coming back in your dreams, and how many dreams you’ve interpreted.",
     "period": "Period",
     "periodShort7d": "7D",
     "periodShort30d": "30D",
@@ -289,6 +303,7 @@
   },
   "Symbols": {
     "title": "Symbols & tags",
+    "metadataDescription": "Every person, place, thing and feeling tagged across your dreams.",
     "footer": "Dreamnal counts what you wrote. It doesn’t say what it means.",
     "empty": "Record a few more dreams to see what comes back.",
     "noRecurring": "Nothing keeps coming back yet.",
@@ -343,6 +358,7 @@
   },
   "Settings": {
     "title": "Settings",
+    "metadataDescription": "Profile, recording preferences, and data export.",
     "language": "Language",
     "languageDescription": "Choose the language you’d like to use in Dreamnal.",
     "english": "English",
