@@ -57,7 +57,7 @@ export function MeaningForm({
           ) : null}
         </div>
 
-        <fieldset className="flex flex-col gap-2">
+        <fieldset className="flex flex-col gap-2 space-y-2">
           <legend className="text-xs text-muted-foreground">
             {t("sureAria")}
           </legend>

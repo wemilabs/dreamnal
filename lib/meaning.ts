@@ -27,7 +27,7 @@ export function matchesMeaningFilter(
     return true;
   }
   if (filter === "interpreted") {
-    return entry.hasMeaning && entry.fulfilledOn === null;
+    return entry.hasMeaning;
   }
   return entry.fulfilledOn !== null;
 }
