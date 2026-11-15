@@ -165,7 +165,7 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
   return (
     <IntentPrefetchLink
       href={`/journal/${entry.id}` as AppHref}
-      className="flex flex-col gap-1 rounded-2xl bg-card p-4 sm:gap-1.5 sm:p-5 shadow-card ring-1 ring-border/60 outline-none transition-[translate,box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-[0.99]"
+      className="flex flex-col gap-1 rounded-2xl bg-card p-4 sm:gap-1.5 sm:p-5 shadow-card ring-1 ring-border/60 outline-none transition-[box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:active:scale-[0.99]"
       testId="entry-link"
     >
       <span className="flex items-center justify-between gap-3 tabular-nums text-xs text-muted-foreground">
