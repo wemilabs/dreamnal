@@ -29,12 +29,12 @@ export type JournalNavItem = {
 
 export const JOURNAL_NAV_ITEMS: JournalNavItem[] = [
   { titleKey: "navJournal", href: "/journal", icon: BookOpen },
-  { titleKey: "navWhispers", href: "/journal/whispers", icon: Feather },
   { titleKey: "navCalendar", href: "/journal/calendar", icon: CalendarDays },
   { titleKey: "navInsights", href: "/journal/insights", icon: ChartSpline },
   { titleKey: "navSymbols", href: "/journal/symbols", icon: Tags },
   { titleKey: "navFavorites", href: "/journal/favorites", icon: Star },
   { titleKey: "navLucid", href: "/journal/lucid", icon: Eye },
+  { titleKey: "navWhispers", href: "/journal/whispers", icon: Feather },
 ];
 
 export const JOURNAL_BOTTOM_NAV_ITEMS: JournalNavItem[] = [
