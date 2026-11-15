@@ -1,0 +1,1 @@
+ALTER TABLE "dream_entries" ADD COLUMN "lucid" boolean DEFAULT false NOT NULL;

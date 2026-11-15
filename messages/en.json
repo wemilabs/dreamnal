@@ -139,7 +139,9 @@
     "emptyTitle": "Nothing written yet.",
     "emptyDescription": "Whatever came to you fades fast. Keep it here.",
     "emptyPromptBefore": "Tap the mic below to record it, or",
-    "emptyPromptAction": "type it instead"
+    "emptyPromptAction": "type it instead",
+    "noLucidDreams": "No lucid dreams yet.",
+    "noLucidDreamsHint": "Open a dream and mark it as lucid when you knew you were dreaming."
   },
   "Entry": {
     "metadataTitle": "Dream",
@@ -175,7 +177,10 @@
     "recordAgain": "Record again",
     "recordInstead": "Record instead",
     "discard": "Discard",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "markLucid": "Mark as lucid",
+    "unmarkLucid": "Unmark lucid",
+    "lucidBadge": "Lucid"
   },
   "Composer": {
     "ready": "Ready to record",

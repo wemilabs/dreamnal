@@ -15,6 +15,7 @@ export async function EntryList() {
     meaningConfidence: entry.meaningConfidence,
     fulfilledOn: entry.fulfilledOn,
     hasMeaning: entry.hasMeaning,
+    lucid: entry.lucid,
   }));
 
   return <FilteredEntryFeed entries={feedEntries} empty={<EmptyState />} />;

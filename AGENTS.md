@@ -207,7 +207,9 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
   opens a composer overlay (Drawer on mobile, Dialog on desktop) instead of
   navigating; recording → transcribing → editing → save
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
-- `/journal/{favorites,lucid,trash,settings}` — placeholder pages
+- `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
+  toggled from the entry header; `lucid` is a plaintext boolean column)
+- `/journal/{favorites,trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
 

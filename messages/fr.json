@@ -139,7 +139,9 @@
     "emptyTitle": "Rien n’est encore écrit.",
     "emptyDescription": "Ce qui vous vient s’efface vite. Gardez-le ici.",
     "emptyPromptBefore": "Touchez le micro ci-dessous pour enregistrer votre rêve, ou",
-    "emptyPromptAction": "écrivez-le"
+    "emptyPromptAction": "écrivez-le",
+    "noLucidDreams": "Pas encore de rêves lucides.",
+    "noLucidDreamsHint": "Ouvrez un rêve et marquez-le comme lucide si vous saviez que vous rêviez."
   },
   "Entry": {
     "metadataTitle": "Rêve",
@@ -175,7 +177,10 @@
     "recordAgain": "Enregistrer à nouveau",
     "recordInstead": "Enregistrer plutôt",
     "discard": "Abandonner",
-    "saveChanges": "Enregistrer les modifications"
+    "saveChanges": "Enregistrer les modifications",
+    "markLucid": "Marquer comme lucide",
+    "unmarkLucid": "Retirer le marquage lucide",
+    "lucidBadge": "Lucide"
   },
   "Composer": {
     "ready": "Prêt à enregistrer",
