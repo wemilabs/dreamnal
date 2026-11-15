@@ -7,6 +7,7 @@ import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
 import { EntryDate } from "./entry-date";
 import { EntryForm } from "./entry-form";
+import { LucidToggle } from "./lucid-toggle";
 import { MeaningSection } from "./meaning/meaning-section";
 import { SymbolTags } from "./symbols/symbol-tags";
 
@@ -33,7 +34,10 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
             {duration ? <span>· {duration}</span> : null}
           </div>
         </div>
-        <DeleteEntryButton id={entry.id} />
+        <div className="flex shrink-0 items-start gap-1">
+          <LucidToggle id={entry.id} lucid={entry.lucid} />
+          <DeleteEntryButton id={entry.id} />
+        </div>
       </div>
       <h1 className="sr-only">{entry.title ?? titleFallback(entry.body)}</h1>
       <EntryForm

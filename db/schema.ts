@@ -1,4 +1,5 @@
 import {
+  boolean,
   date,
   index,
   pgEnum,
@@ -29,6 +30,7 @@ export const dreamEntries = pgTable(
     meaningConfidence: smallint("meaning_confidence"),
     fulfilledOn: date("fulfilled_on", { mode: "string" }),
     fulfillmentNote: text("fulfillment_note"),
+    lucid: boolean("lucid").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

@@ -33,10 +33,16 @@ export async function listEntries(filter: MeaningFilter = "all") {
       meaningConfidence: row.meaningConfidence,
       fulfilledOn: row.fulfilledOn,
       hasMeaning: row.hasMeaning,
+      lucid: row.lucid,
     };
   });
 
   return entries.filter((entry) => matchesMeaningFilter(entry, filter));
+}
+
+export async function listLucidEntries() {
+  const entries = await listEntries();
+  return entries.filter((entry) => entry.lucid);
 }
 
 export async function listSearchEntries(): Promise<SearchEntry[]> {
@@ -71,6 +77,7 @@ async function listEntriesForUser(userId: string) {
       meaningConfidence: dreamEntries.meaningConfidence,
       fulfilledOn: dreamEntries.fulfilledOn,
       hasMeaning: sql<boolean>`${dreamEntries.meaning} is not null`,
+      lucid: dreamEntries.lucid,
       createdAt: dreamEntries.createdAt,
     })
     .from(dreamEntries)
