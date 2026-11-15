@@ -1,15 +1,20 @@
 "use client";
 
-import { Mic, Upload } from "lucide-react";
+import { Keyboard, Mic, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 export function RecordFab() {
-  const t = useTranslations("Journal");
   const tComposer = useTranslations("Composer");
-  const { startRecording, pickAudioFile } = useComposer();
+  const { startRecording, startTyping, pickAudioFile } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
 
   return (
@@ -21,24 +26,47 @@ export function RecordFab() {
       )}
     >
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => pickAudioFile()}
-          aria-label={tComposer("uploadAudio")}
-          className="pressable absolute top-1/2 right-full mr-3 -translate-y-1/2 grid size-10 place-items-center rounded-full bg-card text-foreground ring-1 ring-border/60 shadow-card"
-        >
-          <Upload className="size-4" aria-hidden />
-        </button>
-        <button
-          type="button"
-          onClick={() => startRecording()}
-          aria-label={t("recordDreamAria")}
-          className="pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
-        >
-          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
-            <Mic className="size-4.5" aria-hidden />
-          </span>
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label={tComposer("addDream")}
+            className="group/fab pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
+          >
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
+              <Plus
+                className="size-4.5 transition-transform duration-200 ease-out group-data-popup-open/fab:rotate-45 motion-reduce:transition-none"
+                aria-hidden
+              />
+            </span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side="top"
+            align="center"
+            sideOffset={10}
+            className="w-auto min-w-40"
+          >
+            <DropdownMenuItem
+              onClick={() => startRecording()}
+              className="gap-2.5 px-2.5 py-2"
+            >
+              <Mic aria-hidden />
+              {tComposer("record")}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => startTyping()}
+              className="gap-2.5 px-2.5 py-2"
+            >
+              <Keyboard aria-hidden />
+              {tComposer("type")}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => pickAudioFile()}
+              className="gap-2.5 px-2.5 py-2"
+            >
+              <Upload aria-hidden />
+              {tComposer("upload")}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

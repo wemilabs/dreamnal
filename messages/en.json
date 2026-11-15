@@ -116,7 +116,6 @@
     "lucidDescription": "Every dream you marked as lucid.",
     "trashDescription": "Deleted dreams live here until they’re gone for good.",
     "comingSoon": "Coming soon",
-    "recordDreamAria": "Record a dream",
     "searchPlaceholder": "Search dreams, pages, actions…",
     "noResults": "No results found.",
     "searchingDreams": "Searching dreams…",
@@ -183,6 +182,7 @@
     "lucidBadge": "Lucid"
   },
   "Composer": {
+    "addDream": "Add a dream",
     "ready": "Ready to record",
     "starting": "Starting",
     "recording": "Recording",
