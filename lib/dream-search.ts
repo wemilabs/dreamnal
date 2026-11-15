@@ -1,6 +1,9 @@
+import type { EntryKind } from "@/lib/entry-kind";
+
 export type SearchEntry = {
   id: string;
   title: string | null;
+  kind: EntryKind;
   body: string;
   labels: string[];
   createdAt: string;

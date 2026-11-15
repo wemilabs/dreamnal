@@ -1,1 +1,0 @@
-ALTER TABLE "dream_entries" ADD COLUMN "favorite" boolean DEFAULT false NOT NULL;

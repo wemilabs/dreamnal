@@ -10,9 +10,12 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+import { ENTRY_KINDS } from "../lib/entry-kind";
 import { authUsers } from "./neon-auth";
 
 export const entrySource = pgEnum("entry_source", ["voice", "text"]);
+
+export const entryKind = pgEnum("entry_kind", ENTRY_KINDS);
 
 export const dreamEntries = pgTable(
   "dream_entries",
@@ -24,6 +27,7 @@ export const dreamEntries = pgTable(
     title: text("title"),
     body: text("body").notNull(),
     source: entrySource("source").notNull(),
+    kind: entryKind("kind").notNull().default("dream"),
     audioDurationSeconds: real("audio_duration_seconds"),
     symbols: text("symbols"),
     meaning: text("meaning"),

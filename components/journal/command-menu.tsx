@@ -1,7 +1,15 @@
 "use client";
 
 import { CommandLoading, defaultFilter } from "cmdk";
-import { BookOpen, Mic, Moon, PenLine, Sun, Upload } from "lucide-react";
+import {
+  BookOpen,
+  Feather,
+  Mic,
+  Moon,
+  PenLine,
+  Sun,
+  Upload,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import {
@@ -128,9 +136,20 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
                         router.push(`/journal/${e.id}` as AppHref);
                       }}
                     >
-                      <BookOpen aria-hidden />
+                      {e.kind === "whisper" ? (
+                        <Feather aria-hidden />
+                      ) : (
+                        <BookOpen aria-hidden />
+                      )}
                       <div className="min-w-0">
-                        <div className="truncate">{title}</div>
+                        <div className="truncate">
+                          {e.kind === "whisper" ? (
+                            <span className="sr-only">
+                              {t("whisperPrefix")}
+                            </span>
+                          ) : null}
+                          {title}
+                        </div>
                         {snippet !== null && (
                           <div className="line-clamp-1 text-xs text-muted-foreground">
                             {snippet}

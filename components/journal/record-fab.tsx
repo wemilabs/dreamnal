@@ -2,6 +2,7 @@
 
 import { Keyboard, Mic, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { Button } from "@/components/ui/button";
@@ -11,9 +12,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "@/i18n/navigation";
+import type { EntryKind } from "@/lib/entry-kind";
 import { cn } from "@/lib/utils";
 
-export function RecordFab() {
+function RecordFabMenu({ kind }: { kind: EntryKind }) {
   const tComposer = useTranslations("Composer");
   const { startRecording, startTyping, pickAudioFile } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
@@ -29,7 +32,9 @@ export function RecordFab() {
       <div className="relative">
         <DropdownMenu>
           <DropdownMenuTrigger
-            aria-label={tComposer("addDream")}
+            aria-label={tComposer(
+              kind === "whisper" ? "addWhisper" : "addDream",
+            )}
             render={
               <Button
                 size="icon-lg"
@@ -50,15 +55,15 @@ export function RecordFab() {
             sideOffset={10}
             className="w-auto min-w-40"
           >
-            <DropdownMenuItem onClick={() => startRecording()}>
+            <DropdownMenuItem onClick={() => startRecording({ kind })}>
               <Mic aria-hidden />
               {tComposer("record")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => startTyping()}>
+            <DropdownMenuItem onClick={() => startTyping({ kind })}>
               <Keyboard aria-hidden />
               {tComposer("type")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => pickAudioFile()}>
+            <DropdownMenuItem onClick={() => pickAudioFile({ kind })}>
               <Upload aria-hidden />
               {tComposer("upload")}
             </DropdownMenuItem>
@@ -66,5 +71,24 @@ export function RecordFab() {
         </DropdownMenu>
       </div>
     </div>
+  );
+}
+
+function PathnameRecordFab() {
+  const pathname = usePathname();
+  const kind =
+    pathname === "/journal/whispers" ||
+    pathname.startsWith("/journal/whispers/")
+      ? "whisper"
+      : "dream";
+
+  return <RecordFabMenu kind={kind} />;
+}
+
+export function RecordFab() {
+  return (
+    <Suspense fallback={<RecordFabMenu kind="dream" />}>
+      <PathnameRecordFab />
+    </Suspense>
   );
 }

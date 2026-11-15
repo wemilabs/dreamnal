@@ -1,0 +1,1 @@
+ALTER TABLE "dream_entries" ADD COLUMN IF NOT EXISTS "favorite" boolean DEFAULT false NOT NULL;

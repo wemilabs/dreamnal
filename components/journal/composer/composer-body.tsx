@@ -57,10 +57,15 @@ export function ComposerBody() {
         onTitleChange={(title) => composer.onDraftChange({ title })}
         onBodyChange={(body) => composer.onDraftChange({ body })}
         source={state.source}
+        kind={state.kind}
         audioDurationSeconds={state.duration}
         submitLabel={t("save")}
         onRecordAgain={() =>
-          composer.startRecording({ day: state.backdateDay ?? undefined })
+          composer.startRecording({
+            day: state.backdateDay ?? undefined,
+            time: state.backdateTime ?? undefined,
+            kind: state.kind,
+          })
         }
         recordLabel={state.transcript ? t("recordAgain") : t("recordInstead")}
         onDiscard={composer.discard}

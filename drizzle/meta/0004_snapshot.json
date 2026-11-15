@@ -1,5 +1,5 @@
 {
-  "id": "b100cb13-4594-49b2-9882-65148fc0f51a",
+  "id": "70e4615f-c2d1-4b62-891a-b08b0e4b3b5a",
   "prevId": "ca7211e5-b59e-4e2a-ab71-3256bfe5d870",
   "version": "7",
   "dialect": "postgresql",
@@ -40,6 +40,14 @@
           "primaryKey": false,
           "notNull": true
         },
+        "kind": {
+          "name": "kind",
+          "type": "entry_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'dream'"
+        },
         "audio_duration_seconds": {
           "name": "audio_duration_seconds",
           "type": "real",
@@ -78,13 +86,6 @@
         },
         "lucid": {
           "name": "lucid",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "favorite": {
-          "name": "favorite",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -152,6 +153,14 @@
     }
   },
   "enums": {
+    "public.entry_kind": {
+      "name": "entry_kind",
+      "schema": "public",
+      "values": [
+        "dream",
+        "whisper"
+      ]
+    },
     "public.entry_source": {
       "name": "entry_source",
       "schema": "public",
