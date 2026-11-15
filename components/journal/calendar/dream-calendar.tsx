@@ -16,6 +16,7 @@ import { YearHeatmap } from "@/components/journal/calendar/year-heatmap";
 import { Button } from "@/components/ui/button";
 import { Calendar, CalendarDayButton } from "@/components/ui/calendar";
 import type { AppLocale } from "@/i18n/routing";
+import { backHref } from "@/lib/back-href";
 import {
   type CalendarDream,
   dayKey,
@@ -242,6 +243,12 @@ export function DreamCalendar({ dreams }: { dreams: CalendarDream[] }) {
           displayedMonth={displayedMonth}
           groups={dreamsByDay}
           today={today}
+          from={backHref("/journal/calendar", {
+            month:
+              monthKey(displayedMonth) === monthKey(currentMonth)
+                ? null
+                : monthKey(displayedMonth),
+          })}
         />
       </div>
     </div>

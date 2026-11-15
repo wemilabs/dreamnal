@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { EntryFeed, type FeedEntry } from "@/components/journal/entry-feed";
+import { backHref } from "@/lib/back-href";
 import { matchesMeaningFilter, parseMeaningFilter } from "@/lib/meaning";
 
 export function FilteredEntryFeed({
@@ -37,5 +38,10 @@ export function FilteredEntryFeed({
     return empty;
   }
 
-  return <EntryFeed entries={visible} />;
+  return (
+    <EntryFeed
+      entries={visible}
+      from={backHref("/journal", { filter: filter === "all" ? null : filter })}
+    />
+  );
 }

@@ -32,6 +32,7 @@ export async function LucidEntryList() {
 
   return (
     <EntryFeed
+      from="/journal/lucid"
       entries={entries.map((entry) => ({
         id: entry.id,
         title: entry.title,

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
-import type { AppHref } from "@/i18n/paths";
+import { entryHref } from "@/lib/back-href";
 import { listEntries } from "@/lib/entries";
 import { titleFallback } from "@/lib/format";
 import {
@@ -72,7 +72,7 @@ export async function SymbolsContent() {
                         return (
                           <li key={id}>
                             <IntentPrefetchLink
-                              href={`/journal/${id}` as AppHref}
+                              href={entryHref(id, "/journal/symbols")}
                               className="pressable flex items-baseline justify-between gap-4 py-1.5 text-control"
                             >
                               <span className="text-foreground">

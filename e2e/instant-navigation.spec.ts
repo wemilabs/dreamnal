@@ -1,6 +1,6 @@
 import { instant } from "@next/playwright";
 import { expect, test } from "@playwright/test";
-import { SEED_ENTRY_TITLE } from "./fixtures";
+import { SEED_ENTRY_TITLE, urlIs } from "./fixtures";
 
 test.describe("instant navigation", () => {
   test("journal list commits under the lock from calendar", async ({
@@ -30,7 +30,7 @@ test.describe("instant navigation", () => {
 
     await instant(page, async () => {
       await entryLink.evaluate((el: HTMLElement) => el.click());
-      await page.waitForURL(`**${href}`);
+      await page.waitForURL(urlIs(href ?? ""));
       await expect(page.getByTestId("entry-detail-skeleton")).toBeVisible();
       await expect(page.getByLabel("Title")).toHaveCount(0);
     });
@@ -53,7 +53,7 @@ test.describe("instant navigation", () => {
 
     await instant(page, async () => {
       await entryLink.click();
-      await page.waitForURL(`**${href}`);
+      await page.waitForURL(urlIs(href));
       await expect(page.getByLabel("Title")).toHaveValue(SEED_ENTRY_TITLE);
       await expect(page.getByTestId("entry-detail-skeleton")).toHaveCount(0);
     });

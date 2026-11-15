@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { type ReactNode, useState, useSyncExternalStore } from "react";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { backHref } from "@/lib/back-href";
 import {
   analyzeInsights,
   type InsightDream,
@@ -165,6 +166,9 @@ export function InsightsDashboard({
         onOpenChange={setDrilldownOpen}
         dreams={dreams}
         range={report.range}
+        from={backHref("/journal/insights", {
+          period: period === "30d" ? null : period,
+        })}
       />
     </div>
   );

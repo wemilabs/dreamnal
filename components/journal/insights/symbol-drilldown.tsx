@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "@/i18n/navigation";
-import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
+import { type BackHref, entryHref } from "@/lib/back-href";
 import {
   type InsightDream,
   type PeriodRange,
@@ -43,10 +43,12 @@ function DrilldownBody({
   symbol,
   dreams,
   range,
+  from,
 }: {
   symbol: SymbolItem;
   dreams: InsightDream[];
   range: PeriodRange;
+  from: BackHref;
 }) {
   const locale = useLocale() as AppLocale;
   const insightsCopy = useInsightsCopy();
@@ -125,7 +127,7 @@ function DrilldownBody({
           {inPeriod.map((dream) => (
             <li key={dream.id}>
               <Link
-                href={`/journal/${dream.id}` as AppHref}
+                href={entryHref(dream.id, from)}
                 className="pressable flex items-baseline justify-between gap-3 border-b border-border py-2.5"
               >
                 <span className="truncate text-control text-foreground">
@@ -149,19 +151,21 @@ export function SymbolDrilldown({
   onOpenChange,
   dreams,
   range,
+  from,
 }: {
   symbol: SymbolItem | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   dreams: InsightDream[];
   range: PeriodRange;
+  from: BackHref;
 }) {
   const isMobile = useIsMobile();
   const insightsCopy = useInsightsCopy();
   const title = symbol ? capitalizeLabel(symbol.label) : "";
   const kind = symbol ? insightsCopy.kindNames[symbol.kind] : "";
   const body = symbol ? (
-    <DrilldownBody symbol={symbol} dreams={dreams} range={range} />
+    <DrilldownBody symbol={symbol} dreams={dreams} range={range} from={from} />
   ) : null;
 
   if (isMobile) {

@@ -5,6 +5,7 @@ import { useActionState, useState, ViewTransition } from "react";
 import type { EntryFormState } from "@/app/[locale]/journal/actions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { BackHref } from "@/lib/back-href";
 import type { EntryKind } from "@/lib/entry-kind";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ type EntryFormProps = {
   onTitleChange?: (title: string) => void;
   onBodyChange?: (body: string) => void;
   titleTransitionName?: string;
+  from?: BackHref;
 };
 
 function autosize(el: HTMLTextAreaElement) {
@@ -54,6 +56,7 @@ export function EntryForm({
   onTitleChange,
   onBodyChange,
   titleTransitionName,
+  from,
 }: EntryFormProps) {
   const t = useTranslations("Entry");
   const [state, formAction, pending] = useActionState(action, null);
@@ -81,6 +84,7 @@ export function EntryForm({
     <form action={formAction} className="flex w-full flex-col gap-5">
       {entryId ? <input type="hidden" name="id" value={entryId} /> : null}
       <input type="hidden" name="source" value={source} />
+      {from ? <input type="hidden" name="from" value={from} /> : null}
       {audioDurationSeconds != null ? (
         <input
           type="hidden"

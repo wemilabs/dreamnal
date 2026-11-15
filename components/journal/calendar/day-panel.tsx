@@ -6,8 +6,8 @@ import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
+import { type BackHref, entryHref } from "@/lib/back-href";
 import type { CalendarDream } from "@/lib/calendar";
 import { dayKey, parseDayKey } from "@/lib/calendar";
 import {
@@ -17,13 +17,13 @@ import {
 } from "@/lib/calendar-copy";
 import { formatDuration } from "@/lib/format";
 
-function DreamRow({ dream }: { dream: CalendarDream }) {
+function DreamRow({ dream, from }: { dream: CalendarDream; from: BackHref }) {
   const locale = useLocale() as AppLocale;
   const createdAt = new Date(dream.createdAt);
   return (
     <li className="border-b border-border py-3 last:border-0">
       <IntentPrefetchLink
-        href={`/journal/${dream.id}` as AppHref}
+        href={entryHref(dream.id, from)}
         className="pressable flex w-full flex-col items-start gap-1.5"
       >
         <span className="block w-full text-control text-foreground">
@@ -65,6 +65,7 @@ type DayPanelProps = {
   displayedMonth: Date;
   groups: Map<string, CalendarDream[]>;
   today: Date;
+  from: BackHref;
 };
 
 export function DayPanel({
@@ -72,6 +73,7 @@ export function DayPanel({
   displayedMonth,
   groups,
   today,
+  from,
 }: DayPanelProps) {
   const locale = useLocale() as AppLocale;
   const t = useTranslations("Calendar");
@@ -99,7 +101,7 @@ export function DayPanel({
           {selectedDreams.length > 0 ? (
             <ul className="mt-2 flex flex-col">
               {selectedDreams.map((dream) => (
-                <DreamRow key={dream.id} dream={dream} />
+                <DreamRow key={dream.id} dream={dream} from={from} />
               ))}
             </ul>
           ) : (
@@ -169,7 +171,7 @@ export function DayPanel({
                     </h3>
                     <ul className="flex flex-col">
                       {dreams.map((dream) => (
-                        <DreamRow key={dream.id} dream={dream} />
+                        <DreamRow key={dream.id} dream={dream} from={from} />
                       ))}
                     </ul>
                   </section>
