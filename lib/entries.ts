@@ -8,6 +8,7 @@ import { type DreamEntry, dreamEntries } from "@/db/schema";
 import { getCurrentUser } from "@/lib/auth/session";
 import { openEntry, openSymbols } from "@/lib/crypto/entries";
 import type { SearchEntry } from "@/lib/dream-search";
+import type { EntryKind } from "@/lib/entry-kind";
 import {
   CONFIDENCE_LEVELS,
   type Confidence,
@@ -16,26 +17,32 @@ import {
 } from "@/lib/meaning";
 import type { SymbolsPayload } from "@/lib/symbols/schema";
 
-export async function listEntries(filter: MeaningFilter = "all") {
+export async function listEntries(
+  filter: MeaningFilter = "all",
+  kind: EntryKind = "dream",
+) {
   const user = await getCurrentUser();
   const rows = await listEntriesForUser(user.id);
-  const entries = rows.map((row) => {
-    const entry = openEntry(row);
-    return {
-      id: entry.id,
-      title: entry.title,
-      source: entry.source,
-      audioDurationSeconds: entry.audioDurationSeconds,
-      createdAt: entry.createdAt,
-      symbols: openSymbols(row)?.items ?? [],
-      wordCount: entry.body.trim().split(/\s+/).filter(Boolean).length,
-      excerpt: Array.from(entry.body).slice(0, 280).join(""),
-      meaningConfidence: row.meaningConfidence,
-      fulfilledOn: row.fulfilledOn,
-      hasMeaning: row.hasMeaning,
-      lucid: row.lucid,
-    };
-  });
+  const entries = rows
+    .filter((row) => row.kind === kind)
+    .map((row) => {
+      const entry = openEntry(row);
+      return {
+        id: entry.id,
+        title: entry.title,
+        kind: entry.kind,
+        source: entry.source,
+        audioDurationSeconds: entry.audioDurationSeconds,
+        createdAt: entry.createdAt,
+        symbols: openSymbols(row)?.items ?? [],
+        wordCount: entry.body.trim().split(/\s+/).filter(Boolean).length,
+        excerpt: Array.from(entry.body).slice(0, 280).join(""),
+        meaningConfidence: row.meaningConfidence,
+        fulfilledOn: row.fulfilledOn,
+        hasMeaning: row.hasMeaning,
+        lucid: row.lucid,
+      };
+    });
 
   return entries.filter((entry) => matchesMeaningFilter(entry, filter));
 }
@@ -43,6 +50,10 @@ export async function listEntries(filter: MeaningFilter = "all") {
 export async function listLucidEntries() {
   const entries = await listEntries();
   return entries.filter((entry) => entry.lucid);
+}
+
+export async function listWhisperEntries() {
+  return listEntries("all", "whisper");
 }
 
 export async function listSearchEntries(): Promise<SearchEntry[]> {
@@ -53,6 +64,7 @@ export async function listSearchEntries(): Promise<SearchEntry[]> {
     return {
       id: entry.id,
       title: entry.title,
+      kind: entry.kind,
       body: entry.body,
       labels: (openSymbols(row)?.items ?? []).map((item) => item.label),
       createdAt: entry.createdAt.toISOString(),
@@ -71,6 +83,7 @@ async function listEntriesForUser(userId: string) {
       userId: dreamEntries.userId,
       title: dreamEntries.title,
       body: dreamEntries.body,
+      kind: dreamEntries.kind,
       source: dreamEntries.source,
       audioDurationSeconds: dreamEntries.audioDurationSeconds,
       symbols: dreamEntries.symbols,
@@ -120,7 +133,9 @@ async function getMeaningStatsForUser(userId: string): Promise<MeaningStats> {
         >`avg(${dreamEntries.fulfilledOn}::date - ${dreamEntries.createdAt}::date) filter (where ${dreamEntries.fulfilledOn} is not null)`,
       })
       .from(dreamEntries)
-      .where(eq(dreamEntries.userId, userId)),
+      .where(
+        and(eq(dreamEntries.userId, userId), eq(dreamEntries.kind, "dream")),
+      ),
     db
       .select({
         value: dreamEntries.meaningConfidence,
@@ -130,6 +145,7 @@ async function getMeaningStatsForUser(userId: string): Promise<MeaningStats> {
       .where(
         and(
           eq(dreamEntries.userId, userId),
+          eq(dreamEntries.kind, "dream"),
           isNotNull(dreamEntries.meaningConfidence),
         ),
       )

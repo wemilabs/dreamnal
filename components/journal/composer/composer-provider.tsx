@@ -30,15 +30,18 @@ import {
 import { useRecorder } from "@/components/journal/use-recorder";
 import { useRouter } from "@/i18n/navigation";
 import { dayKey } from "@/lib/calendar";
+import type { EntryKind } from "@/lib/entry-kind";
 
 export type ComposerOpenChangeDetails = { cancel: () => void };
 
+export type ComposerStartOptions = { day?: string; kind?: EntryKind };
+
 type ComposerContextValue = {
   state: ComposerState;
-  startRecording: (options?: { day?: string }) => void;
-  startUpload: (file: File, options?: { day?: string }) => void;
-  pickAudioFile: (options?: { day?: string }) => void;
-  startTyping: (options?: { day?: string }) => void;
+  startRecording: (options?: ComposerStartOptions) => void;
+  startUpload: (file: File, options?: ComposerStartOptions) => void;
+  pickAudioFile: (options?: ComposerStartOptions) => void;
+  startTyping: (options?: ComposerStartOptions) => void;
   cancelRecording: () => void;
   discard: () => void;
   finishRecording: () => void;
@@ -71,14 +74,14 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   const { trigger } = useWebHaptics();
   const requestIdRef = useRef(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadDayRef = useRef<string | undefined>(undefined);
+  const uploadOptionsRef = useRef<ComposerStartOptions | undefined>(undefined);
   const [, startTransition] = useTransition();
 
   const hasHiddenDraft = !state.open && state.phase === "editing";
 
-  const startUpload = (file: File, options?: { day?: string }) => {
+  const startUpload = (file: File, options?: ComposerStartOptions) => {
     const requestId = ++requestIdRef.current;
-    dispatch({ type: "upload", day: options?.day });
+    dispatch({ type: "upload", day: options?.day, kind: options?.kind });
     if (file.size === 0 || !file.type.startsWith("audio/")) {
       dispatch({ type: "failed", message: t("invalidAudio") });
       return;
@@ -106,7 +109,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const pickAudioFile = (options?: { day?: string }) => {
+  const pickAudioFile = (options?: ComposerStartOptions) => {
     if (
       state.phase === "starting" ||
       state.phase === "recording" ||
@@ -119,13 +122,13 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
       return;
     }
     void trigger("nudge");
-    uploadDayRef.current = options?.day;
+    uploadOptionsRef.current = options;
     fileInputRef.current?.click();
   };
 
-  const beginRecording = async (day?: string) => {
+  const beginRecording = async (options?: ComposerStartOptions) => {
     requestIdRef.current += 1;
-    dispatch({ type: "start", day });
+    dispatch({ type: "start", day: options?.day, kind: options?.kind });
     const error = await recorder.start();
     if (error === "interrupted") {
       return;
@@ -143,22 +146,22 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   // beginRecording() runs synchronously up to its first await, which is
   // where recorder.start() creates the AudioContext, so it stays inside the
   // click's user-activation window.
-  const startRecording = (options?: { day?: string }) => {
+  const startRecording = (options?: ComposerStartOptions) => {
     if (hasHiddenDraft) {
       dispatch({ type: "open" });
       return;
     }
     // iOS only fires haptics synchronously inside the tap handler.
     void trigger("nudge");
-    void beginRecording(options?.day);
+    void beginRecording(options);
   };
 
-  const startTyping = (options?: { day?: string }) => {
+  const startTyping = (options?: ComposerStartOptions) => {
     if (hasHiddenDraft) {
       dispatch({ type: "open" });
       return;
     }
-    dispatch({ type: "type-instead", day: options?.day });
+    dispatch({ type: "type-instead", day: options?.day, kind: options?.kind });
   };
 
   const finishRecording = () => {
@@ -234,9 +237,9 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "reset" });
   };
 
-  const onSaved = (id: string) => {
+  const onSaved = (id: string, kind: EntryKind) => {
     dispatch({ type: "reset" });
-    toast.success(t("saved"), {
+    toast.success(t(kind === "whisper" ? "whisperSaved" : "saved"), {
       action: {
         label: t("view"),
         onClick: () => router.push(`/journal/${id}`),
@@ -259,9 +262,11 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
         ).toISOString(),
       );
     }
+    const kind = state.kind;
+    formData.set("kind", kind);
     const result = await createEntry(prev, formData);
     if (result?.savedId) {
-      onSaved(result.savedId);
+      onSaved(result.savedId, kind);
     }
     return result;
   };
@@ -309,7 +314,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
           const file = event.currentTarget.files?.[0];
           event.currentTarget.value = "";
           if (file) {
-            startUpload(file, { day: uploadDayRef.current });
+            startUpload(file, uploadOptionsRef.current);
           }
         }}
       />

@@ -34,7 +34,9 @@ function ComposerDateField() {
   return (
     <label className="flex w-fit items-center gap-2 text-control text-muted-foreground">
       <CalendarDays aria-hidden className="size-4 shrink-0" />
-      <span className="sr-only">{t("dateAria")}</span>
+      <span className="sr-only">
+        {t(state.kind === "whisper" ? "dateAriaWhisper" : "dateAria")}
+      </span>
       <input
         type="date"
         min={MIN_DAY}
@@ -66,6 +68,7 @@ export function ComposerOverlay() {
     error: t("error"),
   };
   const status = statuses[state.phase];
+  const title = t(state.kind === "whisper" ? "newWhisper" : "newDream");
   const backdate = state.backdateDay ? parseDayKey(state.backdateDay) : null;
   const backdateLabel =
     state.phase !== "editing" &&
@@ -80,7 +83,7 @@ export function ComposerOverlay() {
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
             <DrawerTitle className="text-2xl font-semibold tracking-tight">
-              {t("newDream")}
+              {title}
             </DrawerTitle>
             {state.phase === "editing" ? (
               <ComposerDateField />
@@ -111,7 +114,7 @@ export function ComposerOverlay() {
       >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold tracking-tight">
-            {t("newDream")}
+            {title}
           </DialogTitle>
           {state.phase === "editing" ? (
             <ComposerDateField />

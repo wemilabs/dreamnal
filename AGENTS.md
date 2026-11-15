@@ -216,6 +216,13 @@ storage or the database; only edited text is saved.
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
 - `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
   toggled from the entry header; `lucid` is a plaintext boolean column)
+- `/journal/whispers` — non-dream entries (teachings, revelations, insights):
+  `dream_entries.kind` (`entry_kind` enum, default `dream`) set via the
+  composer's `kind` option (FAB and "New whisper" button on that page).
+  `listEntries` returns dreams only by default, so whispers stay out of the
+  feed, calendar, lucid, insights and symbols; search includes them. The entry
+  page hides the lucid toggle and meaning section, and the lucid/meaning
+  actions only update `kind = 'dream'` rows
 - `/journal/{favorites,trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler

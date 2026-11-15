@@ -11,12 +11,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export function RecordFab() {
   const tComposer = useTranslations("Composer");
   const { startRecording, startTyping, pickAudioFile } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
+  const pathname = usePathname();
+  const kind =
+    pathname === "/journal/whispers" ||
+    pathname.startsWith("/journal/whispers/")
+      ? "whisper"
+      : "dream";
 
   return (
     <div
@@ -29,7 +36,9 @@ export function RecordFab() {
       <div className="relative">
         <DropdownMenu>
           <DropdownMenuTrigger
-            aria-label={tComposer("addDream")}
+            aria-label={tComposer(
+              kind === "whisper" ? "addWhisper" : "addDream",
+            )}
             render={
               <Button
                 size="icon-lg"
@@ -50,15 +59,15 @@ export function RecordFab() {
             sideOffset={10}
             className="w-auto min-w-40"
           >
-            <DropdownMenuItem onClick={() => startRecording()}>
+            <DropdownMenuItem onClick={() => startRecording({ kind })}>
               <Mic aria-hidden />
               {tComposer("record")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => startTyping()}>
+            <DropdownMenuItem onClick={() => startTyping({ kind })}>
               <Keyboard aria-hidden />
               {tComposer("type")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => pickAudioFile()}>
+            <DropdownMenuItem onClick={() => pickAudioFile({ kind })}>
               <Upload aria-hidden />
               {tComposer("upload")}
             </DropdownMenuItem>

@@ -5,6 +5,7 @@ import { useActionState, useState, ViewTransition } from "react";
 import type { EntryFormState } from "@/app/[locale]/journal/actions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { EntryKind } from "@/lib/entry-kind";
 
 type EntryFormProps = {
   action: (prev: EntryFormState, formData: FormData) => Promise<EntryFormState>;
@@ -12,6 +13,7 @@ type EntryFormProps = {
   defaultTitle?: string | null;
   defaultBody?: string;
   source: "voice" | "text";
+  kind?: EntryKind;
   audioDurationSeconds?: number | null;
   submitLabel?: string;
   pendingLabel?: string;
@@ -41,6 +43,7 @@ export function EntryForm({
   defaultTitle,
   defaultBody = "",
   source,
+  kind = "dream",
   audioDurationSeconds,
   submitLabel,
   pendingLabel,
@@ -112,11 +115,13 @@ export function EntryForm({
           }}
           autoFocus={!defaultBody}
           required
-          aria-label={t("dreamAria")}
+          aria-label={t(kind === "whisper" ? "whisperAria" : "dreamAria")}
           autoComplete="off"
           autoCapitalize="sentences"
           enterKeyHint="enter"
-          placeholder={t("bodyPlaceholder")}
+          placeholder={t(
+            kind === "whisper" ? "whisperBodyPlaceholder" : "bodyPlaceholder",
+          )}
           className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead"
         />
         <div className="flex items-center justify-between">

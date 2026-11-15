@@ -3,6 +3,7 @@ import {
   CalendarDays,
   ChartSpline,
   Eye,
+  Feather,
   type LucideIcon,
   Settings,
   Star,
@@ -14,6 +15,7 @@ import type { AppHref } from "@/i18n/paths";
 export type JournalNavItem = {
   titleKey:
     | "navJournal"
+    | "navWhispers"
     | "navCalendar"
     | "navInsights"
     | "navSymbols"
@@ -27,6 +29,7 @@ export type JournalNavItem = {
 
 export const JOURNAL_NAV_ITEMS: JournalNavItem[] = [
   { titleKey: "navJournal", href: "/journal", icon: BookOpen },
+  { titleKey: "navWhispers", href: "/journal/whispers", icon: Feather },
   { titleKey: "navCalendar", href: "/journal/calendar", icon: CalendarDays },
   { titleKey: "navInsights", href: "/journal/insights", icon: ChartSpline },
   { titleKey: "navSymbols", href: "/journal/symbols", icon: Tags },

@@ -13,6 +13,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { openEntry, openSymbols, sealEntry } from "@/lib/crypto/entries";
 import type { SearchEntry } from "@/lib/dream-search";
 import { listSearchEntries } from "@/lib/entries";
+import { ENTRY_KINDS } from "@/lib/entry-kind";
 import { scheduleSymbolRefresh } from "@/lib/symbols/refresh";
 import { transcribeAudio } from "@/lib/transcribe";
 
@@ -79,6 +80,7 @@ function parseEntryForm(
       .min(1, messages.bodyMin)
       .max(20000, messages.bodyMax),
     source: z.enum(["voice", "text"]),
+    kind: z.enum(ENTRY_KINDS).optional(),
     audioDurationSeconds: z
       .string()
       .optional()
@@ -95,6 +97,7 @@ function parseEntryForm(
     title: formData.get("title") ?? "",
     body: formData.get("body") ?? "",
     source: formData.get("source"),
+    kind: formData.get("kind") ?? undefined,
     audioDurationSeconds: formData.get("audioDurationSeconds") ?? undefined,
   });
 }
@@ -146,6 +149,7 @@ export async function createEntry(
     .values({
       ...parsed.data,
       ...sealed,
+      kind: parsed.data.kind ?? "dream",
       id,
       userId: user.id,
       ...(createdAt ? { createdAt } : {}),
@@ -256,12 +260,12 @@ export async function deleteEntry(
   const deleted = await db
     .delete(dreamEntries)
     .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
-    .returning({ id: dreamEntries.id });
+    .returning({ kind: dreamEntries.kind });
 
   if (deleted.length === 0) {
     return { error: t("notFound") };
   }
 
   updateTag(`entries:${user.id}`);
-  redirect("/journal");
+  redirect(deleted[0].kind === "whisper" ? "/journal/whispers" : "/journal");
 }

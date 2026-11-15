@@ -18,7 +18,10 @@ export function ComposerError({ className }: { className?: string }) {
         <button
           type="button"
           onClick={() =>
-            startRecording({ day: state.backdateDay ?? undefined })
+            startRecording({
+              day: state.backdateDay ?? undefined,
+              kind: state.kind,
+            })
           }
           className="pressable flex items-center rounded-full bg-primary px-6 py-2.5 text-control font-semibold text-primary-foreground"
         >
@@ -26,14 +29,24 @@ export function ComposerError({ className }: { className?: string }) {
         </button>
         <button
           type="button"
-          onClick={() => startTyping({ day: state.backdateDay ?? undefined })}
+          onClick={() =>
+            startTyping({
+              day: state.backdateDay ?? undefined,
+              kind: state.kind,
+            })
+          }
           className="pressable text-control font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
         >
           {tJournal("emptyPromptAction")}
         </button>
         <button
           type="button"
-          onClick={() => pickAudioFile({ day: state.backdateDay ?? undefined })}
+          onClick={() =>
+            pickAudioFile({
+              day: state.backdateDay ?? undefined,
+              kind: state.kind,
+            })
+          }
           className="pressable text-control font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
         >
           {t("uploadAudio")}
