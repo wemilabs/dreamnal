@@ -8,6 +8,21 @@ export const CONFIDENCE_LEVELS = [
 
 export type Confidence = (typeof CONFIDENCE_LEVELS)[number]["value"];
 
+export const CONFIDENCE_LABEL_KEYS = {
+  10: "confidenceUnsure",
+  30: "confidenceHunch",
+  50: "confidencePossible",
+  75: "confidenceLikely",
+  100: "confidenceCertain",
+} as const satisfies Record<
+  Confidence,
+  | "confidenceUnsure"
+  | "confidenceHunch"
+  | "confidencePossible"
+  | "confidenceLikely"
+  | "confidenceCertain"
+>;
+
 export const MEANING_FILTERS = ["all", "interpreted", "fulfilled"] as const;
 
 export type MeaningFilter = (typeof MEANING_FILTERS)[number];

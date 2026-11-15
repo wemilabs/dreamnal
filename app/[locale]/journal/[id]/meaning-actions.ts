@@ -242,6 +242,53 @@ export async function saveFulfillmentNote(
   return { ok: true };
 }
 
+export async function saveFulfilledMeaning(
+  _prev: MeaningFormState,
+  formData: FormData,
+): Promise<MeaningFormState> {
+  const t = await getMeaningTranslations();
+  const user = await getCurrentUser();
+  const id = idInput.safeParse(formData.get("id"));
+  if (!id.success) {
+    return { error: t("notFound") };
+  }
+
+  const value = formData.get("meaning");
+  const meaning = typeof value === "string" ? value.trim() : "";
+  if (meaning === "") {
+    return {
+      fieldErrors: { meaning: [t("meaningEmpty")] },
+    };
+  }
+  if (meaning.length > 4000) {
+    return {
+      fieldErrors: { meaning: [t("meaningMax")] },
+    };
+  }
+
+  const sealed = sealMeaning({ userId: user.id, id: id.data, meaning });
+  const updated = await db
+    .update(dreamEntries)
+    .set({
+      meaning: sealed.meaning ?? null,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        isNotNull(dreamEntries.fulfilledOn),
+      ),
+    )
+    .returning({ id: dreamEntries.id });
+  if (updated.length === 0) {
+    return { error: t("notFulfilled") };
+  }
+
+  updateTag(`entries:${user.id}`);
+  return { ok: true };
+}
+
 export async function unmarkFulfilled(
   _prev: MeaningFormState,
   formData: FormData,

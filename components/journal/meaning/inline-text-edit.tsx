@@ -2,18 +2,35 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
-import {
-  type MeaningFormState,
-  saveFulfillmentNote,
-} from "@/app/[locale]/journal/[id]/meaning-actions";
+import type { MeaningFormState } from "@/app/[locale]/journal/[id]/meaning-actions";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
-export function FulfillmentNote({
+export function InlineTextEdit({
   entryId,
-  note,
+  field,
+  value,
+  maxLength,
+  action,
+  editLabel,
+  addLabel,
+  ariaLabel,
+  placeholder,
+  textClassName,
 }: {
   entryId: string;
-  note: string | null;
+  field: "meaning" | "note";
+  value: string | null;
+  maxLength: number;
+  action: (
+    prev: MeaningFormState,
+    formData: FormData,
+  ) => Promise<MeaningFormState>;
+  editLabel: string;
+  addLabel?: string;
+  ariaLabel: string;
+  placeholder: string;
+  textClassName: string;
 }) {
   const t = useTranslations("Meaning");
   const [editing, setEditing] = useState(false);
@@ -22,7 +39,7 @@ export function FulfillmentNote({
       prev: MeaningFormState,
       formData: FormData,
     ): Promise<MeaningFormState> => {
-      const result = await saveFulfillmentNote(prev, formData);
+      const result = await action(prev, formData);
       if (result?.ok) {
         setEditing(false);
       }
@@ -30,6 +47,7 @@ export function FulfillmentNote({
     },
     null,
   );
+  const fieldError = state?.fieldErrors?.[field]?.[0];
 
   return (
     <div className="flex flex-col items-start gap-3">
@@ -38,13 +56,13 @@ export function FulfillmentNote({
           <input type="hidden" name="id" value={entryId} />
           <div className="grid gap-1.5">
             <Textarea
-              name="note"
-              defaultValue={note ?? ""}
-              maxLength={2000}
+              name={field}
+              defaultValue={value ?? ""}
+              maxLength={maxLength}
               autoFocus
-              placeholder={t("fulfillmentPlaceholder")}
-              aria-label={t("noteAria")}
-              aria-invalid={state?.fieldErrors?.note ? true : undefined}
+              placeholder={placeholder}
+              aria-label={ariaLabel}
+              aria-invalid={fieldError ? true : undefined}
               autoComplete="off"
               onKeyDown={(event) => {
                 if (event.key === "Escape" && !pending) {
@@ -52,11 +70,14 @@ export function FulfillmentNote({
                   setEditing(false);
                 }
               }}
-              className="min-h-24 resize-none rounded-lg border border-border bg-card/60 p-4 text-sm md:text-control"
+              className={cn(
+                "resize-none rounded-lg border border-border bg-card/60 p-4 text-sm md:text-control",
+                field === "meaning" ? "min-h-28" : "min-h-24",
+              )}
             />
-            {state?.fieldErrors?.note?.[0] ? (
+            {fieldError ? (
               <p role="alert" className="text-sm/tight text-rec">
-                {state.fieldErrors.note[0]}
+                {fieldError}
               </p>
             ) : null}
           </div>
@@ -85,17 +106,15 @@ export function FulfillmentNote({
         </form>
       ) : (
         <>
-          {note ? (
-            <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-              {note}
-            </p>
+          {value ? (
+            <p className={cn("whitespace-pre-wrap", textClassName)}>{value}</p>
           ) : null}
           <button
             type="button"
             onClick={() => setEditing(true)}
             className="pressable text-control font-medium text-muted-foreground underline decoration-foreground/20 underline-offset-[5px]"
           >
-            {t(note ? "editNote" : "addNote")}
+            {value ? editLabel : (addLabel ?? editLabel)}
           </button>
         </>
       )}
