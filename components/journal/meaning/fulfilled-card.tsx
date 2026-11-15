@@ -29,7 +29,7 @@ export async function FulfilledCard({
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card/60">
       <div className="flex flex-col gap-2 p-4 md:p-5">
-        <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        <h3 className="text-sm font-medium text-muted-foreground">
           {t("yourInterpretation")}
         </h3>
         <InlineTextEdit
