@@ -196,6 +196,52 @@ export async function markFulfilled(
   return { ok: true };
 }
 
+export async function saveFulfillmentNote(
+  _prev: MeaningFormState,
+  formData: FormData,
+): Promise<MeaningFormState> {
+  const t = await getMeaningTranslations();
+  const user = await getCurrentUser();
+  const id = idInput.safeParse(formData.get("id"));
+  if (!id.success) {
+    return { error: t("notFound") };
+  }
+
+  const value = formData.get("note");
+  const note = typeof value === "string" ? value.trim() : "";
+  if (note.length > 2000) {
+    return {
+      fieldErrors: { note: [t("noteMax")] },
+    };
+  }
+
+  const sealed = sealMeaning({
+    userId: user.id,
+    id: id.data,
+    fulfillmentNote: note || null,
+  });
+  const updated = await db
+    .update(dreamEntries)
+    .set({
+      fulfillmentNote: sealed.fulfillmentNote ?? null,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        isNotNull(dreamEntries.fulfilledOn),
+      ),
+    )
+    .returning({ id: dreamEntries.id });
+  if (updated.length === 0) {
+    return { error: t("notFulfilled") };
+  }
+
+  updateTag(`entries:${user.id}`);
+  return { ok: true };
+}
+
 export async function unmarkFulfilled(
   _prev: MeaningFormState,
   formData: FormData,

@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import type { AppLocale } from "@/i18n/routing";
 import { formatDay } from "@/lib/format";
+import { FulfillmentNote } from "./fulfillment-note";
 import { UndoFulfilledButton } from "./undo-fulfilled-button";
 
 export async function FulfilledCard({
@@ -37,11 +38,11 @@ export async function FulfilledCard({
           })}
         </span>
       </div>
-      {fulfillmentNote ? (
-        <p className="whitespace-pre-wrap text-sm text-muted-foreground">
-          {fulfillmentNote}
-        </p>
-      ) : null}
+      <FulfillmentNote
+        key={fulfillmentNote ?? ""}
+        entryId={entryId}
+        note={fulfillmentNote}
+      />
       <UndoFulfilledButton entryId={entryId} />
     </div>
   );
