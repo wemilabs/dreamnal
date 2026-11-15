@@ -23,14 +23,16 @@ export function LucidToggle({ id, lucid }: { id: string; lucid: boolean }) {
         title={lucid ? t("unmarkLucid") : t("markLucid")}
         data-testid="lucid-toggle"
         className={cn(
-          "pressable inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-control font-medium disabled:opacity-60",
+          "pressable inline-flex size-9 shrink-0 items-center justify-center gap-1.5 rounded-full text-control font-medium disabled:opacity-60 md:w-auto md:px-3",
           lucid
             ? "bg-secondary text-secondary-foreground"
             : "text-muted-foreground hover:text-foreground",
         )}
       >
         <Icon className="size-4" aria-hidden />
-        <span>{lucid ? t("lucidBadge") : t("markLucid")}</span>
+        <span className="hidden md:inline">
+          {lucid ? t("lucidBadge") : t("markLucid")}
+        </span>
       </button>
       {state?.error ? (
         <p role="alert" className="text-sm/tight text-rec">
