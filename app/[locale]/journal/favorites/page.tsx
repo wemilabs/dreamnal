@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense, ViewTransition } from "react";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
 import { FavoriteEntryList } from "@/components/journal/favorite-entry-list";
+import { FavoriteTabs } from "@/components/journal/favorite-tabs";
 import { PageFade } from "@/components/journal/page-fade";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,17 +22,34 @@ export default async function FavoritesPage() {
         {t("favoritesDescription")}
       </p>
       <div className="mt-8">
-        <Suspense
-          fallback={
-            <ViewTransition exit="reveal-out" default="none">
-              <EntryListSkeleton />
-            </ViewTransition>
+        <FavoriteTabs
+          dreams={
+            <Suspense
+              fallback={
+                <ViewTransition exit="reveal-out" default="none">
+                  <EntryListSkeleton />
+                </ViewTransition>
+              }
+            >
+              <ViewTransition enter="reveal-in" default="none">
+                <FavoriteEntryList kind="dream" />
+              </ViewTransition>
+            </Suspense>
           }
-        >
-          <ViewTransition enter="reveal-in" default="none">
-            <FavoriteEntryList />
-          </ViewTransition>
-        </Suspense>
+          whispers={
+            <Suspense
+              fallback={
+                <ViewTransition exit="reveal-out" default="none">
+                  <EntryListSkeleton />
+                </ViewTransition>
+              }
+            >
+              <ViewTransition enter="reveal-in" default="none">
+                <FavoriteEntryList kind="whisper" />
+              </ViewTransition>
+            </Suspense>
+          }
+        />
       </div>
     </PageFade>
   );

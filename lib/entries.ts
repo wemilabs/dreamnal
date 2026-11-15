@@ -53,8 +53,8 @@ export async function listLucidEntries() {
   return entries.filter((entry) => entry.lucid);
 }
 
-export async function listFavoriteEntries() {
-  const entries = await listEntries();
+export async function listFavoriteEntries(kind: EntryKind = "dream") {
+  const entries = await listEntries("all", kind);
   return entries.filter((entry) => entry.favorite);
 }
 

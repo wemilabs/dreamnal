@@ -37,9 +37,7 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
           </div>
         </div>
         <div className="flex shrink-0 items-start gap-1">
-          {isWhisper ? null : (
-            <FavoriteToggle id={entry.id} favorite={entry.favorite} />
-          )}
+          <FavoriteToggle id={entry.id} favorite={entry.favorite} />
           {isWhisper ? null : <LucidToggle id={entry.id} lucid={entry.lucid} />}
           <DeleteEntryButton id={entry.id} />
         </div>
