@@ -165,6 +165,7 @@
     "typed": "Saisi",
     "fulfilled": "Réalisé",
     "entryDreams": "{count, plural, one {# rêve} other {# rêves}}",
+    "entryWhispers": "{count, plural, one {# inspiration} other {# inspirations}}",
     "untitled": "Sans titre",
     "deleteAria": "Supprimer l’entrée",
     "deleteTitle": "Supprimer cette entrée ?",

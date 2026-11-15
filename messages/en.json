@@ -165,6 +165,7 @@
     "typed": "Typed",
     "fulfilled": "Fulfilled",
     "entryDreams": "{count, plural, one {# dream} other {# dreams}}",
+    "entryWhispers": "{count, plural, one {# whisper} other {# whispers}}",
     "untitled": "Untitled",
     "deleteAria": "Delete entry",
     "deleteTitle": "Delete this entry?",

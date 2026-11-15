@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
 import { dayKey } from "@/lib/calendar";
+import type { EntryKind } from "@/lib/entry-kind";
 import { formatDuration, titleFallback } from "@/lib/format";
 import type { SymbolItem, SymbolKind } from "@/lib/symbols/schema";
 
@@ -77,7 +78,13 @@ function groupByLocalDay(entries: FeedEntry[]) {
   return [...groups];
 }
 
-export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
+export function EntryFeed({
+  entries,
+  kind = "dream",
+}: {
+  entries: FeedEntry[];
+  kind?: EntryKind;
+}) {
   const locale = useLocale() as AppLocale;
   const tJournal = useTranslations("Journal");
   const tEntry = useTranslations("Entry");
@@ -110,7 +117,9 @@ export function EntryFeed({ entries }: { entries: FeedEntry[] }) {
             </span>
             {group.entries.length > 1 && (
               <span className="tabular-nums text-xs font-normal">
-                {tEntry("entryDreams", { count: group.entries.length })}
+                {tEntry(kind === "whisper" ? "entryWhispers" : "entryDreams", {
+                  count: group.entries.length,
+                })}
               </span>
             )}
           </h2>
