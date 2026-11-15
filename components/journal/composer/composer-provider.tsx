@@ -36,6 +36,8 @@ export type ComposerOpenChangeDetails = { cancel: () => void };
 type ComposerContextValue = {
   state: ComposerState;
   startRecording: (options?: { day?: string }) => void;
+  startUpload: (file: File, options?: { day?: string }) => void;
+  pickAudioFile: (options?: { day?: string }) => void;
   startTyping: (options?: { day?: string }) => void;
   cancelRecording: () => void;
   discard: () => void;
@@ -68,9 +70,58 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   const recorder = useRecorder();
   const { trigger } = useWebHaptics();
   const requestIdRef = useRef(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadDayRef = useRef<string | undefined>(undefined);
   const [, startTransition] = useTransition();
 
   const hasHiddenDraft = !state.open && state.phase === "editing";
+
+  const startUpload = (file: File, options?: { day?: string }) => {
+    const requestId = ++requestIdRef.current;
+    dispatch({ type: "upload", day: options?.day });
+    if (file.size === 0 || !file.type.startsWith("audio/")) {
+      dispatch({ type: "failed", message: t("invalidAudio") });
+      return;
+    }
+    if (file.size > MAX_AUDIO_BYTES) {
+      dispatch({ type: "failed", message: t("fileTooLarge") });
+      return;
+    }
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.set("audio", file);
+      const result = await transcribeRecording(formData);
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
+      if (result.status === "ok") {
+        dispatch({
+          type: "transcribed",
+          text: result.text,
+          duration: result.duration,
+        });
+      } else {
+        dispatch({ type: "failed", message: result.message });
+      }
+    });
+  };
+
+  const pickAudioFile = (options?: { day?: string }) => {
+    if (
+      state.phase === "starting" ||
+      state.phase === "recording" ||
+      state.phase === "transcribing"
+    ) {
+      return;
+    }
+    if (hasHiddenDraft) {
+      dispatch({ type: "open" });
+      return;
+    }
+    void trigger("nudge");
+    uploadDayRef.current = options?.day;
+    fileInputRef.current?.click();
+  };
 
   const beginRecording = async (day?: string) => {
     requestIdRef.current += 1;
@@ -231,6 +282,8 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
       value={{
         state,
         startRecording,
+        startUpload,
+        pickAudioFile,
         startTyping,
         cancelRecording,
         discard,
@@ -245,6 +298,21 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     >
       {children}
       <ComposerOverlay />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="audio/*"
+        hidden
+        tabIndex={-1}
+        aria-hidden
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0];
+          event.currentTarget.value = "";
+          if (file) {
+            startUpload(file, { day: uploadDayRef.current });
+          }
+        }}
+      />
     </ComposerContext.Provider>
   );
 }

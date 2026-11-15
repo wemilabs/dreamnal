@@ -75,7 +75,8 @@ export function DayPanel({
 }: DayPanelProps) {
   const locale = useLocale() as AppLocale;
   const t = useTranslations("Calendar");
-  const { startRecording, startTyping } = useComposer();
+  const tComposer = useTranslations("Composer");
+  const { startRecording, startTyping, pickAudioFile } = useComposer();
   const selectedDate = selectedDay ? parseDayKey(selectedDay) : null;
   const selectedDreams = selectedDay ? (groups.get(selectedDay) ?? []) : [];
   const selectedDateIsPastOrToday =
@@ -133,6 +134,16 @@ export function DayPanel({
                 >
                   <PenLine aria-hidden />
                   {t("type")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    pickAudioFile({ day: selectedDay ?? undefined })
+                  }
+                >
+                  {tComposer("upload")}
                 </Button>
               </div>
             </div>
