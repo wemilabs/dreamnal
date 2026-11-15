@@ -26,29 +26,50 @@ import { formatCalendarDayShort } from "@/lib/calendar-copy";
 
 const MIN_DAY = "2000-01-01";
 
+function pad(value: number) {
+  return String(value).padStart(2, "0");
+}
+
 function ComposerDateField() {
-  const { state, setBackdateDay } = useComposer();
+  const { state, setBackdateDay, setBackdateTime } = useComposer();
   const t = useTranslations("Composer");
-  const today = dayKey(new Date());
+  const now = new Date();
+  const today = dayKey(now);
+  const currentTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
   return (
-    <label className="flex w-fit items-center gap-2 text-control text-muted-foreground">
+    <div className="flex items-center gap-2 text-control text-muted-foreground">
       <CalendarDays aria-hidden className="size-4 shrink-0" />
-      <span className="sr-only">{t("dateAria")}</span>
-      <input
-        type="date"
-        min={MIN_DAY}
-        max={today}
-        value={state.backdateDay ?? today}
-        onChange={(event) => {
-          const day = event.target.value;
-          setBackdateDay(
-            !day || day > today ? null : day < MIN_DAY ? MIN_DAY : day,
-          );
-        }}
-        className="h-9 min-w-36 rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground tabular-nums outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-8 md:text-sm dark:scheme-dark dark:bg-input/30 [&::-webkit-date-and-time-value]:text-left"
-      />
-    </label>
+      <label>
+        <span className="sr-only">
+          {t(state.kind === "whisper" ? "dateAriaWhisper" : "dateAria")}
+        </span>
+        <input
+          type="date"
+          min={MIN_DAY}
+          max={today}
+          value={state.backdateDay ?? today}
+          onChange={(event) => {
+            const day = event.target.value;
+            setBackdateDay(
+              !day || day > today ? null : day < MIN_DAY ? MIN_DAY : day,
+            );
+          }}
+          className="h-9 min-w-36 rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground tabular-nums outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-8 md:text-sm dark:scheme-dark dark:bg-input/30 [&::-webkit-date-and-time-value]:text-left"
+        />
+      </label>
+      {state.kind === "whisper" ? (
+        <label>
+          <span className="sr-only">{t("timeAriaWhisper")}</span>
+          <input
+            type="time"
+            value={state.backdateTime ?? currentTime}
+            onChange={(event) => setBackdateTime(event.target.value || null)}
+            className="h-9 min-w-24 rounded-lg border border-input bg-transparent px-2.5 text-base text-foreground tabular-nums outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-8 md:text-sm dark:scheme-dark dark:bg-input/30 [&::-webkit-date-and-time-value]:text-left"
+          />
+        </label>
+      ) : null}
+    </div>
   );
 }
 
@@ -66,6 +87,7 @@ export function ComposerOverlay() {
     error: t("error"),
   };
   const status = statuses[state.phase];
+  const title = t(state.kind === "whisper" ? "newWhisper" : "newDream");
   const backdate = state.backdateDay ? parseDayKey(state.backdateDay) : null;
   const backdateLabel =
     state.phase !== "editing" &&
@@ -80,7 +102,7 @@ export function ComposerOverlay() {
         <DrawerContent className="max-h-[85dvh]">
           <DrawerHeader className="shrink-0 text-left">
             <DrawerTitle className="text-2xl font-semibold tracking-tight">
-              {t("newDream")}
+              {title}
             </DrawerTitle>
             {state.phase === "editing" ? (
               <ComposerDateField />
@@ -111,7 +133,7 @@ export function ComposerOverlay() {
       >
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold tracking-tight">
-            {t("newDream")}
+            {title}
           </DialogTitle>
           {state.phase === "editing" ? (
             <ComposerDateField />

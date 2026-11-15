@@ -40,7 +40,11 @@ export async function setLucid(
     .update(dreamEntries)
     .set({ lucid: input.data.lucid, updatedAt: new Date() })
     .where(
-      and(eq(dreamEntries.id, input.data.id), eq(dreamEntries.userId, user.id)),
+      and(
+        eq(dreamEntries.id, input.data.id),
+        eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
+      ),
     )
     .returning({ id: dreamEntries.id });
   if (updated.length === 0) {

@@ -216,6 +216,13 @@ storage or the database; only edited text is saved.
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
 - `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
   toggled from the entry header; `lucid` is a plaintext boolean column)
+- `/journal/whispers` — non-dream entries (teachings, revelations, insights):
+  `dream_entries.kind` (`entry_kind` enum, default `dream`) set via the
+  composer's `kind` option (FAB and "New whisper" button on that page).
+  `listEntries` returns dreams only by default, so whispers stay out of the
+  feed, calendar, lucid, insights and symbols; search includes them. The entry
+  page hides the lucid toggle and meaning section, and the lucid/meaning
+  actions only update `kind = 'dream'` rows
 - `/journal/{favorites,trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
@@ -237,7 +244,9 @@ pages.
   there is not; the longest streak is counted across all recorded days
 - Backdated saves set the optional `createdAt` form field in the composer.
   `createEntry` validates the ISO timestamp and rejects values before
-  2000-01-01 or more than five minutes in the future
+  2000-01-01 or more than five minutes in the future.
+  The whisper composer also has an optional time field (`backdateTime`) that
+  defaults to the current time and is clamped to now.
 
 ## Symbols and patterns
 

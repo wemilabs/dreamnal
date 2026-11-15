@@ -46,7 +46,13 @@ export async function saveMeaning(
   const [existing] = await db
     .select({ fulfilledOn: dreamEntries.fulfilledOn })
     .from(dreamEntries)
-    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
+      ),
+    )
     .limit(1);
   if (!existing) {
     return { error: t("notFound") };
@@ -94,6 +100,7 @@ export async function saveMeaning(
       and(
         eq(dreamEntries.id, id.data),
         eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
         isNull(dreamEntries.fulfilledOn),
       ),
     )
@@ -123,7 +130,13 @@ export async function markFulfilled(
       createdAt: dreamEntries.createdAt,
     })
     .from(dreamEntries)
-    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
+      ),
+    )
     .limit(1);
   if (!existing) {
     return { error: t("notFound") };
@@ -184,6 +197,7 @@ export async function markFulfilled(
       and(
         eq(dreamEntries.id, id.data),
         eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
         isNotNull(dreamEntries.meaning),
       ),
     )
@@ -230,6 +244,7 @@ export async function saveFulfillmentNote(
       and(
         eq(dreamEntries.id, id.data),
         eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
         isNotNull(dreamEntries.fulfilledOn),
       ),
     )
@@ -277,6 +292,7 @@ export async function saveFulfilledMeaning(
       and(
         eq(dreamEntries.id, id.data),
         eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
         isNotNull(dreamEntries.fulfilledOn),
       ),
     )
@@ -307,7 +323,13 @@ export async function unmarkFulfilled(
       fulfillmentNote: null,
       updatedAt: new Date(),
     })
-    .where(and(eq(dreamEntries.id, id.data), eq(dreamEntries.userId, user.id)))
+    .where(
+      and(
+        eq(dreamEntries.id, id.data),
+        eq(dreamEntries.userId, user.id),
+        eq(dreamEntries.kind, "dream"),
+      ),
+    )
     .returning({ id: dreamEntries.id });
   if (updated.length === 0) {
     return { error: t("notFound") };

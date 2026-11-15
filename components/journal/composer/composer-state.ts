@@ -1,3 +1,5 @@
+import type { EntryKind } from "@/lib/entry-kind";
+
 export type Phase =
   | "idle"
   | "starting"
@@ -12,7 +14,9 @@ export type ComposerState = {
   transcript: string;
   duration: number | null;
   source: "voice" | "text";
+  kind: EntryKind;
   backdateDay: string | null;
+  backdateTime: string | null;
   message: string | null;
   draftTitle: string;
   draftBody: string;
@@ -21,15 +25,16 @@ export type ComposerState = {
 export type ComposerAction =
   | { type: "open" }
   | { type: "close" }
-  | { type: "start"; day?: string }
-  | { type: "upload"; day?: string }
+  | { type: "start"; day?: string; time?: string; kind?: EntryKind }
+  | { type: "upload"; day?: string; time?: string; kind?: EntryKind }
   | { type: "started" }
   | { type: "stop" }
   | { type: "transcribed"; text: string; duration: number }
   | { type: "failed"; message: string }
-  | { type: "type-instead"; day?: string }
+  | { type: "type-instead"; day?: string; time?: string; kind?: EntryKind }
   | { type: "draft"; title?: string; body?: string }
   | { type: "set-day"; day: string | null }
+  | { type: "set-time"; time: string | null }
   | { type: "reset" };
 
 export const initialComposerState: ComposerState = {
@@ -38,7 +43,9 @@ export const initialComposerState: ComposerState = {
   transcript: "",
   duration: null,
   source: "text",
+  kind: "dream",
   backdateDay: null,
+  backdateTime: null,
   message: null,
   draftTitle: "",
   draftBody: "",
@@ -60,7 +67,9 @@ export function reduceComposer(
         phase: "starting",
         transcript: "",
         duration: null,
+        kind: action.kind ?? "dream",
         backdateDay: action.day ?? null,
+        backdateTime: action.time ?? null,
         message: null,
         draftTitle: "",
         draftBody: "",
@@ -72,7 +81,9 @@ export function reduceComposer(
         phase: "transcribing",
         transcript: "",
         duration: null,
+        kind: action.kind ?? "dream",
         backdateDay: action.day ?? null,
+        backdateTime: action.time ?? null,
         message: null,
         draftTitle: "",
         draftBody: "",
@@ -101,7 +112,9 @@ export function reduceComposer(
         transcript: "",
         duration: null,
         source: "text",
+        kind: action.kind ?? "dream",
         backdateDay: action.day ?? null,
+        backdateTime: action.time ?? null,
         draftTitle: "",
         draftBody: "",
       };
@@ -113,6 +126,8 @@ export function reduceComposer(
       };
     case "set-day":
       return { ...state, backdateDay: action.day };
+    case "set-time":
+      return { ...state, backdateTime: action.time };
     case "reset":
       return { ...initialComposerState };
   }

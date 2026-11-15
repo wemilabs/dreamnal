@@ -13,6 +13,7 @@ import { SymbolTags } from "./symbols/symbol-tags";
 
 export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
   const t = await getTranslations("Entry");
+  const isWhisper = entry.kind === "whisper";
   const duration =
     entry.source === "voice" && entry.audioDurationSeconds != null
       ? formatDuration(entry.audioDurationSeconds)
@@ -23,8 +24,8 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <Link
-            href="/journal"
-            aria-label={t("backToJournal")}
+            href={isWhisper ? "/journal/whispers" : "/journal"}
+            aria-label={t(isWhisper ? "backToWhispers" : "backToJournal")}
             className="pressable grid size-9 shrink-0 place-items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" aria-hidden />
@@ -35,7 +36,7 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
           </div>
         </div>
         <div className="flex shrink-0 items-start gap-1">
-          <LucidToggle id={entry.id} lucid={entry.lucid} />
+          {isWhisper ? null : <LucidToggle id={entry.id} lucid={entry.lucid} />}
           <DeleteEntryButton id={entry.id} />
         </div>
       </div>
@@ -47,10 +48,11 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
         titleTransitionName={`entry-title-${entry.id}`}
         defaultBody={entry.body}
         source={entry.source}
+        kind={entry.kind}
         audioDurationSeconds={entry.audioDurationSeconds}
         submitLabel={t("saveChanges")}
       />
-      <MeaningSection entry={entry} />
+      {isWhisper ? null : <MeaningSection entry={entry} />}
       <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />
     </div>
   );
