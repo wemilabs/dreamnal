@@ -201,6 +201,7 @@
     "error": "Erreur",
     "dateAria": "Date du rêve",
     "dateAriaWhisper": "Date de l’inspiration",
+    "timeAriaWhisper": "Heure de l’inspiration",
     "recordAgain": "Enregistrer à nouveau",
     "recordInstead": "Enregistrer plutôt",
     "type": "Saisir",

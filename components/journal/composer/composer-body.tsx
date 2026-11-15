@@ -63,6 +63,7 @@ export function ComposerBody() {
         onRecordAgain={() =>
           composer.startRecording({
             day: state.backdateDay ?? undefined,
+            time: state.backdateTime ?? undefined,
             kind: state.kind,
           })
         }

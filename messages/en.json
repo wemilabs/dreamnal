@@ -201,6 +201,7 @@
     "error": "Error",
     "dateAria": "Date of the dream",
     "dateAriaWhisper": "Date of the whisper",
+    "timeAriaWhisper": "Time of the whisper",
     "recordAgain": "Record again",
     "recordInstead": "Record instead",
     "type": "Type",

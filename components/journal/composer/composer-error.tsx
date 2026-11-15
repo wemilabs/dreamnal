@@ -20,6 +20,7 @@ export function ComposerError({ className }: { className?: string }) {
           onClick={() =>
             startRecording({
               day: state.backdateDay ?? undefined,
+              time: state.backdateTime ?? undefined,
               kind: state.kind,
             })
           }
@@ -32,6 +33,7 @@ export function ComposerError({ className }: { className?: string }) {
           onClick={() =>
             startTyping({
               day: state.backdateDay ?? undefined,
+              time: state.backdateTime ?? undefined,
               kind: state.kind,
             })
           }
@@ -44,6 +46,7 @@ export function ComposerError({ className }: { className?: string }) {
           onClick={() =>
             pickAudioFile({
               day: state.backdateDay ?? undefined,
+              time: state.backdateTime ?? undefined,
               kind: state.kind,
             })
           }

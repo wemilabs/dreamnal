@@ -244,7 +244,9 @@ pages.
   there is not; the longest streak is counted across all recorded days
 - Backdated saves set the optional `createdAt` form field in the composer.
   `createEntry` validates the ISO timestamp and rejects values before
-  2000-01-01 or more than five minutes in the future
+  2000-01-01 or more than five minutes in the future.
+  The whisper composer also has an optional time field (`backdateTime`) that
+  defaults to the current time and is clamped to now.
 
 ## Symbols and patterns
 

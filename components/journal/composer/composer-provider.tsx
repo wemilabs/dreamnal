@@ -34,7 +34,11 @@ import type { EntryKind } from "@/lib/entry-kind";
 
 export type ComposerOpenChangeDetails = { cancel: () => void };
 
-export type ComposerStartOptions = { day?: string; kind?: EntryKind };
+export type ComposerStartOptions = {
+  day?: string;
+  time?: string;
+  kind?: EntryKind;
+};
 
 type ComposerContextValue = {
   state: ComposerState;
@@ -52,6 +56,7 @@ type ComposerContextValue = {
   ) => Promise<EntryFormState>;
   onDraftChange: (draft: { title?: string; body?: string }) => void;
   setBackdateDay: (day: string | null) => void;
+  setBackdateTime: (time: string | null) => void;
   analyserRef: RefObject<AnalyserNode | null>;
   startedAtRef: RefObject<number>;
 };
@@ -81,7 +86,12 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
 
   const startUpload = (file: File, options?: ComposerStartOptions) => {
     const requestId = ++requestIdRef.current;
-    dispatch({ type: "upload", day: options?.day, kind: options?.kind });
+    dispatch({
+      type: "upload",
+      day: options?.day,
+      time: options?.time,
+      kind: options?.kind,
+    });
     if (file.size === 0 || !file.type.startsWith("audio/")) {
       dispatch({ type: "failed", message: t("invalidAudio") });
       return;
@@ -128,7 +138,12 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
 
   const beginRecording = async (options?: ComposerStartOptions) => {
     requestIdRef.current += 1;
-    dispatch({ type: "start", day: options?.day, kind: options?.kind });
+    dispatch({
+      type: "start",
+      day: options?.day,
+      time: options?.time,
+      kind: options?.kind,
+    });
     const error = await recorder.start();
     if (error === "interrupted") {
       return;
@@ -161,7 +176,12 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "open" });
       return;
     }
-    dispatch({ type: "type-instead", day: options?.day, kind: options?.kind });
+    dispatch({
+      type: "type-instead",
+      day: options?.day,
+      time: options?.time,
+      kind: options?.kind,
+    });
   };
 
   const finishRecording = () => {
@@ -248,19 +268,23 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
   };
 
   const saveEntry = async (prev: EntryFormState, formData: FormData) => {
-    if (state.backdateDay && state.backdateDay !== dayKey(new Date())) {
-      const [year, month, day] = state.backdateDay.split("-").map(Number);
-      const now = new Date();
-      formData.set(
-        "createdAt",
-        new Date(
-          year,
-          month - 1,
-          day,
-          now.getHours(),
-          now.getMinutes(),
-        ).toISOString(),
-      );
+    const now = new Date();
+    const today = dayKey(now);
+    const hasBackdateDay = state.backdateDay && state.backdateDay !== today;
+    const hasWhisperTime = state.kind === "whisper" && state.backdateTime;
+    if (hasBackdateDay || hasWhisperTime) {
+      const [year, month, day] = (state.backdateDay ?? today)
+        .split("-")
+        .map(Number);
+      const [hours, minutes] =
+        state.kind === "whisper" && state.backdateTime
+          ? state.backdateTime.split(":").map(Number)
+          : [now.getHours(), now.getMinutes()];
+      let createdAt = new Date(year, month - 1, day, hours, minutes);
+      if (createdAt > now) {
+        createdAt = now;
+      }
+      formData.set("createdAt", createdAt.toISOString());
     }
     const kind = state.kind;
     formData.set("kind", kind);
@@ -282,6 +306,10 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const setBackdateTime = (time: string | null) => {
+    dispatch({ type: "set-time", time });
+  };
+
   return (
     <ComposerContext.Provider
       value={{
@@ -297,6 +325,7 @@ export function ComposerProvider({ children }: { children: ReactNode }) {
         saveEntry,
         onDraftChange,
         setBackdateDay,
+        setBackdateTime,
         analyserRef: recorder.analyserRef,
         startedAtRef: recorder.startedAtRef,
       }}
