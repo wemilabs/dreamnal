@@ -216,7 +216,10 @@ storage or the database; only edited text is saved.
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
 - `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
   toggled from the entry header; `lucid` is a plaintext boolean column)
-- `/journal/favorites` — starred dreams and whispers in client tabs, with each panel streamed through its own server Suspense list
+- `/journal/favorites` — starred dreams and whispers (`setFavorite` in
+  `[id]/favorite-actions.ts`, toggled from the entry header; `favorite` is a
+  plaintext boolean column), shown in client Dreams/Whispers tabs whose panels
+  are separate server Suspense lists
 - `/journal/whispers` — non-dream entries (teachings, revelations, insights):
   `dream_entries.kind` (`entry_kind` enum, default `dream`) set via the
   composer's `kind` option (FAB and "New whisper" button on that page).
