@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic, PenLine } from "lucide-react";
+import { Mic, PenLine, Upload } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
@@ -143,6 +143,7 @@ export function DayPanel({
                     pickAudioFile({ day: selectedDay ?? undefined })
                   }
                 >
+                  <Upload aria-hidden />
                   {tComposer("upload")}
                 </Button>
               </div>
