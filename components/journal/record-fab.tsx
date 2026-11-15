@@ -4,6 +4,7 @@ import { Keyboard, Mic, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +30,12 @@ export function RecordFab() {
         <DropdownMenu>
           <DropdownMenuTrigger
             aria-label={tComposer("addDream")}
-            className="group/fab pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
+            render={
+              <Button
+                size="icon-lg"
+                className="group/fab pressable size-auto rounded-full p-2 shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
+              />
+            }
           >
             <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
               <Plus
@@ -44,24 +50,15 @@ export function RecordFab() {
             sideOffset={10}
             className="w-auto min-w-40"
           >
-            <DropdownMenuItem
-              onClick={() => startRecording()}
-              className="gap-2.5 px-2.5 py-2"
-            >
+            <DropdownMenuItem onClick={() => startRecording()}>
               <Mic aria-hidden />
               {tComposer("record")}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => startTyping()}
-              className="gap-2.5 px-2.5 py-2"
-            >
+            <DropdownMenuItem onClick={() => startTyping()}>
               <Keyboard aria-hidden />
               {tComposer("type")}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => pickAudioFile()}
-              className="gap-2.5 px-2.5 py-2"
-            >
+            <DropdownMenuItem onClick={() => pickAudioFile()}>
               <Upload aria-hidden />
               {tComposer("upload")}
             </DropdownMenuItem>
