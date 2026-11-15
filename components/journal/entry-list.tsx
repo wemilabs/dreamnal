@@ -16,6 +16,7 @@ export async function EntryList() {
     fulfilledOn: entry.fulfilledOn,
     hasMeaning: entry.hasMeaning,
     lucid: entry.lucid,
+    favorite: entry.favorite,
   }));
 
   return <FilteredEntryFeed entries={feedEntries} empty={<EmptyState />} />;

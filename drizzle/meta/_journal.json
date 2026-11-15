@@ -36,6 +36,13 @@
       "when": 1794759899203,
       "tag": "0004_windy_skin",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794762972308,
+      "tag": "0005_magical_ken_ellis",
+      "breakpoints": true
     }
   ]
 }

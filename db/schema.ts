@@ -35,6 +35,7 @@ export const dreamEntries = pgTable(
     fulfilledOn: date("fulfilled_on", { mode: "string" }),
     fulfillmentNote: text("fulfillment_note"),
     lucid: boolean("lucid").notNull().default(false),
+    favorite: boolean("favorite").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

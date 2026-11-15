@@ -45,6 +45,7 @@ export async function WhisperEntryList() {
         fulfilledOn: entry.fulfilledOn,
         hasMeaning: entry.hasMeaning,
         lucid: entry.lucid,
+        favorite: entry.favorite,
       }))}
     />
   );
