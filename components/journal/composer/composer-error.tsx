@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export function ComposerError({ className }: { className?: string }) {
   const t = useTranslations("Composer");
   const tJournal = useTranslations("Journal");
-  const { state, startRecording, startTyping } = useComposer();
+  const { state, startRecording, startTyping, pickAudioFile } = useComposer();
 
   return (
     <div className={cn("flex w-full flex-col items-start gap-5", className)}>
@@ -30,6 +30,13 @@ export function ComposerError({ className }: { className?: string }) {
           className="pressable text-control font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
         >
           {tJournal("emptyPromptAction")}
+        </button>
+        <button
+          type="button"
+          onClick={() => pickAudioFile({ day: state.backdateDay ?? undefined })}
+          className="pressable text-control font-medium text-foreground underline decoration-foreground/30 underline-offset-[5px]"
+        >
+          {t("uploadAudio")}
         </button>
       </div>
     </div>

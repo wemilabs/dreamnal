@@ -1,6 +1,6 @@
 "use client";
 
-import { Keyboard, Mic } from "lucide-react";
+import { Keyboard, Mic, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSyncExternalStore } from "react";
 import { useComposer } from "@/components/journal/composer/composer-provider";
@@ -51,7 +51,7 @@ function observeCaptureBar(node: HTMLElement | null) {
 export function CaptureBar() {
   const tEntry = useTranslations("Entry");
   const tComposer = useTranslations("Composer");
-  const { startRecording, startTyping } = useComposer();
+  const { startRecording, startTyping, pickAudioFile } = useComposer();
 
   return (
     <div
@@ -70,6 +70,15 @@ export function CaptureBar() {
           <Keyboard className="size-4" aria-hidden />
           {tComposer("type")}
         </span>
+      </button>
+      <button
+        type="button"
+        onClick={() => pickAudioFile()}
+        aria-label={tComposer("uploadAudio")}
+        title={tComposer("uploadAudio")}
+        className="pressable grid size-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <Upload className="size-4" aria-hidden />
       </button>
       <button
         type="button"

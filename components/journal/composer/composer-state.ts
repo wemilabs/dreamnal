@@ -22,6 +22,7 @@ export type ComposerAction =
   | { type: "open" }
   | { type: "close" }
   | { type: "start"; day?: string }
+  | { type: "upload"; day?: string }
   | { type: "started" }
   | { type: "stop" }
   | { type: "transcribed"; text: string; duration: number }
@@ -57,6 +58,18 @@ export function reduceComposer(
         ...state,
         open: true,
         phase: "starting",
+        transcript: "",
+        duration: null,
+        backdateDay: action.day ?? null,
+        message: null,
+        draftTitle: "",
+        draftBody: "",
+      };
+    case "upload":
+      return {
+        ...state,
+        open: true,
+        phase: "transcribing",
         transcript: "",
         duration: null,
         backdateDay: action.day ?? null,

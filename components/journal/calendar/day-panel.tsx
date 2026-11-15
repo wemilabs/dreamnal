@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic, PenLine } from "lucide-react";
+import { Mic, PenLine, Upload } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
@@ -75,7 +75,8 @@ export function DayPanel({
 }: DayPanelProps) {
   const locale = useLocale() as AppLocale;
   const t = useTranslations("Calendar");
-  const { startRecording, startTyping } = useComposer();
+  const tComposer = useTranslations("Composer");
+  const { startRecording, startTyping, pickAudioFile } = useComposer();
   const selectedDate = selectedDay ? parseDayKey(selectedDay) : null;
   const selectedDreams = selectedDay ? (groups.get(selectedDay) ?? []) : [];
   const selectedDateIsPastOrToday =
@@ -133,6 +134,17 @@ export function DayPanel({
                 >
                   <PenLine aria-hidden />
                   {t("type")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    pickAudioFile({ day: selectedDay ?? undefined })
+                  }
+                >
+                  <Upload aria-hidden />
+                  {tComposer("upload")}
                 </Button>
               </div>
             </div>

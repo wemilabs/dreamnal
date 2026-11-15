@@ -1,7 +1,7 @@
 "use client";
 
 import { CommandLoading, defaultFilter } from "cmdk";
-import { BookOpen, Mic, Moon, PenLine, Sun } from "lucide-react";
+import { BookOpen, Mic, Moon, PenLine, Sun, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import {
@@ -51,11 +51,12 @@ export function useCommandMenu() {
 
 export function CommandMenuProvider({ children }: { children: ReactNode }) {
   const t = useTranslations("Journal");
+  const tComposer = useTranslations("Composer");
   const [open, setOpenState] = useState(false);
   const [search, setSearch] = useState("");
   const [entries, setEntries] = useState<SearchEntry[] | null>(null);
   const router = useRouter();
-  const { startRecording, startTyping } = useComposer();
+  const { startRecording, startTyping, pickAudioFile } = useComposer();
   const { resolvedTheme, setTheme } = useTheme();
 
   const setOpen = (next: boolean) => {
@@ -163,6 +164,17 @@ export function CommandMenuProvider({ children }: { children: ReactNode }) {
               >
                 <PenLine aria-hidden />
                 {t("typeDream")}
+              </CommandItem>
+              <CommandItem
+                value={tComposer("uploadAudio")}
+                keywords={["upload audio file"]}
+                onSelect={() => {
+                  close();
+                  pickAudioFile();
+                }}
+              >
+                <Upload aria-hidden />
+                {tComposer("uploadAudio")}
               </CommandItem>
               <CommandItem
                 value={t("toggleTheme")}

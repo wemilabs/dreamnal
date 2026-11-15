@@ -177,6 +177,13 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 `transcribeRecording` action. `next.config.ts` sets `serverActions` /
 `proxyClientMaxBodySize` to `4.5mb` to match.
 
+Uploads go through `pickAudioFile` (one hidden `<input type="file" accept="audio/*">`
+in `ComposerProvider`, with haptics fired in the tap handler) to `startUpload`,
+which rejects empty, non-audio, and over-`MAX_AUDIO_BYTES` files client-side
+before sending the file unchanged to `transcribeRecording`. Recorded and
+uploaded audio stays in memory and is forwarded to xAI STT, never written to
+storage or the database; only edited text is saved.
+
 ## PWA
 
 - `app/manifest.ts` — `id: "/journal"` (don't change it; installs are keyed
@@ -205,7 +212,7 @@ client-side above `MAX_AUDIO_BYTES`, and re-checked at 4 MB in the
 - `/journal` — list + empty state (Suspense)
 - `/journal/*` — dashboard shell: sidebar + inset content; "Record a dream"
   opens a composer overlay (Drawer on mobile, Dialog on desktop) instead of
-  navigating; recording → transcribing → editing → save
+  navigating; recording or uploading → transcribing → editing → save
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
 - `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
   toggled from the entry header; `lucid` is a plaintext boolean column)

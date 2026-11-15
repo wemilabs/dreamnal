@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic } from "lucide-react";
+import { Mic, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 export function RecordFab() {
   const t = useTranslations("Journal");
-  const { startRecording } = useComposer();
+  const tComposer = useTranslations("Composer");
+  const { startRecording, pickAudioFile } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
 
   return (
@@ -19,16 +20,26 @@ export function RecordFab() {
         captureBarVisible && "pointer-events-none scale-90 opacity-0",
       )}
     >
-      <button
-        type="button"
-        onClick={() => startRecording()}
-        aria-label={t("recordDreamAria")}
-        className="pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
-      >
-        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
-          <Mic className="size-4.5" aria-hidden />
-        </span>
-      </button>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => pickAudioFile()}
+          aria-label={tComposer("uploadAudio")}
+          className="pressable absolute top-1/2 right-full mr-3 -translate-y-1/2 grid size-10 place-items-center rounded-full bg-card text-foreground ring-1 ring-border/60 shadow-card"
+        >
+          <Upload className="size-4" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={() => startRecording()}
+          aria-label={t("recordDreamAria")}
+          className="pressable grid place-items-center rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_28px_-12px_rgb(22_35_59/0.55)]"
+        >
+          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-petal text-ink">
+            <Mic className="size-4.5" aria-hidden />
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
