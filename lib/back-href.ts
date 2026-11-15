@@ -4,7 +4,7 @@ import { PERIODS } from "./insights-analytics";
 import { MEANING_FILTERS } from "./meaning";
 
 const BACK_QUERY = {
-  "/journal": { filter: MEANING_FILTERS.filter((f) => f !== "all") },
+  "/journal": { filter: MEANING_FILTERS },
   "/journal/lucid": {},
   "/journal/favorites": {},
   "/journal/calendar": { month: (v: string) => parseMonthKey(v) !== null },
@@ -65,5 +65,9 @@ export function parseBackHref(value: unknown): BackHref | null {
     }
     params[key] = param;
   }
-  return backHref(path as BackPath, params);
+  const { filter, ...rest } = params;
+  return backHref(path as BackPath, {
+    ...rest,
+    filter: filter === "all" ? null : (filter ?? null),
+  });
 }
