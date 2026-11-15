@@ -6,6 +6,7 @@ import type { EntryFormState } from "@/app/[locale]/journal/actions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { EntryKind } from "@/lib/entry-kind";
+import { cn } from "@/lib/utils";
 
 type EntryFormProps = {
   action: (prev: EntryFormState, formData: FormData) => Promise<EntryFormState>;
@@ -68,7 +69,11 @@ export function EntryForm({
       placeholder={t("titlePlaceholder")}
       aria-label={t("titleAria")}
       maxLength={120}
-      className="h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-subhead font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-cta placeholder:font-normal placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title md:placeholder:text-subhead"
+      className={cn(
+        "h-auto border-0 border-b border-border bg-transparent px-0 pb-2 text-subhead font-semibold tracking-tight shadow-none focus-visible:border-foreground focus-visible:ring-0 rounded-none placeholder:text-cta placeholder:font-normal placeholder:text-muted-foreground/60 dark:bg-transparent md:text-editor-title md:placeholder:text-subhead",
+        kind === "whisper" &&
+          "border-b-0 focus-visible:border-transparent disabled:bg-transparent dark:disabled:bg-transparent aria-invalid:bg-transparent dark:aria-invalid:bg-transparent",
+      )}
     />
   );
 
@@ -122,7 +127,11 @@ export function EntryForm({
           placeholder={t(
             kind === "whisper" ? "whisperBodyPlaceholder" : "bodyPlaceholder",
           )}
-          className="max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead"
+          className={cn(
+            kind === "whisper"
+              ? "min-h-40 w-full resize-none overflow-hidden rounded-none border-0 bg-transparent p-0 text-base/relaxed text-foreground shadow-none focus-visible:ring-0 dark:bg-transparent md:text-lead"
+              : "max-h-[50dvh] min-h-60 w-full resize-none overflow-y-auto rounded-lg border border-border bg-card/60 p-4 text-sm text-foreground shadow-none md:text-lead",
+          )}
         />
         <div className="flex items-center justify-between">
           <span className="tabular-nums text-xs text-muted-foreground">
