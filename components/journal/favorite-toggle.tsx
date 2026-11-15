@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 import { setFavorite } from "@/app/[locale]/journal/[id]/favorite-actions";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function FavoriteToggle({
@@ -24,26 +25,27 @@ export function FavoriteToggle({
         name="favorite"
         value={favorite ? "false" : "true"}
       />
-      <button
+      <Button
         type="submit"
+        variant="ghost"
+        size="icon-lg"
         disabled={pending}
         aria-pressed={favorite}
         aria-label={favorite ? t("unmarkFavorite") : t("markFavorite")}
         title={favorite ? t("unmarkFavorite") : t("markFavorite")}
         data-testid="favorite-toggle"
-        className={cn(
-          "pressable inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-control font-medium disabled:opacity-60",
-          favorite
-            ? "bg-secondary text-secondary-foreground"
-            : "text-muted-foreground hover:text-foreground",
-        )}
+        className="pressable shrink-0"
       >
         <Star
-          className={cn("size-4", favorite && "fill-current")}
+          className={cn(
+            "size-4",
+            favorite
+              ? "fill-amber-400 text-amber-400"
+              : "text-muted-foreground",
+          )}
           aria-hidden
         />
-        <span>{favorite ? t("favoriteBadge") : t("markFavorite")}</span>
-      </button>
+      </Button>
       {state?.error ? (
         <p role="alert" className="text-sm/tight text-rec">
           {state.error}
