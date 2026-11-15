@@ -30,7 +30,7 @@ test.describe("entry back button", () => {
     await page.waitForURL(urlIs("/journal"));
   });
 
-  test("restores the journal filter", async ({ page }) => {
+  test("restores the originating page state", async ({ page }) => {
     await page.goto("/journal");
     const href =
       (await page.getByTestId("entry-link").first().getAttribute("href")) ?? "";
@@ -46,6 +46,16 @@ test.describe("entry back button", () => {
     );
     await page.getByRole("link", { name: "Back to journal" }).click();
     await page.waitForURL(urlIs("/journal?filter=fulfilled"));
+
+    for (const from of [
+      "/journal/calendar?month=2026-01",
+      "/journal/insights?period=12m",
+    ]) {
+      await page.goto(`${entryPath(href)}?from=${encodeURIComponent(from)}`);
+      await expect(
+        page.getByRole("link", { name: "Back to journal" }),
+      ).toHaveAttribute("href", from);
+    }
   });
 
   test("ignores a from outside the journal", async ({ page }) => {
