@@ -31,9 +31,7 @@ test.describe("favorite dreams", () => {
       `[data-testid="entry-link"][href="${href}"]`,
     );
     await expect(favoriteLink).toBeVisible();
-    await expect(
-      favoriteLink.getByText("Favorite", { exact: true }),
-    ).toBeVisible();
+    await expect(favoriteLink.getByTestId("favorite-badge")).toBeVisible();
 
     await page.goto(href);
     await expect(toggle).toHaveAttribute("aria-pressed", "true");

@@ -181,10 +181,17 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
         </time>
         <span className="flex items-center gap-2">
           {entry.favorite ? (
-            <Badge variant="outline">
-              <Star data-icon="inline-start" />
-              {tEntry("favoriteBadge")}
-            </Badge>
+            <span
+              className="inline-flex items-center"
+              title={tEntry("favoriteBadge")}
+              data-testid="favorite-badge"
+            >
+              <Star
+                className="size-4 fill-amber-400 text-amber-400"
+                aria-hidden
+              />
+              <span className="sr-only">{tEntry("favoriteBadge")}</span>
+            </span>
           ) : null}
           {entry.lucid ? (
             <Badge variant="outline">
