@@ -2,6 +2,7 @@
 
 import { Keyboard, Mic, Plus, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Suspense } from "react";
 import { useCaptureBarVisible } from "@/components/journal/capture-bar";
 import { useComposer } from "@/components/journal/composer/composer-provider";
 import { Button } from "@/components/ui/button";
@@ -12,18 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "@/i18n/navigation";
+import type { EntryKind } from "@/lib/entry-kind";
 import { cn } from "@/lib/utils";
 
-export function RecordFab() {
+function RecordFabMenu({ kind }: { kind: EntryKind }) {
   const tComposer = useTranslations("Composer");
   const { startRecording, startTyping, pickAudioFile } = useComposer();
   const captureBarVisible = useCaptureBarVisible();
-  const pathname = usePathname();
-  const kind =
-    pathname === "/journal/whispers" ||
-    pathname.startsWith("/journal/whispers/")
-      ? "whisper"
-      : "dream";
 
   return (
     <div
@@ -75,5 +71,24 @@ export function RecordFab() {
         </DropdownMenu>
       </div>
     </div>
+  );
+}
+
+function PathnameRecordFab() {
+  const pathname = usePathname();
+  const kind =
+    pathname === "/journal/whispers" ||
+    pathname.startsWith("/journal/whispers/")
+      ? "whisper"
+      : "dream";
+
+  return <RecordFabMenu kind={kind} />;
+}
+
+export function RecordFab() {
+  return (
+    <Suspense fallback={<RecordFabMenu kind="dream" />}>
+      <PathnameRecordFab />
+    </Suspense>
   );
 }
