@@ -140,7 +140,9 @@
     "emptyPromptBefore": "Touchez le micro ci-dessous pour enregistrer votre rêve, ou",
     "emptyPromptAction": "écrivez-le",
     "noLucidDreams": "Pas encore de rêves lucides.",
-    "noLucidDreamsHint": "Ouvrez un rêve et marquez-le comme lucide si vous saviez que vous rêviez."
+    "noLucidDreamsHint": "Ouvrez un rêve et marquez-le comme lucide si vous saviez que vous rêviez.",
+    "noFavoriteDreams": "Aucun rêve favori pour l'instant.",
+    "noFavoriteDreamsHint": "Ouvrez un rêve et marquez-le comme favori pour le retrouver ici."
   },
   "Entry": {
     "metadataTitle": "Rêve",
@@ -179,7 +181,10 @@
     "saveChanges": "Enregistrer les modifications",
     "markLucid": "Marquer comme lucide",
     "unmarkLucid": "Retirer le marquage lucide",
-    "lucidBadge": "Lucide"
+    "lucidBadge": "Lucide",
+    "markFavorite": "Marquer comme favori",
+    "unmarkFavorite": "Retirer des favoris",
+    "favoriteBadge": "Favori"
   },
   "Composer": {
     "addDream": "Ajouter un rêve",

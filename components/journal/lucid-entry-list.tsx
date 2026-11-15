@@ -44,6 +44,7 @@ export async function LucidEntryList() {
         fulfilledOn: entry.fulfilledOn,
         hasMeaning: entry.hasMeaning,
         lucid: entry.lucid,
+        favorite: entry.favorite,
       }))}
     />
   );

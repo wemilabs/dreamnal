@@ -34,6 +34,7 @@ export async function listEntries(filter: MeaningFilter = "all") {
       fulfilledOn: row.fulfilledOn,
       hasMeaning: row.hasMeaning,
       lucid: row.lucid,
+      favorite: row.favorite,
     };
   });
 
@@ -43,6 +44,11 @@ export async function listEntries(filter: MeaningFilter = "all") {
 export async function listLucidEntries() {
   const entries = await listEntries();
   return entries.filter((entry) => entry.lucid);
+}
+
+export async function listFavoriteEntries() {
+  const entries = await listEntries();
+  return entries.filter((entry) => entry.favorite);
 }
 
 export async function listSearchEntries(): Promise<SearchEntry[]> {
@@ -78,6 +84,7 @@ async function listEntriesForUser(userId: string) {
       fulfilledOn: dreamEntries.fulfilledOn,
       hasMeaning: sql<boolean>`${dreamEntries.meaning} is not null`,
       lucid: dreamEntries.lucid,
+      favorite: dreamEntries.favorite,
       createdAt: dreamEntries.createdAt,
     })
     .from(dreamEntries)

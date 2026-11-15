@@ -216,7 +216,10 @@ storage or the database; only edited text is saved.
 - `/journal/insights`, `/journal/symbols` — symbols and patterns (see below)
 - `/journal/lucid` — entries marked lucid (`setLucid` in `[id]/lucid-actions.ts`,
   toggled from the entry header; `lucid` is a plaintext boolean column)
-- `/journal/{favorites,trash,settings}` — placeholder pages
+- `/journal/favorites` — entries marked favorite (`setFavorite` in
+  `[id]/favorite-actions.ts`, toggled from the entry header; `favorite` is a
+  plaintext boolean column)
+- `/journal/{trash,settings}` — placeholder pages
 - `/journal/[id]` — edit + delete (uuid-guarded, `notFound()`)
 - `/api/auth/[...path]` — Neon Auth handler
 

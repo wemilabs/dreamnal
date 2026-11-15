@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Eye, Mic, PenLine } from "lucide-react";
+import { Check, Eye, Mic, PenLine, Star } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSyncExternalStore, ViewTransition } from "react";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
@@ -24,6 +24,7 @@ export type FeedEntry = {
   fulfilledOn: string | null;
   hasMeaning: boolean;
   lucid: boolean;
+  favorite: boolean;
 };
 
 const subscribeNoop = () => () => {};
@@ -179,6 +180,12 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
             .toLowerCase()}
         </time>
         <span className="flex items-center gap-2">
+          {entry.favorite ? (
+            <Badge variant="outline">
+              <Star data-icon="inline-start" />
+              {tEntry("favoriteBadge")}
+            </Badge>
+          ) : null}
           {entry.lucid ? (
             <Badge variant="outline">
               <Eye data-icon="inline-start" />

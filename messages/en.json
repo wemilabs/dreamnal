@@ -140,7 +140,9 @@
     "emptyPromptBefore": "Tap the mic below to record it, or",
     "emptyPromptAction": "type it instead",
     "noLucidDreams": "No lucid dreams yet.",
-    "noLucidDreamsHint": "Open a dream and mark it as lucid when you knew you were dreaming."
+    "noLucidDreamsHint": "Open a dream and mark it as lucid when you knew you were dreaming.",
+    "noFavoriteDreams": "No favorite dreams yet.",
+    "noFavoriteDreamsHint": "Open a dream and mark it as a favorite to keep it here."
   },
   "Entry": {
     "metadataTitle": "Dream",
@@ -179,7 +181,10 @@
     "saveChanges": "Save changes",
     "markLucid": "Mark as lucid",
     "unmarkLucid": "Unmark lucid",
-    "lucidBadge": "Lucid"
+    "lucidBadge": "Lucid",
+    "markFavorite": "Mark as favorite",
+    "unmarkFavorite": "Remove from favorites",
+    "favoriteBadge": "Favorite"
   },
   "Composer": {
     "addDream": "Add a dream",
