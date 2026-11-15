@@ -35,7 +35,7 @@ approved. Cloud sessions open PRs into `main`, so after they merge, fast-forward
 
 ## Stack
 
-- Next.js 16.4.0 (App Router, Turbopack) with `cacheComponents`, `typedRoutes`,
+- Next.js 16.4.6 (App Router, Turbopack) with `cacheComponents`, `typedRoutes`,
   `partialPrefetching`, and `reactCompiler` enabled in `next.config.ts`.
   Experimental: `turbopackRustReactCompiler` (Rust compiler, no
   `babel-plugin-react-compiler`), `turbopackGc`, `turbopackLazyDynamicImports`,
