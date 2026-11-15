@@ -116,7 +116,6 @@
     "lucidDescription": "Tous les rêves que vous avez marqués comme lucides.",
     "trashDescription": "Les rêves supprimés restent ici avant leur suppression définitive.",
     "comingSoon": "Bientôt disponible",
-    "recordDreamAria": "Enregistrer un rêve",
     "searchPlaceholder": "Rechercher des rêves, pages, actions…",
     "noResults": "Aucun résultat.",
     "searchingDreams": "Recherche dans les rêves…",
@@ -183,6 +182,7 @@
     "lucidBadge": "Lucide"
   },
   "Composer": {
+    "addDream": "Ajouter un rêve",
     "ready": "Prêt à enregistrer",
     "starting": "Démarrage",
     "recording": "Enregistrement",
