@@ -64,6 +64,7 @@ export async function EntryDetail({
         kind={entry.kind}
         audioDurationSeconds={entry.audioDurationSeconds}
         submitLabel={t("saveChanges")}
+        from={backHref}
       />
       {isWhisper ? null : <MeaningSection entry={entry} />}
       <SymbolTags entryId={entry.id} items={entry.symbols?.items ?? []} />

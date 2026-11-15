@@ -10,6 +10,7 @@ import { dreamEntries } from "@/db/schema";
 import { getActionLocale } from "@/i18n/action-locale";
 import { redirect } from "@/i18n/redirect";
 import { getCurrentUser } from "@/lib/auth/session";
+import { entryHref, parseBackHref } from "@/lib/back-href";
 import { openEntry, openSymbols, sealEntry } from "@/lib/crypto/entries";
 import type { SearchEntry } from "@/lib/dream-search";
 import { listSearchEntries } from "@/lib/entries";
@@ -239,7 +240,8 @@ export async function updateEntry(
   }
 
   updateTag(`entries:${user.id}`);
-  redirect(`/journal/${id.data}`);
+  const from = parseBackHref(formData.get("from"));
+  redirect(from ? entryHref(id.data, from) : `/journal/${id.data}`);
 }
 
 export async function deleteEntry(
