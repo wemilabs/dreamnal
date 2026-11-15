@@ -334,6 +334,7 @@
   },
   "Meaning": {
     "meaning": "Sens",
+    "yourInterpretation": "Votre interprétation",
     "confidenceUnsure": "Incertain",
     "confidenceHunch": "Intuition",
     "confidencePossible": "Possible",
@@ -344,6 +345,7 @@
     "sureAria": "À quel point en êtes-vous sûr ?",
     "save": "Enregistrer",
     "saving": "Enregistrement…",
+    "editMeaning": "Modifier le sens",
     "editNote": "Modifier la note",
     "addNote": "Ajouter une note",
     "cancel": "Annuler",
@@ -364,6 +366,7 @@
     "notFound": "Impossible de trouver cette entrée.",
     "notFulfilled": "Marquez-le d’abord comme réalisé.",
     "undoFirst": "Annulez d’abord la réalisation",
+    "meaningEmpty": "Un rêve réalisé a besoin d’un sens. Annulez la réalisation pour l’effacer.",
     "meaningMax": "Le sens doit contenir moins de 4 000 caractères",
     "confidenceRequired": "Indiquez votre degré de certitude",
     "meaningRequired": "Enregistrez d’abord un sens.",
