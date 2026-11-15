@@ -9,22 +9,28 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { listFavoriteEntries } from "@/lib/entries";
+import type { EntryKind } from "@/lib/entry-kind";
 
-export async function FavoriteEntryList() {
+export async function FavoriteEntryList({ kind }: { kind: EntryKind }) {
   const [entries, t] = await Promise.all([
-    listFavoriteEntries(),
+    listFavoriteEntries(kind),
     getTranslations("Journal"),
   ]);
 
   if (entries.length === 0) {
+    const isDream = kind === "dream";
     return (
       <Empty className="rounded-lg border border-border border-dashed">
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <Star aria-hidden />
           </EmptyMedia>
-          <EmptyTitle>{t("noFavoriteDreams")}</EmptyTitle>
-          <EmptyDescription>{t("noFavoriteDreamsHint")}</EmptyDescription>
+          <EmptyTitle>
+            {t(isDream ? "noFavoriteDreams" : "noFavoriteWhispers")}
+          </EmptyTitle>
+          <EmptyDescription>
+            {t(isDream ? "noFavoriteDreamsHint" : "noFavoriteWhispersHint")}
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
@@ -32,6 +38,7 @@ export async function FavoriteEntryList() {
 
   return (
     <EntryFeed
+      kind={kind}
       entries={entries.map((entry) => ({
         id: entry.id,
         title: entry.title,
