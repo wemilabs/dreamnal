@@ -20,7 +20,7 @@ export async function MeaningSection({ entry }: { entry: EntryWithSymbols }) {
         />
       ) : (
         <MeaningForm
-          key={entry.updatedAt.toISOString()}
+          key={`${entry.meaningConfidence ?? ""}:${entry.meaning ?? ""}`}
           entryId={entry.id}
           meaning={entry.meaning}
           confidence={entry.meaningConfidence}
