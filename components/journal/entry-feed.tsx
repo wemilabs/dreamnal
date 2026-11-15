@@ -6,8 +6,8 @@ import { useSyncExternalStore, ViewTransition } from "react";
 import { EntryListSkeleton } from "@/components/journal/entry-list-skeleton";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
-import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
+import { type BackHref, entryHref } from "@/lib/back-href";
 import { dayKey } from "@/lib/calendar";
 import type { EntryKind } from "@/lib/entry-kind";
 import { formatDuration, titleFallback } from "@/lib/format";
@@ -82,9 +82,11 @@ function groupByLocalDay(entries: FeedEntry[]) {
 export function EntryFeed({
   entries,
   kind = "dream",
+  from = "/journal",
 }: {
   entries: FeedEntry[];
   kind?: EntryKind;
+  from?: BackHref;
 }) {
   const locale = useLocale() as AppLocale;
   const tJournal = useTranslations("Journal");
@@ -132,7 +134,7 @@ export function EntryFeed({
                     aria-hidden
                     className={`absolute top-4.75 sm:top-5.75 left-[-5.5px] size-2.5 rounded-full bg-fold shadow-dot-glow ring-3 ring-background transition-shadow duration-300 group-hover:shadow-dot-glow-hover dark:bg-petal ${entry.id === latestId ? "motion-safe:animate-glow" : ""}`}
                   />
-                  <EntryCard entry={entry} />
+                  <EntryCard entry={entry} from={from} />
                 </li>
               </ViewTransition>
             ))}
@@ -143,7 +145,7 @@ export function EntryFeed({
   );
 }
 
-function EntryCard({ entry }: { entry: FeedEntry }) {
+function EntryCard({ entry, from }: { entry: FeedEntry; from: BackHref }) {
   const locale = useLocale() as AppLocale;
   const tEntry = useTranslations("Entry");
   const tMeaning = useTranslations("Meaning");
@@ -174,7 +176,7 @@ function EntryCard({ entry }: { entry: FeedEntry }) {
 
   return (
     <IntentPrefetchLink
-      href={`/journal/${entry.id}` as AppHref}
+      href={entryHref(entry.id, from)}
       className="flex flex-col gap-1 rounded-2xl bg-card p-4 sm:gap-1.5 sm:p-5 shadow-card ring-1 ring-border/60 outline-none transition-[box-shadow,scale] duration-200 ease-out hover:shadow-card-hover focus-visible:ring-2 focus-visible:ring-ring motion-safe:active:scale-[0.99]"
       testId="entry-link"
     >

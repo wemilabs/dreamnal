@@ -37,5 +37,10 @@ export function FilteredEntryFeed({
     return empty;
   }
 
-  return <EntryFeed entries={visible} />;
+  return (
+    <EntryFeed
+      entries={visible}
+      from={filter === "all" ? "/journal" : `/journal?filter=${filter}`}
+    />
+  );
 }

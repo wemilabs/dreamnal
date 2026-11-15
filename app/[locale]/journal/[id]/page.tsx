@@ -5,6 +5,7 @@ import { Suspense, ViewTransition } from "react";
 import { EntryDetail } from "@/components/journal/entry-detail";
 import { EntryDetailSkeleton } from "@/components/journal/entry-detail-skeleton";
 import { PageFade } from "@/components/journal/page-fade";
+import { parseBackHref } from "@/lib/back-href";
 import { getEntry } from "@/lib/entries";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -12,11 +13,12 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("metadataTitle"), description: t("metadataDescription") };
 }
 
-export default function EntryPage({
-  params,
-}: {
+type EntryPageProps = {
   params: Promise<{ id: string }>;
-}) {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default function EntryPage({ params, searchParams }: EntryPageProps) {
   return (
     <PageFade>
       <Suspense
@@ -27,18 +29,21 @@ export default function EntryPage({
         }
       >
         <ViewTransition enter="reveal-in" default="none">
-          <EntryLoader params={params} />
+          <EntryLoader params={params} searchParams={searchParams} />
         </ViewTransition>
       </Suspense>
     </PageFade>
   );
 }
 
-async function EntryLoader({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+async function EntryLoader({ params, searchParams }: EntryPageProps) {
+  const [{ id }, { from }] = await Promise.all([params, searchParams]);
   const entry = await getEntry(id);
   if (!entry) {
     notFound();
   }
-  return <EntryDetail entry={entry} />;
+  const backHref =
+    parseBackHref(from) ??
+    (entry.kind === "whisper" ? "/journal/whispers" : "/journal");
+  return <EntryDetail entry={entry} backHref={backHref} />;
 }

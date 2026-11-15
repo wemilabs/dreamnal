@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { updateEntry } from "@/app/[locale]/journal/actions";
 import { Link } from "@/i18n/navigation";
+import type { BackHref } from "@/lib/back-href";
 import type { EntryWithSymbols } from "@/lib/entries";
 import { formatDuration, titleFallback } from "@/lib/format";
 import { DeleteEntryButton } from "./delete-entry-button";
@@ -12,7 +13,13 @@ import { LucidToggle } from "./lucid-toggle";
 import { MeaningSection } from "./meaning/meaning-section";
 import { SymbolTags } from "./symbols/symbol-tags";
 
-export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
+export async function EntryDetail({
+  entry,
+  backHref,
+}: {
+  entry: EntryWithSymbols;
+  backHref: BackHref;
+}) {
   const t = await getTranslations("Entry");
   const isWhisper = entry.kind === "whisper";
   const duration =
@@ -25,9 +32,13 @@ export async function EntryDetail({ entry }: { entry: EntryWithSymbols }) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <Link
-            href={isWhisper ? "/journal/whispers" : "/journal"}
-            aria-label={t(isWhisper ? "backToWhispers" : "backToJournal")}
-            className="pressable grid size-9 shrink-0 place-items-center text-muted-foreground hover:text-foreground"
+            href={backHref}
+            aria-label={t(
+              backHref === "/journal/whispers"
+                ? "backToWhispers"
+                : "backToJournal",
+            )}
+            className="pressable -ml-2.5 grid size-9 shrink-0 place-items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="size-4" aria-hidden />
           </Link>

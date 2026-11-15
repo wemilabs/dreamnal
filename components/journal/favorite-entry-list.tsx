@@ -38,6 +38,7 @@ export async function FavoriteEntryList({ kind }: { kind: EntryKind }) {
 
   return (
     <EntryFeed
+      from="/journal/favorites"
       kind={kind}
       entries={entries.map((entry) => ({
         id: entry.id,

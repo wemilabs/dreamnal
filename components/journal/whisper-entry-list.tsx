@@ -32,6 +32,7 @@ export async function WhisperEntryList() {
 
   return (
     <EntryFeed
+      from="/journal/whispers"
       kind="whisper"
       entries={entries.map((entry) => ({
         id: entry.id,

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { SEED_ENTRY_TITLE } from "./fixtures";
+import { entryPath, SEED_ENTRY_TITLE, urlIs } from "./fixtures";
 
 test.describe("favorite dreams", () => {
   test("marking an entry favorite lists it on the favorites page", async ({
@@ -12,8 +12,9 @@ test.describe("favorite dreams", () => {
       .first();
     await expect(entryLink).toBeVisible();
     const href = (await entryLink.getAttribute("href")) ?? "";
+    const path = entryPath(href);
     await entryLink.click();
-    await page.waitForURL(`**${href}`);
+    await page.waitForURL(urlIs(href));
 
     const toggle = page.getByTestId("favorite-toggle");
     await expect(toggle).toBeVisible();
@@ -28,12 +29,12 @@ test.describe("favorite dreams", () => {
 
     await page.goto("/journal/favorites");
     const favoriteLink = page.locator(
-      `[data-testid="entry-link"][href="${href}"]`,
+      `[data-testid="entry-link"][href^="${path}?"]`,
     );
     await expect(favoriteLink).toBeVisible();
     await expect(favoriteLink.getByTestId("favorite-badge")).toBeVisible();
 
-    await page.goto(href);
+    await page.goto(path);
     await expect(toggle).toHaveAttribute("aria-pressed", "true");
     await toggle.click();
     await expect(toggle).toHaveAttribute("aria-pressed", "false");

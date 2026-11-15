@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "@/i18n/navigation";
-import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
+import { entryHref } from "@/lib/back-href";
 import {
   type InsightDream,
   type PeriodRange,
@@ -125,7 +125,7 @@ function DrilldownBody({
           {inPeriod.map((dream) => (
             <li key={dream.id}>
               <Link
-                href={`/journal/${dream.id}` as AppHref}
+                href={entryHref(dream.id, "/journal/insights")}
                 className="pressable flex items-baseline justify-between gap-3 border-b border-border py-2.5"
               >
                 <span className="truncate text-control text-foreground">

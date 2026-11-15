@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { SEED_ENTRY_TITLE } from "./fixtures";
+import { entryPath, SEED_ENTRY_TITLE, urlIs } from "./fixtures";
 
 test.describe("lucid dreams", () => {
   test("marking an entry lucid lists it on the lucid page", async ({
@@ -12,8 +12,9 @@ test.describe("lucid dreams", () => {
       .first();
     await expect(entryLink).toBeVisible();
     const href = (await entryLink.getAttribute("href")) ?? "";
+    const path = entryPath(href);
     await entryLink.click();
-    await page.waitForURL(`**${href}`);
+    await page.waitForURL(urlIs(href));
 
     const toggle = page.getByTestId("lucid-toggle");
     await expect(toggle).toBeVisible();
@@ -28,12 +29,17 @@ test.describe("lucid dreams", () => {
 
     await page.goto("/journal/lucid");
     const lucidLink = page.locator(
-      `[data-testid="entry-link"][href="${href}"]`,
+      `[data-testid="entry-link"][href^="${path}?"]`,
     );
     await expect(lucidLink).toBeVisible();
     await expect(lucidLink.getByText("Lucid", { exact: true })).toBeVisible();
 
-    await page.goto(href);
+    await lucidLink.click();
+    await page.waitForURL(urlIs(`${path}?from=%2Fjournal%2Flucid`));
+    await page.getByRole("link", { name: "Back to journal" }).click();
+    await page.waitForURL(urlIs("/journal/lucid"));
+
+    await page.goto(path);
     await expect(toggle).toHaveAttribute("aria-pressed", "true");
     await toggle.click();
     await expect(toggle).toHaveAttribute("aria-pressed", "false");

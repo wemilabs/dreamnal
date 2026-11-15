@@ -9,7 +9,7 @@ export function EntryDetailSkeleton() {
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
-          <Skeleton className="size-9 shrink-0 rounded-full" />
+          <Skeleton className="-ml-2.5 size-9 shrink-0 rounded-full" />
           <Skeleton className="h-3 w-44" />
         </div>
         <Skeleton className="size-9 shrink-0 rounded-full" />

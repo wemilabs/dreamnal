@@ -6,8 +6,8 @@ import { useComposer } from "@/components/journal/composer/composer-provider";
 import { IntentPrefetchLink } from "@/components/journal/intent-prefetch-link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AppHref } from "@/i18n/paths";
 import type { AppLocale } from "@/i18n/routing";
+import { entryHref } from "@/lib/back-href";
 import type { CalendarDream } from "@/lib/calendar";
 import { dayKey, parseDayKey } from "@/lib/calendar";
 import {
@@ -23,7 +23,7 @@ function DreamRow({ dream }: { dream: CalendarDream }) {
   return (
     <li className="border-b border-border py-3 last:border-0">
       <IntentPrefetchLink
-        href={`/journal/${dream.id}` as AppHref}
+        href={entryHref(dream.id, "/journal/calendar")}
         className="pressable flex w-full flex-col items-start gap-1.5"
       >
         <span className="block w-full text-control text-foreground">
