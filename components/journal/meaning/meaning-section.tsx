@@ -14,7 +14,6 @@ export async function MeaningSection({ entry }: { entry: EntryWithSymbols }) {
       {entry.fulfilledOn ? (
         <FulfilledCard
           meaning={entry.meaning ?? ""}
-          confidence={entry.meaningConfidence}
           fulfilledOn={entry.fulfilledOn}
           fulfillmentNote={entry.fulfillmentNote}
           entryId={entry.id}
